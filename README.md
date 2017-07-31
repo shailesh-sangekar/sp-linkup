@@ -4,8 +4,8 @@ Make SharePoint 2013/2016/Online list item edits easy from JavaScript with a com
 
 ## Get Started (AngularJS / spcrud.js)
 1. upload files to /SiteAssets/
-2. add Content Editor to homepage
-3. point Content Editor at /SiteAssets/spcrud-demo.html
+2. add Content Editor to page
+3. point Content Editor at /SiteAssets/<added html page name>.html
 4. create new Custom List (ex: "Test")
 5. click buttons to run CRUD operations on list "Test" (or any list)
 
@@ -36,32 +36,6 @@ saveList() {
     });
 }
 ```
-
-## Video
-[![](https://raw.githubusercontent.com/spjeff/spcrud/master/doc/7.png)](http://www.spjeff.com/2016/04/10/video-get-started-with-spcrud-js/ "Get Started with SPCRUD")
-
-## Sceenshots
-1. upload files to /SiteAssets/
-![image](https://raw.githubusercontent.com/spjeff/spcrud/master/doc/1.png)
-2. homepage with Content Editor pointed at /SiteAssets/spcrud-demo.html
-![image](https://raw.githubusercontent.com/spjeff/spcrud/master/doc/2.png)
-3. Create
-![image](https://raw.githubusercontent.com/spjeff/spcrud/master/doc/3.png)
-4. Read
-![image](https://raw.githubusercontent.com/spjeff/spcrud/master/doc/4.png)
-5. Update
-![image](https://raw.githubusercontent.com/spjeff/spcrud/master/doc/5.png)
-6. Delete
-![image](https://raw.githubusercontent.com/spjeff/spcrud/master/doc/6.png)
-
-## Contact
-Please drop a line to [@spjeff](https://twitter.com/spjeff) or [spjeff@spjeff.com](mailto:spjeff@spjeff.com)
-Thanks!  =)
-
-![image](http://img.shields.io/badge/first--timers--only-friendly-blue.svg?style=flat-square)
-
-
-## License
 
 The MIT License (MIT)
 
