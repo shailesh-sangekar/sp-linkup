@@ -5,5 +5,5 @@ function stockMangementCtl($scope, $http) {
 }
 
 
-//load
+//load controller and app
 angular.module('stockMangementApp', []).controller('stockMangementCtl', spcrudCtl);
