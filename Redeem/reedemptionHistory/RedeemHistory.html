@@ -1,0 +1,91 @@
+<head>
+	<title>Redeem Master</title>
+	<meta charset="utf-8">
+	<meta name="Submitport" content="width=device-width, initial-scale=1, user-scalable=no">
+	<link rel='shortcut icon' href='favicon.ico' type='image/x-icon'/ >
+	<link rel="stylesheet" href="http://espld205/SiteAssets/RnR/Redeem/css/bootstrap.min.css">
+	<link rel="stylesheet" href="http://espld205/SiteAssets/RnR/Redeem/css/style.css">
+	<link rel="stylesheet" href="http://espld205/SiteAssets/RnR/Redeem/css/datepicker.css">
+	
+   <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.3/moment.js"></script>
+   <script src="assets/plugins/moment/moment.min.js"></script>
+	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">		
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">		
+</head>
+<script src="http://espld205/SiteAssets/RnR/Redeem/angular.js"></script>
+
+<!--Application-->
+<script src="http://espld205/SiteAssets/RnR/Redeem/spcrud.js"></script>
+<script src="http://espld205/SiteAssets/RnR/Redeem/RedeemHistory.js"></script>
+<div ng-app="redeemHistoryApp">
+    <div ng-controller="redeemHistoryCtl">
+    <div class="row" >
+      <div>
+    
+    </div>
+        <h4 class="masterHeading">Redeemption Pending Details:</h4> 
+            <a class="searchbutton" href="http://espld205/SitePages/Redeem.aspx" title="View Redeem">
+		    <i class="fa fa-search"></i> 
+		</a>
+    </div>
+        <div class="col-md-12" >
+            <table class="table StatusTable" style="margin-bottom:0px;">
+				<thead>
+					<tr>
+                        <th>Image</th>
+					    <th>Code</th>
+                        <th>Name</th>
+						<th>Points</th>
+						<th>Quantity</th>	
+                        <th>Redeem Points</th>																	
+						<th>Status</th>
+					</tr>
+				</thead>
+				<tbody>
+                    <tr ng-repeat="item in redeemPendinglistemp">
+                        <td><img src="{{item.Url[0]?item.Url[0].EncodedAbsThumbnailUrl:'http://espld205/SiteAssets/RnR/Redeem/img/defaultImage.png'}}" class="redeemImg img-table" /></td>
+					    <td>{{item.Item_x0020_Code.Item_x0020_Code}}</td>
+                        <td>{{item.Item_x0020_Code.Item_x0020_Name}}</td>	
+					    <td>{{item.Item_x0020_Code.Points}}</td>
+						<td>{{item.RedeemQuantity}}</td>	
+                        <td>{{item.Item_x0020_Code.Points * item.RedeemQuantity}}</td>	
+                        <td class="pendingStatus"><b>{{item.Status}}</b></td>	
+					</tr>
+                </tbody>
+			</table>
+		</div>
+ <h4 class="masterHeading">Redeemption Approved/Rejected Details:</h4>
+     
+           <div class="col-md-12" >
+            <table class="table StatusTable" style="margin-bottom:0px;">
+				<thead>
+					<tr>
+                        <th>Image</th>
+					    <th>Code</th>
+                        <th>Name</th>
+						<th>Points</th>
+						<th>Quantity</th>	
+                        <th>Redeem Points</th>																	
+						<th>Status</th>
+					</tr>
+				</thead>
+				<tbody>
+                    <tr ng-repeat="item in redeemApprovedlistemp">
+                        <td><img src="{{item.Url[0]?item.Url[0].EncodedAbsThumbnailUrl:'http://espld205/SiteAssets/RnR/Redeem/img/defaultImage.png'}}" class="redeemImg img-table" /></td>
+					    <td>{{item.Item_x0020_Code.Item_x0020_Code}}</td>
+                        <td>{{item.Item_x0020_Code.Item_x0020_Name}}</td>	
+					    <td>{{item.Item_x0020_Code.Points}}</td>
+						<td>{{item.RedeemQuantity}}</td>	
+                        <td>{{item.Item_x0020_Code.Points * item.RedeemQuantity}}</td>	
+                        <td ng-if="item.Status==='Approved'" class="approvedStatus"><b>{{item.Status}}</b></td>
+                        <td ng-if="item.Status==='Rejected'" class="rejectedStatus"><b>{{item.Status}}</b></td>		
+					</tr>
+                </tbody>
+			</table>
+		</div>
+    </div>
+</div>
+                                    	
+	<!-- Jquery -->	
+	<script src="http://espld205/SiteAssets/RnR/Redeem/js/jquery.js"></script>
+	<script src="http://espld205/SiteAssets/RnR/Redeem/js/bootstrap.min.js"></script>

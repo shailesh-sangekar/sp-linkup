@@ -1,0 +1,30 @@
+.alignMedal{
+	margin-left: -35px;
+	margin-top: -4px; 
+	color: rgba(47, 126, 236, 0.98)
+}
+.heightMedal{
+	height: 50px;
+}
+.alignTop{
+	margin-top: -28px;
+	margin-left: -35px;
+}
+.height12{
+	height:12px;
+}
+.overflowdata{
+	height:14px; 
+	overflow: hidden; 
+	text-overflow: ellipsis; 
+	white-space: nowrap;
+}
+.inputQuantity{
+	margin-top: 5px;
+}
+.floatright{
+	float:right;
+}
+.dropdownalign{
+	margin-left: 450px;
+}
