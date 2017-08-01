@@ -10,7 +10,7 @@
 <link rel="stylesheet" href="/SiteAssets/RnR/Redeem/Redeemption/redeemption.css"></link>
 
 <!--Main-->
-<div ng-app="redeemApp">
+<div ng-app="redeemApp" class="appmodel">
     <div ng-controller="redeemCtl">
 	<section class="topSection">
 		<div class="container">
@@ -28,7 +28,10 @@
 						</div>
 					
 						<span class="dropdownalign">
-						<a  class="btn btn-xs yellow-soft" href="/SitePages/Redeem%20History.aspx" title="View Redeem History">
+						<!--<a  class="btn btn-xs yellow-soft" href="/SitePages/Redeem%20History.aspx" title="View Redeem History">
+							<i class="fa fa-history"></i> 
+						</a>-->
+						<a class="btn blue" href="/SitePages/Redeem%20History.aspx" title="View Redeem History">
 							<i class="fa fa-history"></i> 
 						</a>
 					</span>
@@ -39,7 +42,7 @@
 					</div>
 	
 	                <div class="row">
-							<div class="col-sm-3" ng-repeat="pd in productDetails">
+							<div ng-if="productDetails.length > 0" class="col-sm-3" ng-repeat="pd in productDetails">
 								<div class="redeemBox"  ng-disabled="pd.Balance < 1">
 									<img ng-show="pd.Balance < 1" src="/SiteAssets/RnR/img/outOfStock.png" class="outOfStockImg" />	
 									<img src="{{pd.Url[0]?pd.Url[0].EncodedAbsThumbnailUrl:'/SiteAssets/RnR/img/defaultImage.png'}}" class="redeemImg img-responsive" />
@@ -61,6 +64,9 @@
 									<input ng-disabled="pd.defaultQuantity < 1" class="inputQuantity" type="button" ng-click="RedeemProduct(pd)" value="Redeem" />
 								</div>
 							</div>	
+							<div class="col-sm-6" ng-if="productDetails.length <= 0">
+								<span style="margin-left:90px;">No Products Available for Redemption...!</span>
+								</div>
 						</div>
 						
 					</div>

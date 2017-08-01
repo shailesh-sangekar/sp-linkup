@@ -1,3 +1,6 @@
+.appmodel{
+margin-top: -80px;
+}
 .alignMedal{
 	margin-left: -35px;
 	margin-top: -4px; 
@@ -7,7 +10,7 @@
 	height: 50px;
 }
 .alignTop{
-	margin-top: -28px;
+	margin-top: -17px;
 	margin-left: -35px;
 }
 .height12{
@@ -71,4 +74,16 @@
 .redeemImg{
 	height: 100px !important;
 	 margin: 0 auto !important;
+}
+.spin span:first-child {
+    border-radius: 0;
+    font-weight: 900;
+    border-radius: 4px 0 0 4px !important;
+}
+.spin span {
+    border-radius: 0 4px 4px 0 !important;
+}
+.input[type=button][disabled], input[type=reset][disabled], input[type=submit][disabled], button[disabled][disabled] {
+    border-color: #e1e1e1;
+    color: #b1b1b1!important;
 }
