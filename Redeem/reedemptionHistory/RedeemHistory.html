@@ -1,22 +1,11 @@
-<head>
-	<title>Redeem Master</title>
-	<meta charset="utf-8">
-	<meta name="Submitport" content="width=device-width, initial-scale=1, user-scalable=no">
-	<link rel='shortcut icon' href='favicon.ico' type='image/x-icon'/ >
-	<link rel="stylesheet" href="http://espld205/SiteAssets/RnR/Redeem/css/bootstrap.min.css">
-	<link rel="stylesheet" href="http://espld205/SiteAssets/RnR/Redeem/css/style.css">
-	<link rel="stylesheet" href="http://espld205/SiteAssets/RnR/Redeem/css/datepicker.css">
-	
-   <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.3/moment.js"></script>
-   <script src="assets/plugins/moment/moment.min.js"></script>
-	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">		
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">		
-</head>
-<script src="http://espld205/SiteAssets/RnR/Redeem/angular.js"></script>
-
+<script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.3/moment.js"></script>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">		
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">		
+<script src="/SiteAssets/RnR/angular.js"></script>
+<script src="/SiteAssets/RnR/spcrud.js"></script>
 <!--Application-->
-<script src="http://espld205/SiteAssets/RnR/Redeem/spcrud.js"></script>
-<script src="http://espld205/SiteAssets/RnR/Redeem/RedeemHistory.js"></script>
+<link rel="stylesheet" href="/SiteAssets/RnR/Redeem/Redeem%20History/RedeemHistory.css"></link>
+<script src="/SiteAssets/RnR/Redeem/Redeem%20History/RedeemHistory.js"></script>
 <div ng-app="redeemHistoryApp">
     <div ng-controller="redeemHistoryCtl">
     <div class="row" >
@@ -24,7 +13,7 @@
     
     </div>
         <h4 class="masterHeading">Redeemption Pending Details:</h4> 
-            <a class="searchbutton" href="http://espld205/SitePages/Redeem.aspx" title="View Redeem">
+            <a class="searchbutton" href="/SitePages/Redemption.aspx" title="View Redeem">
 		    <i class="fa fa-search"></i> 
 		</a>
     </div>
@@ -43,7 +32,7 @@
 				</thead>
 				<tbody>
                     <tr ng-repeat="item in redeemPendinglistemp">
-                        <td><img src="{{item.Url[0]?item.Url[0].EncodedAbsThumbnailUrl:'http://espld205/SiteAssets/RnR/Redeem/img/defaultImage.png'}}" class="redeemImg img-table" /></td>
+                        <td><img src="{{item.Url[0]?item.Url[0].EncodedAbsThumbnailUrl:'/SiteAssets/RnR/img/defaultImage.png'}}" class="redeemImg img-table" /></td>
 					    <td>{{item.Item_x0020_Code.Item_x0020_Code}}</td>
                         <td>{{item.Item_x0020_Code.Item_x0020_Name}}</td>	
 					    <td>{{item.Item_x0020_Code.Points}}</td>
@@ -71,7 +60,7 @@
 				</thead>
 				<tbody>
                     <tr ng-repeat="item in redeemApprovedlistemp">
-                        <td><img src="{{item.Url[0]?item.Url[0].EncodedAbsThumbnailUrl:'http://espld205/SiteAssets/RnR/Redeem/img/defaultImage.png'}}" class="redeemImg img-table" /></td>
+                        <td><img src="{{item.Url[0]?item.Url[0].EncodedAbsThumbnailUrl:'/SiteAssets/RnR/img/defaultImage.png'}}" class="redeemImg img-table" /></td>
 					    <td>{{item.Item_x0020_Code.Item_x0020_Code}}</td>
                         <td>{{item.Item_x0020_Code.Item_x0020_Name}}</td>	
 					    <td>{{item.Item_x0020_Code.Points}}</td>

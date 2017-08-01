@@ -1,14 +1,14 @@
 <!--Third Party-->
-<script src="/sites/test/SiteAssets/angular.js"></script>
+<script src="/SiteAssets/RnR/angular.js"></script>
 
 <!--Application-->
-<script src="/sites/test/SiteAssets/spcrud.js"></script>
-<script src="/sites/test/SiteAssets/spcrud-demo.js"></script>
-<link rel="stylesheet" href="http://espld205/SiteAssets/RnR/Redeem/css/bootstrap.min.css">
-	<link rel="stylesheet" href="http://espld205/SiteAssets/RnR/Redeem/css/style.css">
-	<link rel="stylesheet" href="http://espld205/SiteAssets/RnR/Redeem/css/datepicker.css">
-	
-   <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.3/moment.js"></script>
+<script src="/SiteAssets/RnR/spcrud.js"></script>
+<link rel="stylesheet" href="/SiteAssets/RnR/css/bootstrap.min.css"></link>
+<link rel="stylesheet" href="/SiteAssets/RnR/css/style.css"></link>
+<script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.3/moment.js"></script>
+<script src="/SiteAssets/RnR/Redeem/Redeemption/redeemption.js"></script>
+<link rel="stylesheet" href="/SiteAssets/RnR/Redeem/Redeemption/redeemption.css"></link>
+
 <!--Main-->
 <div ng-app="redeemApp">
     <div ng-controller="redeemCtl">
@@ -19,7 +19,7 @@
 					<div class="col-md-12">
 						<div class="col-sm-1" >
 							<span>
-							<img class="heightMedal" src="http://espld203:2770/SiteAssets/RnR/Redeem/img/medal.png" />		
+							<img class="heightMedal" src="/SiteAssets/RnR/img/medal.png" />		
 							</span>
 							</div>
 						<div class="col-sm-4">
@@ -28,7 +28,7 @@
 						</div>
 					
 						<span class="dropdownalign">
-						<a  class="btn btn-xs yellow-soft" href="http://espld203:2770/SitePages/RedeemHistory.aspx" title="View Redeem History">
+						<a  class="btn btn-xs yellow-soft" href="/SitePages/Redeem%20History.aspx" title="View Redeem History">
 							<i class="fa fa-history"></i> 
 						</a>
 					</span>
@@ -41,8 +41,8 @@
 	                <div class="row">
 							<div class="col-sm-3" ng-repeat="pd in productDetails">
 								<div class="redeemBox"  ng-disabled="pd.Balance < 1">
-									<img ng-show="pd.Balance < 1" src="http://espld205/SiteAssets/RnR/Redeem/img/outOfStock.png" class="outOfStockImg" />	
-									<img src="{{pd.Url[0]?pd.Url[0].EncodedAbsThumbnailUrl:'http://espld205/SiteAssets/RnR/Redeem/img/defaultImage.png'}}" class="redeemImg img-responsive" />
+									<img ng-show="pd.Balance < 1" src="/SiteAssets/RnR/img/outOfStock.png" class="outOfStockImg" />	
+									<img src="{{pd.Url[0]?pd.Url[0].EncodedAbsThumbnailUrl:'/SiteAssets/RnR/img/defaultImage.png'}}" class="redeemImg img-responsive" />
 									<span class="codeSpan">{{pd.Item_x0020_Code?pd.Item_x0020_Code:''}}</span>
                                     <h5 class="overflowdata">{{pd.Item_x0020_Name?pd.Item_x0020_Name:''}}</h5>	
                                     <h4 class="height12">{{pd.Points?pd.Points:''}}Pts.</h4>
