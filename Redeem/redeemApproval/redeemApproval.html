@@ -10,5 +10,95 @@
     <div ng-controller="redeemApprovalCtl">
 
         <!-- add your html stuff -->
+        <div class="row">
+            <div class="col-md-12">
+                <div id="pendingTable" class="tab-content appraisalTabsContent" ng-if="gridItemsPending.length != 0">
+                    <h2>Items Pending for Approval</h2>
+                    <table class="table StatusTable" style="margin-bottom:0px;">
+                        <thead>
+                            <tr>
+                                <th>Code</th>
+                                <th>Points</th>
+                                <th>Name</th>
+                                <th>Quantity</th>
+                                <th style="text-align: center;">Approve</th>
+                                <th style="text-align: center;">Reject</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="item in gridItemsPending" ng-if="gridItemsPending.length != 0">
+                                <td>
+                                    <span class="centre">{{item.Item_x0020_Code.Item_x0020_Code}}</span>
+                                </td>
+                                <td>
+                                    <span class="centre">{{item.Item_x0020_Code.Points}}</span>
+                                </td>
+                                <td>
+                                    <span>{{item.Item_x0020_Code.Item_x0020_Name}}</span>
+                                </td>
+                                <td>
+                                    <span class="centre">{{item.RedeemQuantity}}</span>
+                                </td>
+                                <td>
+                                    <i class="fa fa-check colorApprove centre" style="color:green" aria-hidden="true" ng-click="updateApproval(item,1)"></i>
+                                </td>
+                                <td>
+                                    <i class="fa fa-times colorReject centre" style="color:red" aria-hidden="true" ng-click="updateApproval(item,2)"></i>
+                                </td>
+
+                            </tr>
+
+                        </tbody>
+                    </table>
+
+                </div>
+                <br/>
+                <br/>
+                <div id="historyTable" class="tab-content appraisalTabsContent" ng-if="gridItemsApproved.length != 0">
+                    <h2>Approval History</h2>
+                    <table class="table StatusTable" style="margin-bottom:0px;">
+                        <thead>
+                            <tr>
+                                <th>Code</th>
+                                <th>Points</th>
+                                <th>Name</th>
+                                <th>Quantity</th>
+                                <th style="text-align: center;">Status</th>
+                                <th>Approved By</th>
+                                <th>Approved Date</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="item in gridItemsApproved" ng-if="gridItemsApproved.length != 0">
+                                <td>
+                                    <span class="centre">{{item.Item_x0020_Code.Item_x0020_Code}}</span>
+                                </td>
+                                <td>
+                                    <span class="centre">{{item.Item_x0020_Code.Points}}</span>
+                                </td>
+                                <td>
+                                    <span>{{item.Item_x0020_Code.Item_x0020_Name}}</span>
+                                </td>
+                                <td>
+                                    <span class="centre">{{item.RedeemQuantity}}</span>
+                                </td>
+                                <td>
+                                    <span class="centre">{{item.Status}}</span>
+                                </td>
+                                <td>
+                                    <span class="centre">{{item.Redemption_x0020_Approved_x0020_.Title}}</span>
+                                </td>
+                                <td>
+                                    <span class="centre" ng-bind="item.Redemption_x0020_Approved_x0020_0 | date:'dd/MM/yyyy'"></span>
+                                </td>
+
+                            </tr>
+
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+        </div>
     </div>
 </div>
