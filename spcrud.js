@@ -191,11 +191,13 @@ spcrud.ensureUser = function ($http, login) {
 //create list
 spcrud.createList = function ($http, title, baseTemplate, description) {
     var data = {
-        '__metadata': { 'type': 'SP.List' },
-        'BaseTemplate': baseTemplate,
-        'Description': description,
-        'Title': title
-    },
+            '__metadata': {
+                'type': 'SP.List'
+            },
+            'BaseTemplate': baseTemplate,
+            'Description': description,
+            'Title': title
+        },
         url = spcrud.baseUrl + '/_api/web/lists',
         config = {
             method: 'POST',
@@ -209,10 +211,12 @@ spcrud.createList = function ($http, title, baseTemplate, description) {
 //create field
 spcrud.createField = function ($http, listTitle, fieldName, fieldType) {
     var data = {
-        '__metadata': { 'type': 'SP.Field' },
-        'Type': fieldType,
-        'Title': fieldName
-    },
+            '__metadata': {
+                'type': 'SP.Field'
+            },
+            'Type': fieldType,
+            'Title': fieldName
+        },
         url = spcrud.baseUrl + '/_api/web/lists/GetByTitle(\'' + listTitle + '\')/fields',
         config = {
             method: 'POST',
@@ -228,11 +232,11 @@ spcrud.createField = function ($http, listTitle, fieldName, fieldType) {
 //create folder
 spcrud.createFolder = function ($http, folderUrl) {
     var data = {
-        '__metadata': {
-            'type': 'SP.Folder'
+            '__metadata': {
+                'type': 'SP.Folder'
+            },
+            'ServerRelativeUrl': folderUrl
         },
-        'ServerRelativeUrl': folderUrl
-    },
         url = spcrud.baseUrl + '/_api/web/folders',
         config = {
             method: 'POST',
@@ -325,24 +329,40 @@ spcrud.create = function ($http, listName, jsonBody) {
 };
 
 spcrud.readBuilder = function (url, options) {
+    //Sqeuence changed because Original sequence was giving wrong URL
+    //Edited By Anupreeta Mishra on 01/08/2017 at 01:00
+    //Original sequence:
+    // 1.filter
+    // 2.select
+    // 3.orderby
+    // 4.expand
+    // 5.top
+    // 6.skip
+    //Changed sequence:
+    // 1.select
+    // 2.expand
+    // 3.filter
+    // 4.orderby
+    // 5.skip
+    // 6.top
     if (options) {
-        if (options.filter) {
-            url += ((spcrud.endsWith(url, 'items')) ? "?" : "&") + "$filter=" + options.filter;
-        }
         if (options.select) {
             url += ((spcrud.endsWith(url, 'items')) ? "?" : "&") + "$select=" + options.select;
-        }
-        if (options.orderby) {
-            url += ((spcrud.endsWith(url, 'items')) ? "?" : "&") + "$orderby=" + options.orderby;
         }
         if (options.expand) {
             url += ((spcrud.endsWith(url, 'items')) ? "?" : "&") + "$expand=" + options.expand;
         }
-        if (options.top) {
-            url += ((spcrud.endsWith(url, 'items')) ? "?" : "&") + "$top=" + options.top;
+        if (options.filter) {
+            url += ((spcrud.endsWith(url, 'items')) ? "?" : "&") + "$filter=" + options.filter;
+        }
+        if (options.orderby) {
+            url += ((spcrud.endsWith(url, 'items')) ? "?" : "&") + "$orderby=" + options.orderby;
         }
         if (options.skip) {
             url += ((spcrud.endsWith(url, 'items')) ? "?" : "&") + "$skip=" + options.skip;
+        }
+        if (options.top) {
+            url += ((spcrud.endsWith(url, 'items')) ? "?" : "&") + "$top=" + options.top;
         }
     }
     return url;
