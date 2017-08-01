@@ -63,7 +63,7 @@ var vm = $scope;
 
             if (confirm("You are trying to approve! " + item.Item_x0020_Code.Item_x0020_Code)) {
                 var sum = item.Item_x0020_Code.Items_x0020_Redemend + item.RedeemQuantity;
-                var difference = item.Item_x0020_Code.Available_x0020_Quantity - item.Item_x0020_Code.Items_x0020_Redemend;
+                var difference = item.Item_x0020_Code.Quantity - item.Item_x0020_Code.Items_x0020_Redemend;
                 if (sum > difference) {
                     alert('We do not have those many items in stock!');
                 } else {
@@ -115,4 +115,4 @@ var vm = $scope;
 
 
 //load
-angular.module('redeemApprovalApp', []).controller('redeemApprovalCtl', spcrudCtl);
+angular.module('redeemApprovalApp', []).controller('redeemApprovalCtl', redeemApprovalCtl);
