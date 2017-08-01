@@ -285,7 +285,18 @@ spcrud.uploadAttach = function ($http, listName, id, fileName, binary, overwrite
     };
     return $http(config);
 };
-
+// get image thumbnail url from picture library
+spcrud.getImg = function ($http, listName, options) {
+    
+    var imgurl = spcrud.baseUrl + '/_api/web/lists/getbytitle(\'' + listName + '\')/items?$select=EncodedAbsThumbnailUrl',
+         url = spcrud.readBuilder(imgurl, options);
+     var config = {
+            method: 'GET',
+            url: url,
+            headers: spcrud.headers
+        };
+    return $http(config);
+};
 //get attachment for item
 spcrud.getAttach = function ($http, listName, id) {
     var url = spcrud.baseUrl + '/_api/web/lists/GetByTitle(\'' + listName + '\')/items(' + id + ')/AttachmentFiles',
