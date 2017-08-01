@@ -4,7 +4,11 @@
 <!--Application-->
 <script src="/sites/test/SiteAssets/spcrud.js"></script>
 <script src="/sites/test/SiteAssets/spcrud-demo.js"></script>
-
+<link rel="stylesheet" href="http://espld205/SiteAssets/RnR/Redeem/css/bootstrap.min.css">
+	<link rel="stylesheet" href="http://espld205/SiteAssets/RnR/Redeem/css/style.css">
+	<link rel="stylesheet" href="http://espld205/SiteAssets/RnR/Redeem/css/datepicker.css">
+	
+   <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.3/moment.js"></script>
 <!--Main-->
 <div ng-app="redeemApp">
     <div ng-controller="redeemCtl">
@@ -39,7 +43,7 @@
 								<div class="redeemBox"  ng-disabled="pd.Balance < 1">
 									<img ng-show="pd.Balance < 1" src="http://espld205/SiteAssets/RnR/Redeem/img/outOfStock.png" class="outOfStockImg" />	
 									<img src="{{pd.Url[0]?pd.Url[0].EncodedAbsThumbnailUrl:'http://espld205/SiteAssets/RnR/Redeem/img/defaultImage.png'}}" class="redeemImg img-responsive" />
-                                    <h5 class="height12">{{pd.Item_x0020_Code?pd.Item_x0020_Code:''}}</h5>	
+									<span class="codeSpan">{{pd.Item_x0020_Code?pd.Item_x0020_Code:''}}</span>
                                     <h5 class="overflowdata">{{pd.Item_x0020_Name?pd.Item_x0020_Name:''}}</h5>	
                                     <h4 class="height12">{{pd.Points?pd.Points:''}}Pts.</h4>
 									

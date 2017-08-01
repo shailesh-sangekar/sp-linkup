@@ -28,3 +28,37 @@
 .dropdownalign{
 	margin-left: 450px;
 }
+.redeemBox .codeSpan{
+ position: absolute;
+    top: 13px;
+    left: 27px;
+    background: #e67a7a;
+    font-size: 11px;
+    padding: 3px 4px;
+    color: #fff;
+    border-radius: 2px;
+}
+.redeemBox h4 {
+    font-size: 17px;
+    font-weight: 500;
+    margin-bottom: 12px;
+    margin-top: -2px;
+    letter-spacing: 0px;
+    color: #2B87D4;
+    position: absolute;
+    top: 16px;
+    right: 22px;
+}
+.redeemBox {
+	max-height: 250px !important;
+    min-height: 250px !important;
+ margin-bottom:10px;
+}
+.redeemBox img {
+    height: 95px;
+    margin: 0 auto;
+}
+.redeemImg{
+	height: 100px !important;
+	 margin: 0 auto !important;
+}
