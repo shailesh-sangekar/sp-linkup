@@ -37,6 +37,7 @@ function redeemCtl($scope, $http) {
 					select: empSelect ,
 					filter: nameFilter
 				};
+                 vm.read();
 				vm.reademplist();
 			}, function (error) {
             console.log('error', error);

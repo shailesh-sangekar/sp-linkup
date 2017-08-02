@@ -87,3 +87,6 @@ margin-top: -80px;
     border-color: #e1e1e1;
     color: #b1b1b1!important;
 }
+.inputDisableQuantity{
+	margin-top: 5px !important;
+}
