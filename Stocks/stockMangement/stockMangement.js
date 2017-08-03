@@ -195,7 +195,7 @@ function stockManagementCtl($scope, $http) {
         else if (resp.Points == undefined) {
             alert("Enter Points");
         }
-        else if (resp.NewQuantity == undefined) {
+        else if (resp.Updated_x0020_Quantity == undefined) {
             alert("Enter Quanity");
         }
         else if (resp.ID != null) {
