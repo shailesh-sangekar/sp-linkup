@@ -1,19 +1,19 @@
 <!--Third Party-->
 <script src="/SiteAssets/RnR/angular.js"></script>
-<link rel="stylesheet" href="/SiteAssets/RnR/Redeem/Redeem%20Approval/css/bootstrap.min.css">
-<link rel="stylesheet" href="/SiteAssets/RnR/Redeem/Redeem%20Approval/css/style.css">
-<link rel="stylesheet" href="/SiteAssets/RnR/Redeem/Redeem%20Approval/css/font-awesome.css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-<link rel="stylesheet" href="/SiteAssets/RnR/Stock/Redeem_Approval/css/font-awesome.css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="/SiteAssets/RnR/Stocks/Stock%20Approval/css/bootstrap.min.css">
+<link rel="stylesheet" href="/SiteAssets/RnR/Stocks/Stock%20Approval/css/font-awesome.css">
+<link rel="stylesheet" href="/SiteAssets/RnR/Stocks/Stock%20Approval/css/style.css">
+
 <!--Application-->
 <!-- <script src="/sites/test/SiteAssets/spcrud.js"></script> -->
-<script src="/SiteAssets/RnR/Redeem/Redeem%20Approval/redeemApproval.js"></script>
+<script src="/SiteAssets/RnR/Stocks/Stock%20Approval/stockApproval.js"></script>
 <script src="/SiteAssets/RnR/spcrud.js"></script>
-<link rel="stylesheet" href="/SiteAssets/RnR/Redeem/Redeem%20Approval/redeemApproval.css">
+<link rel="stylesheet" href="/SiteAssets/RnR/Stocks/Stock%20Approval/stockApproval.css">
 <!--Main-->
-<div ng-app="redeemApprovalApp" style="margin-top: -30px;">
-       <div ng-controller="redeemApprovalCtl">
+<div ng-app="stockApprovalApp"  style="margin-top: -30px;">
+    <div ng-controller="stockApprovalCtl">
+
+        <!-- add your html stuff -->
         <div class="row">
             <div class="col-md-12">
                 <div id="pendingTable" class="tab-content appraisalTabsContent" ng-if="gridItemsPending.length != 0">
@@ -24,7 +24,8 @@
                                 <th>Code</th>
                                 <th>Points</th>
                                 <th>Name</th>
-                                <th>Quantity</th>
+                                <th>Original Quantity</th>
+                                <th>Updated Quaantity</th>
                                 <th style="text-align: center;">Approve</th>
                                 <th style="text-align: center;">Reject</th>
                             </tr>
@@ -35,19 +36,22 @@
                                     <span class="centre">{{item.Item_x0020_Code.Item_x0020_Code}}</span>
                                 </td>
                                 <td>
-                                    <span class="centre">{{item.Item_x0020_Code.Points}}</span>
+                                    <span class="centre">{{item.Points}}</span>
                                 </td>
                                 <td>
-                                    <span>{{item.Item_x0020_Code.Item_x0020_Name}}</span>
+                                    <span>{{item.Item_x0020_Name}}</span>
                                 </td>
                                 <td>
-                                    <span class="centre">{{item.RedeemQuantity}}</span>
+                                    <span class="centre">{{item.Quantity}}</span>
+                                </td>
+                                <td>
+                                    <span class="centre">{{item.Updated_x0020_Quantity}}</span>
                                 </td>
                                 <td>
                                     <i class="fa fa-check colorApprove centre" style="color:green" aria-hidden="true" ng-click="updateApproval(item,1)"></i>
                                 </td>
                                 <td>
-                                    <i class="fa fa-times colorReject centre" style="color:red" aria-hidden="true" ng-click="updateApproval(item,2)"></i>
+                                    <i class="fa fa-times colorReject centre" style="color:red" aria-hidden="true" data-toggle="modal" data-target="#myModal" ng-click="updateApproval(item,2)"></i>
                                 </td>
 
                             </tr>
@@ -56,8 +60,7 @@
                     </table>
 
                 </div>
-                <br/>
-                <br/>
+                <hr>
                 <div id="historyTable" class="tab-content appraisalTabsContent" ng-if="gridItemsApproved.length != 0">
                     <h2>Approval History</h2>
                     <table class="table StatusTable" style="margin-bottom:0px;">
@@ -66,7 +69,8 @@
                                 <th>Code</th>
                                 <th>Points</th>
                                 <th>Name</th>
-                                <th>Quantity</th>
+                                <th>Original Quantity</th>
+                                <th>Updated Quaantity</th>
                                 <th style="text-align: center;">Status</th>
                                 <th>Approved By</th>
                                 <th>Approved Date</th>
@@ -78,22 +82,25 @@
                                     <span class="centre">{{item.Item_x0020_Code.Item_x0020_Code}}</span>
                                 </td>
                                 <td>
-                                    <span class="centre">{{item.Item_x0020_Code.Points}}</span>
+                                    <span class="centre">{{item.Points}}</span>
                                 </td>
                                 <td>
-                                    <span>{{item.Item_x0020_Code.Item_x0020_Name}}</span>
+                                    <span>{{item.Item_x0020_Name}}</span>
                                 </td>
                                 <td>
-                                    <span class="centre">{{item.RedeemQuantity}}</span>
+                                    <span class="centre">{{item.Quantity}}</span>
+                                </td>
+                                <td>
+                                    <span class="centre">{{item.Updated_x0020_Quantity}}</span>
                                 </td>
                                 <td>
                                     <span class="centre">{{item.Status}}</span>
                                 </td>
                                 <td>
-                                    <span class="centre">{{item.Redemption_x0020_Approved_x0020_.Title}}</span>
+                                    <span class="centre">{{item.Approved_x0020_By.Title}}</span>
                                 </td>
                                 <td>
-                                    <span class="centre" ng-bind="item.Redemption_x0020_Approved_x0020_0 | date:'dd/MM/yyyy'"></span>
+                                    <span class="centre" ng-bind="item.Approved_x0020_Date | date:'dd/MM/yyyy'"></span>
                                 </td>
 
                             </tr>
@@ -102,6 +109,26 @@
                     </table>
 
                 </div>
+            </div>
+        </div>
+        <div class="modal fade" id="myModal" role="dialog">
+            <div class="modal-dialog">
+
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Modal Header</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div>Please specify the reason for rejection:</div>
+                        <textarea rows="4" cols="50" ng-model="comment" ng-blur="saveRejectComment(comment)"></textarea>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal" >Ok</button>
+                    </div>
+                </div>
+
             </div>
         </div>
     </div>
