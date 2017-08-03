@@ -1,18 +1,19 @@
 <script src="/SiteAssets/RnR/Stocks/Stock%20mangement/js/bootstrap.min.js"></script>
 <script src="/SiteAssets/RnR/Stocks/Stock%20mangement/js/bootstrap-datepicker.min.js"></script>
+
 <script src="/SiteAssets/RnR/angular.js"></script>
-<script src="/SiteAssets/RnR/spcrud.js"></script>
+
+
 <link rel='shortcut icon' href='favicon.ico' type='image/x-icon' />
 <link rel="stylesheet" href="/SiteAssets/RnR/css/bootstrap.min.css">
 <link rel="stylesheet" href="/SiteAssets/RnR/css/style.css">
 
-<link rel="stylesheet" href="/SiteAssets/RnR/Stocks/Stock%20mangement/css/steps.css">
-<link rel="stylesheet" href="/SiteAssets/RnR/Stocks/Stock%20mangement/css/bootstrap-datepicker.min.css">
-<!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"> -->
-<!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"> -->
-<!-- <link href="https://fonts.googleapis.com/icon?family=material+icons" rel="stylesheet"> -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link href="/SiteAssets/RnR/Stocks/Stock%20mangement/css/bootstrap-datepicker.min.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=material+icons" rel="stylesheet">
 <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">  -->
-<script src="/SiteAssets/RnR/Stocks/Stock Management/spcrud.js"></script>
+<script src="/SiteAssets/RnR/spcrud.js"></script>
 <script src="/SiteAssets/RnR/Stocks/Stock%20mangement/stockMangement.js"></script>
 <div ng-app="stockManagemenApp">
 	<div ng-controller="stockManagementCtl">
@@ -22,7 +23,7 @@
 					<div class="row">
 
 						<div class="col-md-12">
-							<h4 class="masterHeading">Product Master:</h4>
+							<h4 class="masterHeading">Product Master</h4>
 							<div class="row ItemRow">
 								<div class="col-md-3" ng-model="ItemForm">
 									<div class="formBox">
@@ -41,9 +42,9 @@
 										<div class="row">
 											<div class="col-md-6">
 												<div class="form-group">
-													<label class="pointFormLabel" style="margin-left: 12px;">Item Points</label>
+													<label class="pointFormLabel">Item Points</label>
 													<span style="color:red">*</span>
-													<input type="number" class="form-control pointFormText" ng-model="Item.Points" min="0" max="9999" required required="" style="width: 110px;margin-left: 12px;"/>
+													<input type="number" class="form-control pointFormText" ng-model="Item.Points" min="0" max="9999" required />
 													<!-- <span class="error" ng-show="pd.Points.$error.required">Required!</span> -->
 												</div>
 											</div>
@@ -51,22 +52,20 @@
 												<div class="form-group">
 													<label class="pointFormLabel">Qty.</label>
 													<span style="color:red">*</span>
-													<input type="number" class="form-control pointFormText" ng-model="Item.Quantity" min="0" max="9999" required ng-disabled="isDisabledQuantity" style="width: 110px;"/>
+													<input type="number" class="form-control pointFormText" ng-model="Item.Quantity" min="0" max="9999" required ng-disabled="isDisabledQuantity"/>
 												</div>
 											</div>
 											<div class="col-md-6" ng-show="IsVisible">
 												<div class="form-group">
 													<label class="pointFormLabel">New Qty.</label>
 													<span style="color:red">*</span>
-													<input type="number" class="form-control pointFormText" ng-model="Item.NewQuantity" min="0" ng-change="TotalQuantity()" max="9999"
-													 required />
+													<input type="number" class="form-control pointFormText" ng-model="Item.Updated_x0020_Quantity"  ng-blur="Validator(Item)" max="9999" required  />
 												</div>
 											</div>
 											<div class="col-md-6" ng-show="IsVisible">
 												<div class="form-group">
 													<label class="pointFormLabel">Total Qty.</label>
-													<input type="number" class="form-control pointFormText" ng-model="Item.TotalQuantity = Item.Quantity + Item.NewQuantity"
-													/>
+													<input type="number" class="form-control pointFormText" ng-model="Item.TotalQuantity =(Item.Updated_x0020_Quantity) + (Item.NewQuantity)" ng-disabled="isTotalDisabledQuantity"  />
 												</div>
 											</div>
 										</div>
@@ -81,49 +80,85 @@
 											</div>
 										</div>
 										<input type="button" class="formSubmitBtn" id="AddButton" ng-click="AddProduct(Item)" value="Add" ng-show="AddButton" />
-										<input type="button" id="SaveButton" class="formSubmitBtn" ng-click="UpdateItem(Item)" value="Save" ng-show="SaveButton"
-										/>
-										<input type="button" class="formSubmitBtn" ng-click="claer()" value="Clear" />
+										<input type="button" id="SaveButton" class="formSubmitBtn" ng-click="UpdateItem(Item)" value="Save" ng-show="SaveButton"/>
+										<input type="button" class="formSubmitBtn" ng-click="claer()" value="Clear" ng-show="ClearButton" />
+										<input type="button" class="formSubmitBtn" ng-click="claerEdit()" value="Clear" ng-show="ClearEditButton"/>
 									</div>
 								</div>
 								<div class="col-md-9">
-									<table class="table itemTable" style="margin-bottom:15px;">
-										<thead>
-											<tr>
-												<th>Image</th>
-												<th>Item Code</th>
-												<th>Item Name</th>
-												<th>Item Points</th>
-												<th>Quantity</th>
-												<th>Items Redemend</th>
-												<th>Balance</th>
-												<th>Action</th>
-											</tr>
-										</thead>
-										<tbody>
-											<tr ng-repeat="Item in ItemDetails">
-												<td>
-													<img src="{{Item.Url[0]?Item.Url[0].EncodedAbsThumbnailUrl:'http://espld205/SiteAssets/RnR/Redeem/img/defaultImage.png'}}"
-													 class="redeemImg img-responsive" style="height: 35px; width:35px" />
-												</td>
-												<td>{{Item.Item_x0020_Code}}</td>
-												<td>{{Item.Item_x0020_Name}}</td>
-												<td>{{Item.Points}}</td>
-												<td>{{Item.Quantity}}</td>
-												<td>{{Item.Items_x0020_Redemend}}</td>
-												<td>{{Item.Balance | number}}</td>
-												 <td><button type="button" class="glyphicon glyphicon-edit" ng-click="OnEdit(Item)"> </button></td> 
-												<!-- <td><input type="button"  ng-click="OnEdit(Item)"><i class="icon-edit" ng-click="OnEdit(Item)"></i></td> -->
-												<!-- <td><i class="icon-edit" ng-click="OnEdit(Item)"></i></td> -->
-											</tr>
-										</tbody>
-									</table>
+									<ul class="nav nav-tabs pointTabs">
+										<li class="active"><a href="#tab1">Product Master</a></li>
+										<li><a href="#tab2">Approved Products</a></li>
+									</ul>
+									<div class="tab-content appraisalTabsContent">
+										<div id="tab1" class="tab-pane fade in active" style="overflow-y: scroll; height:300px;">
+											<table class="table itemTable" style="margin-bottom:15px;">
+												<thead>
+													<tr>
+														<th>Image</th>
+														<th>Product Code</th>
+														<th>Product Name</th>
+														<th>Points</th>
+														<th>Quantity</th>
+														<th>Items Redemend</th>
+														<th>Balance</th>
+														<th>Action</th>
+													</tr>
+												</thead>
+												<tbody>
+													<tr ng-repeat="Item in ItemDetails | orderBy:'-Modified'">
+														<td>
+															<img src="{{Item.Url[0]?Item.Url[0].EncodedAbsThumbnailUrl:'http://espld205/SiteAssets/RnR/Redeem/img/defaultImage.png'}}"
+															 class="redeemImg img-responsive" style="height: 35px ; width:35px" />
+														</td>
+														<td>{{Item.Item_x0020_Code}}</td>
+														<td>{{Item.Item_x0020_Name}}</td>
+														<td>{{Item.Points}}</td>
+														<td>{{Item.Quantity}}</td>
+														<td>{{Item.Items_x0020_Redemend}}</td>
+														<td>{{Item.Balance | number}}</td>
+														<!-- <td><button type="button" class="glyphicon glyphicon-edit" ng-click="OnEdit(Item)"> </button></td>  -->
+														<td><i class="glyphicon glyphicon-edit" ng-click="OnEdit(Item)"></i></td>
+														<!-- <td><i class="icon-edit" ng-click="OnEdit(Item)"></i></td> -->
+													</tr>
+												</tbody>
+											</table>
+										</div>
+										<div id="tab2" class="tab-pane fade in" style="overflow-y: scroll; height:300px;">
+											<table class="table itemTable" style="margin-bottom:15px;">
+												<thead>
+													<tr>
+														<th>Image</th>
+														<th>Product Code</th>
+														<th>Product Name</th>
+														<th>Points</th>
+														<th>Quantity</th>
+														<th>Updated Quantity</th>
+														<th>Status</th>
+														<th>Rejection Comment</th>
+													</tr>
+												</thead>
+												<tbody>
+													<tr ng-repeat="ApprovalItem in ApprovalItemDetails | orderBy:'-Modified'">
+														<td>
+															<img src="{{Item.Url[0]?Item.Url[0].EncodedAbsThumbnailUrl:'http://espld205/SiteAssets/RnR/Redeem/img/defaultImage.png'}}"
+															 class="redeemImg img-responsive" style="height: 35px;width:35px" />
+														</td>
+														<td>{{ApprovalItem.Item_x0020_Code.Item_x0020_Code}}</td>
+														<td>{{ApprovalItem.Item_x0020_Name}}</td>
+														<td>{{ApprovalItem.Points}}</td>
+														<td>{{ApprovalItem.Quantity}}</td>
+														<td>{{ApprovalItem.Updated_x0020_Quantity}}</td>
+														<td>{{ApprovalItem.Status}}</td>
+														<td>{{ApprovalItem.Reject_x0020_Comment}}</td>
+													</tr>
+												</tbody>
+											</table>
+										</div>
+									</div>
 								</div>
 							</div>
-
-
 						</div>
-
 					</div>
 				</div>
 			</div>
