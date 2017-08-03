@@ -77,7 +77,7 @@ function stockManagementCtl($scope, $http) {
             // vm.appendimg();
             if (vm.CheckItems.length > 0) {
                 alert('Item already in pending state!');
-                vm.flag=1;
+                
             }else{
                 
                 // spcrud.create($http, vm.ApprovalList, { 'Title': 'Item Adding', 'Status': 'Pending', 'Item_x0020_CodeId': resp.ID, 'Points': resp.Points, 'Quantity': resp.Updated_x0020_Quantity, 'Updated_x0020_Quantity': resp.NewQuantity, 'Item_x0020_Name': resp.Item_x0020_Name, 'Item_x0020_Description': resp.Item_x0020_Description }
@@ -89,6 +89,7 @@ function stockManagementCtl($scope, $http) {
                 //     vm.SaveButton = vm.SaveButton ? false : false;
                 //     vm.AddButton = vm.AddButton ? false : true;
                 // });
+                vm.flag=1;
             }
 
         }, function (error) {
