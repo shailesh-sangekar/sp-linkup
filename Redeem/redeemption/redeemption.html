@@ -10,185 +10,65 @@
 <link rel="stylesheet" href="/SiteAssets/RnR/Redeem/Redeemption/redeemption.css"></link>
 
 <!--Main-->
-<div ng-app="redeemApp">
+<div ng-app="redeemApp" class="appmodel">
     <div ng-controller="redeemCtl">
-	<section class="topSection">
-		<div class="container">
-			<div class="mainBox">
-				<div class="row">
-					<div class="col-md-12">
-						<div class="col-sm-1" >
-							<span>
-							<img class="heightMedal" src="/SiteAssets/RnR/img/medal.png" />		
-							</span>
+		<section class="topSection">
+			<div class="container">
+				<div class="mainBox">
+					<div class="row">
+						<div class="col-md-12">
+							<div class="col-sm-1" >
+								<span>
+									<img class="heightMedal" src="/SiteAssets/RnR/img/medal.png" />		
+								</span>
 							</div>
-						<div class="col-sm-4">
-							<h2 class="alignMedal">{{empMasterDetails[0].Balance?empMasterDetails[0].Balance:'N/A'}} </h2>
-							<label class="alignTop">Total Accumulated Points</label>	
-						</div>
-					
-						<span class="dropdownalign">
-						<a  class="btn btn-xs yellow-soft" href="/SitePages/Redeem%20History.aspx" title="View Redeem History">
+							<div class="col-sm-4">
+								<h2 class="alignMedal">{{totalavailablepts?totalavailablepts:'0'}} </h2>
+								<label class="alignTop">Balanced Points | used : {{totalUsedPts?totalUsedPts:"0"}} | total : {{empMasterDetails[0].Balance?empMasterDetails[0].Balance:'0'}}</label>	
+							</div>
+							<span class="dropdownalign">
+						<!--<a  class="btn btn-xs yellow-soft" href="/SitePages/Redeem%20History.aspx" title="View Redeem History">
 							<i class="fa fa-history"></i> 
-						</a>
-					</span>
+						</a>-->
+								<a class="btn blue" href="/SitePages/Redeem%20History.aspx" title="View Redeem History">
+									<i class="fa fa-history"></i> 
+								</a>
+							</span>
 							Sort By:
-						<select ng-model="Sort.valueId" ng-options="value.id as value.name for value in Sort.values" ng-change="onChange(Sort.valueId)"></select>
-						<i ng-show="!asc" class="fa fa-long-arrow-up black" ng-click="onChangeOrder(Sort.valueId)"></i>
-						<i ng-show="asc" class="fa fa-long-arrow-down black" ng-click="onChangeOrder(Sort.valueId)"></i>
+							<select ng-model="Sort.valueId" ng-options="value.id as value.name for value in Sort.values" ng-change="onChange(Sort.valueId)"></select>
+							<i ng-show="!asc" class="fa fa-long-arrow-up black" ng-click="onChangeOrder(Sort.valueId)"></i>
+							<i ng-show="asc" class="fa fa-long-arrow-down black" ng-click="onChangeOrder(Sort.valueId)"></i>
 					</div>
-	
 	                <div class="row">
-							<div class="col-sm-3" ng-repeat="pd in productDetails">
-								<div class="redeemBox"  ng-disabled="pd.Balance < 1">
-									<img ng-show="pd.Balance < 1" src="/SiteAssets/RnR/img/outOfStock.png" class="outOfStockImg" />	
-									<img src="{{pd.Url[0]?pd.Url[0].EncodedAbsThumbnailUrl:'/SiteAssets/RnR/img/defaultImage.png'}}" class="redeemImg img-responsive" />
-									<span class="codeSpan">{{pd.Item_x0020_Code?pd.Item_x0020_Code:''}}</span>
-                                    <h5 class="overflowdata">{{pd.Item_x0020_Name?pd.Item_x0020_Name:''}}</h5>	
-                                    <h4 class="height12">{{pd.Points?pd.Points:''}}Pts.</h4>
-									
-									<label>Quantity</label><br/>
-									<div class="spin">
-										<span class="quantity-down" ng-click="minus($index,pd.defaultQuantity)">
-											<i class="fa fa-minus" aria-hidden="true"></i>
-										</span>
-										<input type="number" min="0" value="0" ng-model="pd.defaultQuantity" readonly/>
-										<span class="quantity-up" ng-click="add($index,pd.defaultQuantity)">
-											<i class="fa fa-plus" aria-hidden="true"></i>
-										</span>
-									</div>
-									<br/>
-									<input ng-disabled="pd.defaultQuantity < 1" class="inputQuantity" type="button" ng-click="RedeemProduct(pd)" value="Redeem" />
+						<div ng-if="productDetails.length > 0" class="col-sm-3" ng-repeat="pd in productDetails">
+							<div class="redeemBox"  ng-disabled="pd.Balance < 1">
+								<img ng-show="pd.Balance < 1" src="/SiteAssets/RnR/img/outOfStock.png" class="outOfStockImg" />	
+								<img src="{{pd.Url[0]?pd.Url[0].EncodedAbsThumbnailUrl:'/SiteAssets/RnR/img/defaultImage.png'}}" class="redeemImg img-responsive" />
+								<span class="codeSpan">{{pd.Item_x0020_Code?pd.Item_x0020_Code:''}}</span>
+                                <h5 class="overflowdata">{{pd.Item_x0020_Name?pd.Item_x0020_Name:''}}</h5>	
+                                <h4 class="height12">{{pd.Points?pd.Points:''}}Pts.</h4>
+								<label>Quantity</label><br/>
+								<div class="spin">
+									<span class="quantity-down" ng-click="minus($index,pd.defaultQuantity)">
+										<i class="fa fa-minus" aria-hidden="true"></i>
+									</span>
+									<input type="number" min="0" value="0" ng-model="pd.defaultQuantity" readonly/>
+									<span class="quantity-up" ng-click="add($index,pd.defaultQuantity)">
+										<i class="fa fa-plus" aria-hidden="true"></i>
+									</span>
 								</div>
-							</div>	
+								<br/>
+								<input ng-show="pd.defaultQuantity > 0" ng-disabled="pd.defaultQuantity < 1" class="inputQuantity" type="button" ng-click="RedeemProduct(pd)" value="Redeem" />
+								<input ng-show="pd.defaultQuantity < 1" ng-disabled="pd.defaultQuantity < 1" class="inputDisableQuantity" type="button" ng-click="RedeemProduct(pd)" value="Redeem" />
+							</div>
+						</div>	
+						<div class="col-sm-6" ng-if="productDetails.length <= 0">
+							<span style="margin-left:90px;">No Products Available for Redemption...!</span>
 						</div>
-						
 					</div>
-					
 				</div>
 			</div>
 		</div>
 	</section>
-	
-	
-	<!-- Modal -->
-	<div id="addEventModal" class="modal fade eventModal" role="dialog">
-	  <div class="modal-dialog">
-
-		<!-- Modal content-->
-		<div class="modal-content">
-		  <div class="modal-header">
-			<i class="material-icons close-icon" data-dismiss="modal">close</i>
-			<h4 class="modal-title">Add Event</h4>
-		  </div>
-		  <div class="modal-body">
-			<div class="row">
-				<div class="col-md-3">
-					<div class="form-group">
-						<label class="pointFormLabel">Event ID</label>										
-						<select class="form-control pointFormText">
-							<option>W0301</option>
-							<option>AWRA01</option>
-							<option>AWRA02</option>
-							<option>AWRA03</option>
-							<option>AWRA04</option>
-							<option>AWRA05</option>
-							<option>AWRA06</option>
-							<option>AWRA07</option>
-							<option>AWRM01</option>
-							<option>AWRQ01</option>
-							<option>AWRQ02</option>
-							<option>AWRQ03</option>
-							<option>AWRQ04</option>
-							<option>AWRQ05</option>
-						</select>
-					</div>
-				</div>
-				<div class="col-md-3">
-					<div class="form-group">
-						<label class="pointFormLabel">Event Type</label>										
-						<select class="form-control pointFormText">
-							<option>Awards</option>
-							<option>Espl Eng</option>
-							<option>Miscellaneous</option>							
-						</select>
-					</div>
-				</div>
-				<div class="col-md-3">
-					<div class="form-group">
-						<label class="pointFormLabel">Event Code</label>										
-						<select class="form-control pointFormText">
-							<option>AWR</option>
-							<option>EMP</option>
-							<option>MSC</option>							
-						</select>
-					</div>
-				</div>
-				<div class="col-md-3">
-					<div class="form-group">
-						<label class="pointFormLabel">Frequency</label>										
-						<select class="form-control pointFormText">
-							<option>Annual</option>
-							<option>Monthly</option>
-							<option>Quaterly</option>
-							<option>X-Adhoc</option>			
-						</select>
-					</div>
-				</div>
-				<div class="col-md-6">
-					<div class="form-group">
-						<label class="pointFormLabel">Description</label>										
-						<input type="text" class="form-control pointFormText">
-					</div>
-				</div>
-				<div class="col-md-6">
-					<div class="form-group">
-						<label class="pointFormLabel">Ownership</label>										
-						<input type="text" class="form-control pointFormText">
-					</div>
-				</div>
-				<div class="col-md-3">
-					<div class="form-group">
-						<label class="pointFormLabel">Organizer</label>										
-						<input type="text" class="form-control pointFormText">
-					</div>
-				</div>
-				<div class="col-md-3">
-					<div class="form-group">
-						<label class="pointFormLabel">Volunteer</label>										
-						<input type="text" class="form-control pointFormText">
-					</div>
-				</div>
-				<div class="col-md-3">
-					<div class="form-group">
-						<label class="pointFormLabel">Participants</label>										
-						<input type="text" class="form-control pointFormText">
-					</div>
-				</div>
-				<div class="col-md-3">
-					<div class="form-group">
-						<label class="pointFormLabel">Runner 2</label>										
-						<input type="text" class="form-control pointFormText">
-					</div>
-				</div>
-				<div class="col-md-3">
-					<div class="form-group">
-						<label class="pointFormLabel">Runner 1</label>										
-						<input type="text" class="form-control pointFormText">
-					</div>
-				</div>
-				<div class="col-md-3">
-					<div class="form-group">
-						<label class="pointFormLabel">Winner</label>										
-						<input type="text" class="form-control pointFormText">
-					</div>
-				</div>
-			</div>
-		  </div>
-		
-		</div>
-
-	  </div>
-	</div>
-	 </div>
-	</div>
+</div>
+</div>

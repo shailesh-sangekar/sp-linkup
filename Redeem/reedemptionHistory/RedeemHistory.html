@@ -3,22 +3,25 @@
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">		
 <script src="/SiteAssets/RnR/angular.js"></script>
 <script src="/SiteAssets/RnR/spcrud.js"></script>
-<!--Application-->
+<link rel="stylesheet" href="/SiteAssets/RnR/css/bootstrap.min.css"></link>
+<link rel="stylesheet" href="/SiteAssets/RnR/css/style.css"></link>
 <link rel="stylesheet" href="/SiteAssets/RnR/Redeem/Redeem%20History/RedeemHistory.css"></link>
 <script src="/SiteAssets/RnR/Redeem/Redeem%20History/RedeemHistory.js"></script>
-<div ng-app="redeemHistoryApp">
+<!--Application-->
+
+<div ng-app="redeemHistoryApp" class="topModal">
     <div ng-controller="redeemHistoryCtl">
     <div class="row" >
       <div>
     
     </div>
         <h4 class="masterHeading">Redeemption Pending Details:</h4> 
-            <a class="searchbutton" href="/SitePages/Redemption.aspx" title="View Redeem">
+            <a class="btn blue searchbutton" href="/SitePages/Redemption.aspx" title="View Redeem">
 		    <i class="fa fa-search"></i> 
 		</a>
     </div>
         <div class="col-md-12" >
-            <table class="table StatusTable" style="margin-bottom:0px;">
+            <table ng-if="redeemPendinglistemp.length > 0" class="table StatusTable" style="margin-bottom:0px;">
 				<thead>
 					<tr>
                         <th>Image</th>
@@ -42,11 +45,14 @@
 					</tr>
                 </tbody>
 			</table>
+			<div ng-if="redeemPendinglistemp.length <= 0">
+				No records found...!
+			</div>
 		</div>
- <h4 class="masterHeading">Redeemption Approved/Rejected Details:</h4>
+ <h4 class="masterHeading2">Redeemption Approved/Rejected Details:</h4>
      
            <div class="col-md-12" >
-            <table class="table StatusTable" style="margin-bottom:0px;">
+            <table ng-if="redeemApprovedlistemp.length > 0" class="table StatusTable" style="margin-bottom:0px;">
 				<thead>
 					<tr>
                         <th>Image</th>
@@ -71,10 +77,9 @@
 					</tr>
                 </tbody>
 			</table>
+			<div ng-if="redeemApprovedlistemp.length <= 0">
+				No records found...!
+			</div>
 		</div>
     </div>
 </div>
-                                    	
-	<!-- Jquery -->	
-	<script src="http://espld205/SiteAssets/RnR/Redeem/js/jquery.js"></script>
-	<script src="http://espld205/SiteAssets/RnR/Redeem/js/bootstrap.min.js"></script>
