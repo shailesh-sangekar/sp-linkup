@@ -48,8 +48,8 @@ function redeemApprovalCtl($scope, $http) {
     vm.readPending = function () {
         spcrud.read($http, vm.listName, vm.pendingOptions).then(function (resp) {
             if (resp.status === 200)
-                var myJSON = JSON.stringify(resp.data.d.results);
-            vm.gridItemsPending = resp.data.d.results;
+                // var myJSON = JSON.stringify(resp.data.d.results);
+                vm.gridItemsPending = resp.data.d.results;
         }, function (error) {
             console.log('error', error);
         });
@@ -66,7 +66,52 @@ function redeemApprovalCtl($scope, $http) {
                 if (sum > difference) {
                     alert('We do not have those many items in stock!');
                 } else {
-                    selectID = 'ID';
+                    // selectID = 'ID';
+                    // itemFilter = 'Emp_x0020_ID/Employee_x0020_ID eq \'' + item.Emp_x0020_ID.Employee_x0020_ID + '\'';
+                    // vm.empOptions = {
+                    //     select: selectID,
+                    //     filter: itemFilter
+                    // }
+                    // spcrud.read($http, vm.listEmployeeMaster, vm.empOptions).then(function (resp) {
+                    //     if (resp.status === 200) {
+                    vm.Item_x0020_CodeId = resp.data.d.results[0].ID;
+                    spcrud.update($http, vm.listName, item.ID, {
+                        'Status': 'Approved',
+                        'Redemption_x0020_Approved_x0020_Id': vm.userDetails.data.d.PrincipalType,
+                        'Redemption_x0020_Approved_x0020_0': new Date()
+                    }).then(function (response) {
+                        if (response.status === 204) {
+                            vm.readPending();
+                            vm.readApproved();
+                        }
+                    }, function (error) {
+                        console.log('error', error);
+                    });
+
+                    //         spcrud.update($http, vm.listNameProduct, item.Item_x0020_CodeId, {
+                    //             'Items_x0020_Redemend': item.Item_x0020_Code.Items_x0020_Redemend + item.RedeemQuantity
+                    //         }).then(function (error) {
+                    //             console.log('error', error);
+                    //         });
+
+                    //         spcrud.update($http, vm.listEmployeeMaster, vm.Item_x0020_CodeId, {
+                    //             'Redemend': item.Item_x0020_Code.Points * item.RedeemQuantity
+                    //         }).then(function (error) {
+                    //             console.log('error', error);
+                    //         });
+                    //     }
+
+                    // }, function (error) {
+                    //     console.log('error', error);
+                    // });
+                }
+
+            }
+
+        } else {
+            if (num === 2) {
+                if (confirm("You are trying to reject! " + item.Item_x0020_Code.Item_x0020_Code)) {
+                    selectID = 'ID,Redemend';
                     itemFilter = 'Emp_x0020_ID/Employee_x0020_ID eq \'' + item.Emp_x0020_ID.Employee_x0020_ID + '\'';
                     vm.empOptions = {
                         select: selectID,
@@ -74,9 +119,10 @@ function redeemApprovalCtl($scope, $http) {
                     }
                     spcrud.read($http, vm.listEmployeeMaster, vm.empOptions).then(function (resp) {
                         if (resp.status === 200) {
-                            vm.Item_x0020_CodeId = resp.data.d.results[0].ID;
+                            vm.Emp_x0020_CodeId = resp.data.d.results[0].ID;
+                            vm.Redemend = resp.data.d.results[0].Redemend;
                             spcrud.update($http, vm.listName, item.ID, {
-                                'Status': 'Approved',
+                                'Status': 'Rejected',
                                 'Redemption_x0020_Approved_x0020_Id': vm.userDetails.data.d.PrincipalType,
                                 'Redemption_x0020_Approved_x0020_0': new Date()
                             }).then(function (response) {
@@ -87,39 +133,19 @@ function redeemApprovalCtl($scope, $http) {
                             }, function (error) {
                                 console.log('error', error);
                             });
-
                             spcrud.update($http, vm.listNameProduct, item.Item_x0020_CodeId, {
-                                'Items_x0020_Redemend': item.Item_x0020_Code.Items_x0020_Redemend + item.RedeemQuantity
+                                'Items_x0020_Redemend': item.Item_x0020_Code.Items_x0020_Redemend - item.RedeemQuantity
                             }).then(function (error) {
                                 console.log('error', error);
                             });
-
-                            spcrud.update($http, vm.listEmployeeMaster, vm.Item_x0020_CodeId, {
-                                'Redemend': item.Item_x0020_Code.Points * item.RedeemQuantity
+                            var finalRedemend = vm.Redemend - (item.Item_x0020_Code.Points * item.RedeemQuantity);
+                            spcrud.update($http, vm.listEmployeeMaster, vm.Emp_x0020_CodeId, {
+                                'Redemend': finalRedemend
                             }).then(function (error) {
                                 console.log('error', error);
                             });
                         }
 
-                    }, function (error) {
-                        console.log('error', error);
-                    });
-                }
-
-            }
-
-        } else {
-            if (num === 2) {
-                if (confirm("You are trying to reject! " + item.Item_x0020_Code.Item_x0020_Code)) {
-                    spcrud.update($http, vm.listName, item.ID, {
-                        'Status': 'Rejected',
-                        'Redemption_x0020_Approved_x0020_Id': vm.userDetails.data.d.PrincipalType,
-                        'Redemption_x0020_Approved_x0020_0': new Date()
-                    }).then(function (response) {
-                        if (response.status === 204) {
-                            vm.readPending();
-                            vm.readApproved();
-                        }
                     }, function (error) {
                         console.log('error', error);
                     });
