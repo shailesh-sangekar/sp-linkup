@@ -109,7 +109,6 @@ function redeemCtl($scope, $http) {
             });
 
         }, this);
-        console.log(vm.productDetails);
     }
 
   
@@ -173,11 +172,11 @@ function redeemCtl($scope, $http) {
         var userId = vm.empDetails[0].ID;
         idFilter = '(ID eq \'' + itemId + '\')';
         vm.idOptions = { filter: idFilter };
-        if(redeeemPoints < vm.empMasterDetails[0].Balance){
+        if(redeeemPoints <= vm.empMasterDetails[0].Balance){
             spcrud.read($http, vm.listName, vm.idOptions).then(function (resp) {
             if (resp.status === 200) {
                 vm.product = resp.data.d.results;
-                if (quantity < vm.product[0].Balance) {
+                if (quantity <= vm.product[0].Balance) {
                     spcrud.create($http, vm.Redeemlist, { 'Title': 'redeem adding', 'Status': 'Pending', 'Redemption_x0020_Date': redeemdate, 'Item_x0020_CodeId': itemId, 'Emp_x0020_IDId': userId, 'RedeemQuantity': quantity }
                     ).then(function (resp) {
                         alert("Thank you, Your redeem is successful.");

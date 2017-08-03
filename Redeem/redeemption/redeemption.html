@@ -23,8 +23,8 @@
 								</span>
 							</div>
 							<div class="col-sm-4">
-								<h2 class="alignMedal">{{totalavailablepts?totalavailablepts:'0'}} </h2>
-								<label class="alignTop">Balanced Points | used : {{totalUsedPts?totalUsedPts:"0"}} | total : {{empMasterDetails[0].Balance?empMasterDetails[0].Balance:'0'}}</label>	
+								<h2 class="alignMedal">{{empMasterDetails[0].Balance?empMasterDetails[0].Balance:'0'}} </h2>
+								<label class="alignTop">Balanced Points</label>	
 							</div>
 							<span class="dropdownalign">
 						<!--<a  class="btn btn-xs yellow-soft" href="/SitePages/Redeem%20History.aspx" title="View Redeem History">
@@ -63,7 +63,7 @@
 							</div>
 						</div>	
 						<div class="col-sm-6" ng-if="productDetails.length <= 0">
-							<span style="margin-left:90px;">No Products Available for Redemption...!</span>
+							<span style="margin-left:90px;">No Products Available for Redeemption...!</span>
 						</div>
 					</div>
 				</div>
