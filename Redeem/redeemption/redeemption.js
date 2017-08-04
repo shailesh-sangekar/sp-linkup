@@ -1,5 +1,7 @@
 function redeemCtl($scope, $http) {
     var vm = $scope;
+    vm.query = {};
+    vm.queryBy = '$';
     vm.listName = 'RnR Product Catalog';
     vm.Redeemlist = 'RnR Employee Redemptions';
     vm.EmployeeList = 'Employee Personal Details Master';
@@ -192,16 +194,16 @@ function redeemCtl($scope, $http) {
                             if (quantity <= vm.product[0].Balance) {
                                 spcrud.create($http, vm.Redeemlist, { 'Title': 'redeem adding', 'Status': 'Pending', 'Redemption_x0020_Date': redeemdate, 'Item_x0020_CodeId': itemId, 'Emp_x0020_IDId': userId, 'RedeemQuantity': quantity }
                                 ).then(function (resp) {
-                                vm.add=vm.product[0].Items_x0020_Redemend + quantity;
+                                vm.value=vm.product[0].Items_x0020_Redemend + quantity;
                                 // spcrud.update($http, vm.listName,vm.product[0].ID, {
                                 //     'Items_x0020_Redemend': vm.add
                                 // }).then(function (error) {
                                 //     console.log(' we have error', error);
                                 // });
                                 spcrud.update($http, vm.listName, vm.product[0].ID, {
-                                    'Items_x0020_Redemend': vm.add
+                                    'Items_x0020_Redemend': vm.value
                                 }).then(function (resp) {
-                                    alert("Thank you, successful.");
+                
                                 }, function (error) {
                                     console.log('we have error', error);
                                 });
@@ -238,6 +240,10 @@ function redeemCtl($scope, $http) {
     vm.add = function (id, defaultQuantity) {
         if (defaultQuantity < vm.productDetails[id].Balance) {
             vm.productDetails[id].defaultQuantity = defaultQuantity + 1;
+        }
+         else{
+             vm.productDetails[id].Balance = parseFloat(vm.productDetails[id].Balance);
+             alert("Selected Product's available stock is " + vm.productDetails[id].Balance + " . You cannot request more than available quantity.");
         }
 
     };

@@ -16,7 +16,8 @@
     
     </div>
         <h4 class="masterHeading">Redeemption Pending Details:</h4> 
-            <a class="btn blue searchbutton" href="/SitePages/Redemption.aspx" title="View Redeem">
+		<span class="searchbutton">Search :<input ng-model="queryhistory[queryhistoryBy]" />	</span>
+            <a class="btn blue searchinput" href="/SitePages/Redemption.aspx" title="View Redeem">
 		    <i class="fa fa-search"></i> 
 		</a>
     </div>
@@ -34,7 +35,7 @@
 					</tr>
 				</thead>
 				<tbody>
-                    <tr ng-repeat="item in redeemPendinglistemp">
+                    <tr ng-repeat="item in redeemPendinglistemp | filter:queryhistory">
                         <td><img src="{{item.Url[0]?item.Url[0].EncodedAbsThumbnailUrl:'/SiteAssets/RnR/img/defaultImage.png'}}" class="redeemImg img-table" /></td>
 					    <td>{{item.Item_x0020_Code.Item_x0020_Code}}</td>
                         <td>{{item.Item_x0020_Code.Item_x0020_Name}}</td>	
@@ -65,7 +66,7 @@
 					</tr>
 				</thead>
 				<tbody>
-                    <tr ng-repeat="item in redeemApprovedlistemp">
+                    <tr ng-repeat="item in redeemApprovedlistemp | filter:queryhistory">
                         <td><img src="{{item.Url[0]?item.Url[0].EncodedAbsThumbnailUrl:'/SiteAssets/RnR/img/defaultImage.png'}}" class="redeemImg img-table" /></td>
 					    <td>{{item.Item_x0020_Code.Item_x0020_Code}}</td>
                         <td>{{item.Item_x0020_Code.Item_x0020_Name}}</td>	
