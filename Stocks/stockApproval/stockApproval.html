@@ -1,7 +1,7 @@
 <!--Third Party-->
 <script src="/SiteAssets/RnR/angular.js"></script>
 <link rel="stylesheet" href="/SiteAssets/RnR/Stocks/Stock%20Approval/css/bootstrap.min.css">
-<link rel="stylesheet" href="/SiteAssets/RnR/Stocks/Stock%20Approval/css/font-awesome.css">
+<!-- <link rel="stylesheet" href="/SiteAssets/RnR/Stocks/Stock%20Approval/css/font-awesome.css"> -->
 <link rel="stylesheet" href="/SiteAssets/RnR/Stocks/Stock%20Approval/css/style.css">
 
 <!--Application-->
@@ -10,7 +10,7 @@
 <script src="/SiteAssets/RnR/spcrud.js"></script>
 <link rel="stylesheet" href="/SiteAssets/RnR/Stocks/Stock%20Approval/stockApproval.css">
 <!--Main-->
-<div ng-app="stockApprovalApp"  style="margin-top: -30px;">
+<div ng-app="stockApprovalApp" style="margin-top: -30px;">
     <div ng-controller="stockApprovalCtl">
 
         <!-- add your html stuff -->
@@ -21,17 +21,17 @@
                     <table class="table StatusTable" style="margin-bottom:0px;">
                         <thead>
                             <tr>
-                                <th>Code</th>
-                                <th>Points</th>
-                                <th>Name</th>
-                                <th>Original Quantity</th>
-                                <th>Updated Quaantity</th>
+                                <th ng-click="orderByField='Item_x0020_Code.Item_x0020_Code'; reverseSort = !reverseSort">Code <span ng-show="!reverseSort">^</span><span ng-show="reverseSort">v</span></th>
+                                <th ng-click="orderByField='Points'; reverseSort = !reverseSort">Points <span ng-show="!reverseSort">^</span><span ng-show="reverseSort">v</span></th>
+                                <th ng-click="orderByField='Item_x0020_Name'; reverseSort = !reverseSort">Name <span ng-show="!reverseSort">^</span><span ng-show="reverseSort">v</span></th>
+                                <th ng-click="orderByField='Quantity'; reverseSort = !reverseSort">Original Quantity <span ng-show="!reverseSort">^</span><span ng-show="reverseSort">v</span></th>
+                                <th ng-click="orderByField='Updated_x0020_Quantity'; reverseSort = !reverseSort">Updated Quaantity <span ng-show="!reverseSort">^</span><span ng-show="reverseSort">v</span></th>
                                 <th style="text-align: center;">Approve</th>
                                 <th style="text-align: center;">Reject</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr ng-repeat="item in gridItemsPending | orderBy:'-Modified'" ng-if="gridItemsPending.length != 0">
+                            <tr ng-repeat="item in gridItemsPending | orderBy:'-Modified' | orderBy:orderByField:reverseSort" ng-if="gridItemsPending.length != 0">
                                 <td>
                                     <span class="centre">{{item.Item_x0020_Code.Item_x0020_Code}}</span>
                                 </td>
@@ -51,7 +51,8 @@
                                     <i class="fa fa-check colorApprove centre" style="color:green" aria-hidden="true" ng-click="updateApproval(item,1)"></i>
                                 </td>
                                 <td>
-                                    <i class="fa fa-times colorReject centre" style="color:red" aria-hidden="true" data-toggle="modal" data-target="#myModal" ng-click="updateApproval(item,2)"></i>
+                                    <i class="fa fa-times colorReject centre" style="color:red" aria-hidden="true" data-toggle="modal" data-target="#myModal"
+                                        ng-click="updateApproval(item,2)"></i>
                                 </td>
 
                             </tr>
@@ -66,18 +67,18 @@
                     <table class="table StatusTable" style="margin-bottom:0px;">
                         <thead>
                             <tr>
-                                <th>Code</th>
-                                <th>Points</th>
-                                <th>Name</th>
-                                <th>Original Quantity</th>
-                                <th>Updated Quaantity</th>
-                                <th style="text-align: center;">Status</th>
-                                <th>Approved By</th>
-                                <th>Approved Date</th>
+                                <th ng-click="orderByField='Item_x0020_Code.Item_x0020_Code'; reverseSort = !reverseSort">Code <span ng-show="!reverseSort">^</span><span ng-show="reverseSort">v</span></th>
+                                <th ng-click="orderByField='Points'; reverseSort = !reverseSort">Points <span ng-show="!reverseSort">^</span><span ng-show="reverseSort">v</span></th>
+                                <th ng-click="orderByField='Item_x0020_Name'; reverseSort = !reverseSort">Name <span ng-show="!reverseSort">^</span><span ng-show="reverseSort">v</span></th>
+                                <th ng-click="orderByField='Quantity'; reverseSort = !reverseSort">Original Quantity <span ng-show="!reverseSort">^</span><span ng-show="reverseSort">v</span></th>
+                                <th ng-click="orderByField='Updated_x0020_Quantity'; reverseSort = !reverseSort">Updated Quaantity <span ng-show="!reverseSort">^</span><span ng-show="reverseSort">v</span></th>
+                                <th ng-click="orderByField='Status'; reverseSort = !reverseSort" style="text-align: center;">Status <span ng-show="!reverseSort">^</span><span ng-show="reverseSort">v</span></th>
+                                <th ng-click="orderByField='Approved_x0020_By.Title'; reverseSort = !reverseSort" style="text-align: center;">Approved By <span ng-show="!reverseSort">^</span><span ng-show="reverseSort">v</span></th>
+                                <th ng-click="orderByField='Approved_x0020_Date'; reverseSort = !reverseSort">Approved Date <span ng-show="!reverseSort">^</span><span ng-show="reverseSort">v</span></th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr ng-repeat="item in gridItemsApproved | orderBy:'-Modified'" ng-if="gridItemsApproved.length != 0">
+                            <tr ng-repeat="item in gridItemsApproved | orderBy:'-Modified' | orderBy:orderByField:reverseSort" ng-if="gridItemsApproved.length != 0">
                                 <td>
                                     <span class="centre">{{item.Item_x0020_Code.Item_x0020_Code}}</span>
                                 </td>
@@ -125,7 +126,7 @@
                         <textarea rows="4" cols="50" ng-model="comment" ng-blur="saveRejectComment(comment)"></textarea>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal" >Ok</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Ok</button>
                     </div>
                 </div>
 

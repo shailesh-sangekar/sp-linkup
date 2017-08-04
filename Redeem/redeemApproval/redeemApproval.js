@@ -11,6 +11,7 @@ function redeemApprovalCtl($scope, $http) {
     Approved = 'Approved';
     Pending = 'Pending';
     Rejected = 'Rejected';
+    Active='Active';
     approvedFilter = 'Status eq \'' + Approved + '\' or Status eq \'' + Rejected + '\'';
     pendingFilter = 'Status eq \'' + Pending + '\'';
     vm.approvedOptions = {
@@ -63,7 +64,7 @@ function redeemApprovalCtl($scope, $http) {
             if (confirm("You are trying to approve! " + item.Item_x0020_Code.Item_x0020_Code)) {
                     spcrud.update($http, vm.listName, item.ID, {
                         'Status': 'Approved',
-                        'Redemption_x0020_Approved_x0020_Id': vm.userDetails.data.d.PrincipalType,
+                        'Redemption_x0020_Approved_x0020_Id': vm.userDetails.data.d.Id,
                         'Redemption_x0020_Approved_x0020_0': new Date()
                     }).then(function (response) {
                         if (response.status === 204) {
@@ -91,7 +92,7 @@ function redeemApprovalCtl($scope, $http) {
                             vm.Redemend = resp.data.d.results[0].Redemend;
                             spcrud.update($http, vm.listName, item.ID, {
                                 'Status': 'Rejected',
-                                'Redemption_x0020_Approved_x0020_Id': vm.userDetails.data.d.PrincipalType,
+                                'Redemption_x0020_Approved_x0020_Id': vm.userDetails.data.d.Id,
                                 'Redemption_x0020_Approved_x0020_0': new Date()
                             }).then(function (response) {
                                 if (response.status === 204) {

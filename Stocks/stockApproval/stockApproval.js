@@ -16,6 +16,7 @@ function stockApprovalCtl($scope, $http) {
     Approved = 'Approved';
     Pending = 'Pending';
     Rejected = 'Rejected';
+    Active = 'Active';
     vm.itemID = '';
     vm.itemCatalogID = '';
     approvedFilter = '((Status eq \'' + Approved + '\' ) or ( Status eq \'' + Rejected + '\' )) and (Item_x0020_Status eq \'' + Active + '\')';
@@ -88,7 +89,7 @@ function stockApprovalCtl($scope, $http) {
                     console.log('error', error);
                 });
             }
-        }else{
+        } else {
             alert("You have cancelled rejection!");
         }
 
@@ -117,7 +118,7 @@ function stockApprovalCtl($scope, $http) {
                 // vm.Item_x0020_CodeId = resp.data.d.results[0].ID;
                 spcrud.update($http, vm.listName, item.ID, {
                     'Status': 'Approved',
-                    'Approved_x0020_ById': vm.userDetails.data.d.PrincipalType,
+                    'Approved_x0020_ById': vm.userDetails.data.d.Id,
                     'Approved_x0020_Date': new Date(),
                     'Quantity': item.Quantity + item.Updated_x0020_Quantity
                 }).then(function (response) {
@@ -131,7 +132,7 @@ function stockApprovalCtl($scope, $http) {
 
                 spcrud.update($http, vm.listNameProduct, item.Item_x0020_CodeId, {
                     'Status': 'Approved',
-                    'Approved_x0020_ById': vm.userDetails.data.d.PrincipalType,
+                    'Approved_x0020_ById': vm.userDetails.data.d.Id,
                     'Approved_x0020_Date': new Date(),
                     'Quantity': item.Quantity + item.Updated_x0020_Quantity
                 }).then(function (error) {
@@ -163,7 +164,7 @@ function stockApprovalCtl($scope, $http) {
                     // if (resp.status === 200) {
                     spcrud.update($http, vm.listName, item.ID, {
                         'Status': 'Rejected',
-                        'Approved_x0020_ById': vm.userDetails.data.d.PrincipalType,
+                        'Approved_x0020_ById': vm.userDetails.data.d.Id,
                         'Approved_x0020_Date': new Date(),
                         //'Quantity': item.Quantity + item.Updated_x0020_Quantity
                     }).then(function (response) {
@@ -177,7 +178,7 @@ function stockApprovalCtl($scope, $http) {
                     });
                     spcrud.update($http, vm.listNameProduct, item.Item_x0020_CodeId, {
                         'Status': 'Rejected',
-                        'Approved_x0020_ById': vm.userDetails.data.d.PrincipalType,
+                        'Approved_x0020_ById': vm.userDetails.data.d.Id,
                         'Approved_x0020_Date': new Date(),
                         //'Quantity': item.Quantity + item.Updated_x0020_Quantity
                     }).then(function (response) {

@@ -23,15 +23,16 @@
 					<div class="row">
 
 						<div class="col-md-12">
+							<span style="margin-left: 820px">Search:<input ng-model="searchText"></span>
 							<h4 class="masterHeading">Product Master</h4>
+							
 							<div class="row ItemRow">
 								<div class="col-md-3" ng-model="ItemForm">
 									<div class="formBox">
 										<div class="form-group">
 											<label class="pointFormLabel">Product Name</label>
 											<span style="color:red">*</span>
-											<input type="text" class="form-control pointFormText" name="Name" ng-model="Item.Item_x0020_Name" maxlength="50" required
-											/>
+											<input type="text" class="form-control pointFormText" name="Name" ng-model="Item.Item_x0020_Name" maxlength="50" required/>
 											<!-- <h4>{{pd.Name.$valid}}Enter Item Name</h4> -->
 											<!-- <span ng-show="!pd.Name.length">Please enter Item Name</span> -->
 										</div>
@@ -44,7 +45,8 @@
 												<div class="form-group">
 													<label class="pointFormLabel">Points</label>
 													<span style="color:red">*</span>
-													<input type="number" class="form-control pointFormText" ng-model="Item.Points" min="0" maxlength="4" max="9999" required />
+													<input type="number" class="form-control pointFormText" ng-model="Item.Points" min="0" maxlength="4" max="9999" required
+													/>
 													<!-- <span class="error" ng-show="pd.Points.$error.required">Required!</span> -->
 												</div>
 											</div>
@@ -52,20 +54,23 @@
 												<div class="form-group">
 													<label class="pointFormLabel">Qty.</label>
 													<span style="color:red">*</span>
-													<input type="number" class="form-control pointFormText" ng-model="Item.Quantity" min="0" max="9999"  ng-change="Item.TotalQuantity = Item.Quantity + Item.NewQuantity" maxlength="4" required ng-disabled="isDisabledQuantity"/>
+													<input type="number" class="form-control pointFormText" ng-model="Item.Quantity" min="0" max="9999" ng-change="Item.TotalQuantity = Item.Quantity + Item.NewQuantity"
+													 maxlength="4" required ng-disabled="isDisabledQuantity" />
 												</div>
 											</div>
 											<div class="col-md-12" ng-show="IsVisible">
 												<div class="form-group">
 													<label class="pointFormLabel">New Qty.</label>
 													<span style="color:red">*</span>
-													<input type="number" class="form-control pointFormText" ng-model="Item.NewQuantity"  ng-change="Item.TotalQuantity = Item.Quantity + Item.NewQuantity" ng-blur="Validator(Item)" max="9999" required  maxlength="4"/>
+													<input type="number" class="form-control pointFormText" ng-model="Item.NewQuantity" ng-change="Item.TotalQuantity = Item.Quantity + Item.NewQuantity"
+													 ng-blur="Validator(Item)" max="9999" required maxlength="4" />
 												</div>
 											</div>
 											<div class="col-md-12" ng-show="IsVisible">
 												<div class="form-group">
 													<label class="pointFormLabel">Total Qty.</label>
-													<input type="number" class="form-control pointFormText" ng-model="Item.TotalQuantity" ng-disabled="isTotalDisabledQuantity"  />
+													<input type="number" class="form-control pointFormText" ng-model="Item.TotalQuantity" ng-disabled="isTotalDisabledQuantity"
+													/>
 												</div>
 											</div>
 										</div>
@@ -73,8 +78,8 @@
 											<div class="col-md-12">
 												<div class="form-group">
 													<label class="pointFormLabel">Product Picture</label>
-													<input type="file" class="itemPicture" fileread="Item.Image" />
-													<!-- <input type="file" ng-model-instant id="fileToUpload" multiple onchange="angular.element(this).scope().setFiles(this)" /> -->
+													<!-- <input type="file" class="itemPicture" fileread="Item.Image" /> -->
+													 <input type="file" ng-model-instant id="fileToUpload" multiple onchange="angular.element(this).scope().setFiles(this)" /> 
 													<!-- <input type="file" class="itemPicture" ng-change="uploadPhoto($event)"  fileread="Item.Image"/><span>Upload</span> -->
 												</div>
 											</div>
@@ -82,7 +87,7 @@
 										<input type="button" class="formSubmitBtn" id="AddButton" ng-click="AddProduct(Item)" value="Add" ng-show="AddButton" />
 										<input type="button" id="SaveButton" class="formSubmitBtn" ng-click="UpdateItem(Item)" value="Save" ng-show="SaveButton"/>
 										<input type="button" class="formSubmitBtn" ng-click="claer()" value="Clear" ng-show="ClearButton" />
-										<input type="button" class="formSubmitBtn" ng-click="claerEdit()" value="Clear" ng-show="ClearEditButton"/>
+										<input type="button" class="formSubmitBtn" ng-click="claerEdit()" value="Clear" ng-show="ClearEditButton" />
 									</div>
 								</div>
 								<div class="col-md-9">
@@ -96,20 +101,44 @@
 												<thead>
 													<tr>
 														<th>Image</th>
-														<th>Product Code</th>
-														<th>Product Name</th>
-														<th>Points</th>
-														<th>Quantity</th>
-														<th>Items Redemend</th>
-														<th>Balance</th>
+														<th>
+															<a style="color:white" href="#" ng-click="orderByField='ProductCode'; reverseSort = !reverseSort">
+          														Product Code <span ng-show="orderByField == 'ProductCode'"><span ng-show="!reverseSort">^</span><span ng-show="reverseSort">v</span></span>
+         													</a>
+														</th>
+														<th>
+															<a href="#" style="color:white" ng-click="orderByField='ProductName'; reverseSort = !reverseSort">
+          														Product Name <span ng-show="orderByField == 'ProductName'"><span ng-show="!reverseSort">^</span><span ng-show="reverseSort">v</span></span>
+         													</a>
+														</th>
+														<th>
+															<a href="#" style="color:white" ng-click="orderByField='Points'; reverseSort = !reverseSort">
+          														Points <span ng-show="orderByField == 'Points'"><span ng-show="!reverseSort">^</span><span ng-show="reverseSort">v</span></span>
+         													</a>
+														</th>
+														<th>
+															<a href="#" style="color:white" ng-click="orderByField='Quantity'; reverseSort = !reverseSort">
+          														Quantity <span ng-show="orderByField == 'Quantity'"><span ng-show="!reverseSort">^</span><span ng-show="reverseSort">v</span></span>
+         													</a>
+														</th>
+														<th>
+															<a href="#" style="color:white" ng-click="orderByField='ItemsRedemend'; reverseSort = !reverseSort">
+          														Items Redemend <span ng-show="orderByField == 'ItemsRedemend'"><span ng-show="!reverseSort">^</span><span ng-show="reverseSort">v</span></span>
+         													</a>
+														</th>
+														<th>
+															<a href="#" style="color:white" ng-click="orderByField='Balance'; reverseSort = !reverseSort">
+          														Balance<span ng-show="orderByField == 'Balance'"><span ng-show="!reverseSort">^</span><span ng-show="reverseSort">v</span></span>
+         													</a>
+														</th>
 														<th>Action</th>
 													</tr>
 												</thead>
 												<tbody>
-													<tr ng-repeat="Item in ItemDetails | orderBy:'-Modified'">
+													<tr ng-repeat="Item in ItemDetails | orderBy:'-Modified' | orderBy:orderByField:reverseSort | filter:searchText">
 														<td>
-															<img src="{{Item.Url[0]?Item.Url[0].EncodedAbsThumbnailUrl:'/SiteAssets/RnR/img/defaultImage.png'}}"
-															 class="redeemImg img-responsive" style="height: 35px ; width:35px" />
+															<img src="{{Item.Url[0]?Item.Url[0].EncodedAbsThumbnailUrl:'/SiteAssets/RnR/img/defaultImage.png'}}" class="redeemImg img-responsive"
+															 style="height: 35px ; width:35px" />
 														</td>
 														<td>{{Item.Item_x0020_Code}}</td>
 														<td>{{Item.Item_x0020_Name}}</td>
@@ -119,9 +148,9 @@
 														<td>{{Item.Balance | number}}</td>
 														<!-- <td><button type="button" class="glyphicon glyphicon-edit" ng-click="OnEdit(Item)"> </button></td>  -->
 														<td><span><i style="color:green" title="Edit" class="glyphicon glyphicon-edit" ng-click="OnEdit(Item)"></i></span>
-															<span><i style="color:red ;margin-left: 13px" title="Delete" class="glyphicon glyphicon-remove" ng-click="OnDelete(Item)"></i></span>		
+															<span><i style="color:red ;margin-left: 13px" title="Delete" class="glyphicon glyphicon-remove" ng-click="OnDelete(Item)"></i></span>
 														</td>
-														
+
 														<!-- <td><i class="icon-edit" ng-click="OnEdit(Item)"></i></td> -->
 													</tr>
 												</tbody>
@@ -132,20 +161,44 @@
 												<thead>
 													<tr>
 														<th>Image</th>
-														<th>Product Code</th>
-														<th>Product Name</th>
-														<th>Points</th>
-														<th>Quantity</th>
-														<th>Updated Quantity</th>
-														<th>Status</th>
-														<th>Rejection Comment</th>
+														<th>
+															<a href="#" style="color:white"  ng-click="orderByField='ProductCode'; reverseSort = !reverseSort">
+          														Product Code <span ng-show="orderByField == 'ProductCode'"><span ng-show="!reverseSort">^</span><span ng-show="reverseSort">v</span></span>
+         													</a>
+														</th>
+														<th>
+															<a href="#" style="color:white" ng-click="orderByField='ProductName'; reverseSort = !reverseSort">
+          														Product Name <span ng-show="orderByField == 'ProductName'"><span ng-show="!reverseSort">^</span><span ng-show="reverseSort">v</span></span>
+         													</a>
+														</th>
+														<th>
+															<a href="#" style="color:white" ng-click="orderByField='Points'; reverseSort = !reverseSort">
+          														Points <span ng-show="orderByField == 'Points'"><span ng-show="!reverseSort">^</span><span ng-show="reverseSort">v</span></span>
+         													</a>
+														</th>
+														<th>
+															<a href="#" style="color:white" ng-click="orderByField='Quantity'; reverseSort = !reverseSort">
+          														Quantity <span ng-show="orderByField == 'Quantity'"><span ng-show="!reverseSort">^</span><span ng-show="reverseSort">v</span></span>
+         													</a>
+														</th>
+														<th>
+															<a href="#" style="color:white" ng-click="orderByField='UpdatedQuantity'; reverseSort = !reverseSort">
+          														Updated Quantity <span ng-show="orderByField == 'UpdatedQuantity'"><span ng-show="!reverseSort">^</span><span ng-show="reverseSort">v</span></span>
+         													</a>
+														</th>
+														<th>
+															<a href="#" style="color:white" ng-click="orderByField='Status'; reverseSort = !reverseSort">
+          														Status <span ng-show="orderByField == 'Status'"><span ng-show="!reverseSort">^</span><span ng-show="reverseSort">v</span></span>
+         													</a>
+														</th>
+														<th>Rejection Comment </th>
 													</tr>
 												</thead>
 												<tbody>
-													<tr ng-repeat="ApprovalItem in ApprovalItemDetails | orderBy:'-Modified'">
+													<tr ng-repeat="ApprovalItem in ApprovalItemDetails | orderBy:'-Modified' | orderBy:orderByField:reverseSort | filter:searchText">
 														<td>
-															<img src="{{Item.Url[0]?Item.Url[0].EncodedAbsThumbnailUrl:'/SiteAssets/RnR/img/defaultImage.png'}}"
-															 class="redeemImg img-responsive" style="height: 35px;width:35px" />
+															<img src="{{Item.Url[0]?Item.Url[0].EncodedAbsThumbnailUrl:'/SiteAssets/RnR/img/defaultImage.png'}}" class="redeemImg img-responsive"
+															 style="height: 35px;width:35px" />
 														</td>
 														<td>{{ApprovalItem.Item_x0020_Code.Item_x0020_Code}}</td>
 														<td>{{ApprovalItem.Item_x0020_Name}}</td>
