@@ -61,20 +61,6 @@ function redeemApprovalCtl($scope, $http) {
         if (num === 1) {
 
             if (confirm("You are trying to approve! " + item.Item_x0020_Code.Item_x0020_Code)) {
-                // var sum = item.Item_x0020_Code.Items_x0020_Redemend + item.RedeemQuantity;
-                // var difference = item.Item_x0020_Code.Quantity - item.Item_x0020_Code.Items_x0020_Redemend;
-                // if (sum > difference) {
-                //     alert('We do not have those many items in stock!');
-                // } else {
-                    // selectID = 'ID';
-                    // itemFilter = 'Emp_x0020_ID/Employee_x0020_ID eq \'' + item.Emp_x0020_ID.Employee_x0020_ID + '\'';
-                    // vm.empOptions = {
-                    //     select: selectID,
-                    //     filter: itemFilter
-                    // }
-                    // spcrud.read($http, vm.listEmployeeMaster, vm.empOptions).then(function (resp) {
-                    //     if (resp.status === 200) {
-                    //vm.Item_x0020_CodeId = resp.data.d.results[0].ID;
                     spcrud.update($http, vm.listName, item.ID, {
                         'Status': 'Approved',
                         'Redemption_x0020_Approved_x0020_Id': vm.userDetails.data.d.PrincipalType,
@@ -87,24 +73,6 @@ function redeemApprovalCtl($scope, $http) {
                     }, function (error) {
                         console.log('error', error);
                     });
-
-                    //         spcrud.update($http, vm.listNameProduct, item.Item_x0020_CodeId, {
-                    //             'Items_x0020_Redemend': item.Item_x0020_Code.Items_x0020_Redemend + item.RedeemQuantity
-                    //         }).then(function (error) {
-                    //             console.log('error', error);
-                    //         });
-
-                    //         spcrud.update($http, vm.listEmployeeMaster, vm.Item_x0020_CodeId, {
-                    //             'Redemend': item.Item_x0020_Code.Points * item.RedeemQuantity
-                    //         }).then(function (error) {
-                    //             console.log('error', error);
-                    //         });
-                    //     }
-
-                    // }, function (error) {
-                    //     console.log('error', error);
-                    // });
-               // }
 
             }
 

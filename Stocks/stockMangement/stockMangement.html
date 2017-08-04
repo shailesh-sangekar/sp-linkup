@@ -28,7 +28,7 @@
 								<div class="col-md-3" ng-model="ItemForm">
 									<div class="formBox">
 										<div class="form-group">
-											<label class="pointFormLabel">Item Name</label>
+											<label class="pointFormLabel">Product Name</label>
 											<span style="color:red">*</span>
 											<input type="text" class="form-control pointFormText" name="Name" ng-model="Item.Item_x0020_Name" maxlength="50" required
 											/>
@@ -42,7 +42,7 @@
 										<div class="row">
 											<div class="col-md-6">
 												<div class="form-group">
-													<label class="pointFormLabel">Item Points</label>
+													<label class="pointFormLabel">Points</label>
 													<span style="color:red">*</span>
 													<input type="number" class="form-control pointFormText" ng-model="Item.Points" min="0" max="9999" required />
 													<!-- <span class="error" ng-show="pd.Points.$error.required">Required!</span> -->
@@ -59,20 +59,20 @@
 												<div class="form-group">
 													<label class="pointFormLabel">New Qty.</label>
 													<span style="color:red">*</span>
-													<input type="number" class="form-control pointFormText" ng-model="Item.Updated_x0020_Quantity"  ng-blur="Validator(Item)" max="9999" required  />
+													<input type="number" class="form-control pointFormText" ng-model="Item.NewQuantity"  ng-blur="Validator(Item)" max="9999" required  />
 												</div>
 											</div>
 											<div class="col-md-6" ng-show="IsVisible">
 												<div class="form-group">
 													<label class="pointFormLabel">Total Qty.</label>
-													<input type="number" class="form-control pointFormText" ng-model="Item.TotalQuantity =(Item.Updated_x0020_Quantity) + (Item.NewQuantity)" ng-disabled="isTotalDisabledQuantity"  />
+													<input type="number" class="form-control pointFormText" ng-model="Item.TotalQuantity =(Item.NewQuantity) + (Item.Quantity)" ng-disabled="isTotalDisabledQuantity"  />
 												</div>
 											</div>
 										</div>
 										<div class="row">
 											<div class="col-md-12">
 												<div class="form-group">
-													<label class="pointFormLabel">Item Picture</label>
+													<label class="pointFormLabel">Product Picture</label>
 													<input type="file" class="itemPicture" fileread="Item.Image" />
 													<!-- <input type="file" ng-model-instant id="fileToUpload" multiple onchange="angular.element(this).scope().setFiles(this)" /> -->
 													<!-- <input type="file" class="itemPicture" ng-change="uploadPhoto($event)"  fileread="Item.Image"/><span>Upload</span> -->
@@ -81,6 +81,7 @@
 										</div>
 										<input type="button" class="formSubmitBtn" id="AddButton" ng-click="AddProduct(Item)" value="Add" ng-show="AddButton" />
 										<input type="button" id="SaveButton" class="formSubmitBtn" ng-click="UpdateItem(Item)" value="Save" ng-show="SaveButton"/>
+										<input type="button" id="SaveButton" class="formSubmitBtn" ng-click="DeleteItem(Item)" value="Delete" ng-show="DeleteButton"/>
 										<input type="button" class="formSubmitBtn" ng-click="claer()" value="Clear" ng-show="ClearButton" />
 										<input type="button" class="formSubmitBtn" ng-click="claerEdit()" value="Clear" ng-show="ClearEditButton"/>
 									</div>
@@ -88,7 +89,7 @@
 								<div class="col-md-9">
 									<ul class="nav nav-tabs pointTabs">
 										<li class="active"><a href="#tab1">Product Master</a></li>
-										<li><a href="#tab2">Approved Products</a></li>
+										<li><a href="#tab2">Products For Approval</a></li>
 									</ul>
 									<div class="tab-content appraisalTabsContent">
 										<div id="tab1" class="tab-pane fade in active" style="overflow-y: scroll; height:300px;">
@@ -108,7 +109,7 @@
 												<tbody>
 													<tr ng-repeat="Item in ItemDetails | orderBy:'-Modified'">
 														<td>
-															<img src="{{Item.Url[0]?Item.Url[0].EncodedAbsThumbnailUrl:'http://espld205/SiteAssets/RnR/Redeem/img/defaultImage.png'}}"
+															<img src="{{Item.Url[0]?Item.Url[0].EncodedAbsThumbnailUrl:'/SiteAssets/RnR/img/defaultImage.png'}}"
 															 class="redeemImg img-responsive" style="height: 35px ; width:35px" />
 														</td>
 														<td>{{Item.Item_x0020_Code}}</td>
@@ -118,7 +119,10 @@
 														<td>{{Item.Items_x0020_Redemend}}</td>
 														<td>{{Item.Balance | number}}</td>
 														<!-- <td><button type="button" class="glyphicon glyphicon-edit" ng-click="OnEdit(Item)"> </button></td>  -->
-														<td><i class="glyphicon glyphicon-edit" ng-click="OnEdit(Item)"></i></td>
+														<td><i class="glyphicon glyphicon-edit" ng-click="OnEdit(Item)"></i>
+															<i class="glyphicon glyphicon-remove" ng-click="OnDelete(Item)"></i>		
+														</td>
+														
 														<!-- <td><i class="icon-edit" ng-click="OnEdit(Item)"></i></td> -->
 													</tr>
 												</tbody>

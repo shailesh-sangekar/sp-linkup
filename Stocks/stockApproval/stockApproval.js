@@ -18,8 +18,8 @@ function stockApprovalCtl($scope, $http) {
     Rejected = 'Rejected';
     vm.itemID = '';
     vm.itemCatalogID = '';
-    approvedFilter = 'Status eq \'' + Approved + '\' or Status eq \'' + Rejected + '\'';
-    pendingFilter = 'Status eq \'' + Pending + '\'';
+    approvedFilter = '((Status eq \'' + Approved + '\' ) or ( Status eq \'' + Rejected + '\' )) and (Item_x0020_Status eq \'' + Active + '\')';
+    pendingFilter = 'Status eq \'' + Pending + '\' and Item_x0020_Status eq \'' + Active + '\'';
 
     vm.approvedOptions = {
         select: empSelect,
