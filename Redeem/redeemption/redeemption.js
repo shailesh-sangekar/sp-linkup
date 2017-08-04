@@ -129,12 +129,12 @@ function redeemCtl($scope, $http) {
         });
     }
     vm.readempMasterlist = function () {
-        vm.totalavailablepts = 0;
+       // vm.totalavailablepts = 0;
         spcrud.read($http, vm.EmployeeMasterList, vm.nameFilterOptions).then(function (response) {
             if (response.status === 200)
                 vm.empMasterDetails = response.data.d.results;
             vm.empMasterDetails[0].Balance = parseFloat(vm.empMasterDetails[0].Balance);
-            vm.totalavailablepts = vm.empMasterDetails[0].Balance - vm.totalUsedPts;
+          //  vm.totalavailablepts = vm.empMasterDetails[0].Balance - vm.totalUsedPts;
         }, function (error) {
             console.log('error', error);
         });
@@ -152,13 +152,13 @@ function redeemCtl($scope, $http) {
         spcrud.read($http, vm.Redeemlist, vm.redeemOptions).then(function (response) {
             if (response.status === 200)
                 vm.redeemlistemp = response.data.d.results;
-            vm.availablepts = 0;
-            vm.totalUsedPts = 0;
-            vm.redeemlistemp.forEach(function (item) {
-                vm.availablepts = item.Item_x0020_Code.Points * item.RedeemQuantity;
-                vm.totalUsedPts = vm.availablepts + vm.totalUsedPts;
+          //  vm.availablepts = 0;
+          //  vm.totalUsedPts = 0;
+           // vm.redeemlistemp.forEach(function (item) {
+             //   vm.availablepts = item.Item_x0020_Code.Points * item.RedeemQuantity;
+             //   vm.totalUsedPts = vm.availablepts + vm.totalUsedPts;
 
-            }, this);
+          //  }, this);
             vm.readempMasterlist();
         }, function (error) {
             console.log('error', error);
