@@ -27,15 +27,15 @@
 									<img class="heightMedal" src="/SiteAssets/RnR/img/medal.png" />		
 								</span>
 							</div>
-							<div class="col-sm-4">
-								<h2 class="alignMedal">{{empMasterDetails[0].Balance?empMasterDetails[0].Balance:'0'}} </h2>
-								<label class="alignTop">Balanced Points</label>	
+							<div class="col-sm-5">
+								<h2 class="alignMedal">{{empMasterDetails[0].Balance?empMasterDetails[0].Balance:'N/A'}} </h2>
+							<label class="alignTop">Balanced Points | Used : {{totalUsedPts?totalUsedPts:"N/A"}} | Total Earned : {{totalpts?totalpts:'N/A'}}</label>
 							</div>
 							<span class="dropdownalign" ng-if="productDetails.length > 0">
 						<!--<a  class="btn btn-xs yellow-soft" href="/SitePages/Redeem%20History.aspx" title="View Redeem History">
 							<i class="fa fa-history"></i> 
 						</a>-->
-						Search :<input class="serachBox" ng-model="search.Item_x0020_Name" placeholder="Search By Product Name"/>	
+					<input class="serachBox" ng-model="search.Item_x0020_Name" placeholder="Search By Product Name"/>	
 							</span>
 							<span ng-if="productDetails.length > 0">
 							Sort By:
