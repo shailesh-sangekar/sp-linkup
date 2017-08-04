@@ -1,5 +1,6 @@
-function redeemCtl($scope, $http) {
+function redeemCtl($scope, $http,$timeout) {
     var vm = $scope;
+    vm.loaded = false; 
     vm.query = {};
     vm.queryBy = '$';
     vm.listName = 'RnR Product Catalog';
@@ -16,7 +17,9 @@ function redeemCtl($scope, $http) {
     vm.orderByvalue = 'Latest';
     var orderbyPoints = 'Created asc';
     var Approved = 'Approved';
-    var approvedFilter = 'Status eq \'' + Approved + '\' ';
+    var activeStatus ='Active';
+    //var nameFilter = '(First_x0020_Name eq \'' + FirstName + '\') and (Last_x0020_Name eq \'' + LastName + '\')';
+    var approvedFilter = '(Status eq \'' + Approved + '\' ) and (Item_x0020_Status eq \'' + activeStatus + '\')';
     vm.orderFilter = { select: '*', orderby: orderbyPoints, filter: approvedFilter };
     vm.asc = false;
     vm.Sort = {};
@@ -47,6 +50,7 @@ function redeemCtl($scope, $http) {
         });
     }
     vm.getUserName();
+     $timeout(function() { vm.loaded = true; },500);
 
     vm.onChange = function (value) {
         var orderbyPoints = value;
@@ -166,6 +170,7 @@ function redeemCtl($scope, $http) {
     }
 
     vm.RedeemProduct = function (resp) {
+      if (confirm("Are you sure you want to redeem " + resp.Item_x0020_Name)) {
         var date = new Date();
         var redeemdate = moment.parseZone(date).utc().format();
         var itemId = resp.ID;
@@ -191,7 +196,7 @@ function redeemCtl($scope, $http) {
                     spcrud.read($http, vm.listName, vm.idOptions).then(function (resp) {
                         if (resp.status === 200) {
                             vm.product = resp.data.d.results;
-                            if (quantity <= vm.product[0].Balance) {
+                            if (quantity <= vm.product[0].Balance && vm.product[0].Item_x0020_Status == 'Active') {
                                 spcrud.create($http, vm.Redeemlist, { 'Title': 'redeem adding', 'Status': 'Pending', 'Redemption_x0020_Date': redeemdate, 'Item_x0020_CodeId': itemId, 'Emp_x0020_IDId': userId, 'RedeemQuantity': quantity }
                                 ).then(function (resp) {
                                 vm.value=vm.product[0].Items_x0020_Redemend + quantity;
@@ -234,9 +239,12 @@ function redeemCtl($scope, $http) {
                 }
             }
         });
-
-
     }
+    else{
+        alert("Redeemption Cancelled.");
+        vm.getUserName();
+    }
+}
     vm.add = function (id, defaultQuantity) {
         if (defaultQuantity < vm.productDetails[id].Balance) {
             vm.productDetails[id].defaultQuantity = defaultQuantity + 1;

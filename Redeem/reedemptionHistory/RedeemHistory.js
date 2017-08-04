@@ -1,5 +1,6 @@
-function redeemHistoryCtl($scope, $http) {
+function redeemHistoryCtl($scope, $http,$timeout) {
     var vm = $scope;
+    vm.loaded = false; 
     vm.queryhistory = {};
     vm.queryhistoryBy = '$';
     vm.ImageList = 'RnR Product Images';
@@ -43,6 +44,7 @@ function redeemHistoryCtl($scope, $http) {
     }
     vm.readPendinglist();
     vm.readapprovedlist();
+      $timeout(function() { vm.loaded = true; }, 500);
        vm.appendApproveimg = function () {
         vm.redeemApprovedlistemp.forEach(function (product) {
             var id = product.Item_x0020_Code.Item_x0020_Code;
@@ -52,6 +54,7 @@ function redeemHistoryCtl($scope, $http) {
                 if (response.status === 200)
                    // vm.Url = response.data.d.results;
                 vm.redeemApprovedlistemp.find(f => f.Item_x0020_Code.Item_x0020_Code == id).Url = response.data.d.results;
+              //  vm.loaded = true;
             }, function (error) {
                 console.log('error', error);
             });

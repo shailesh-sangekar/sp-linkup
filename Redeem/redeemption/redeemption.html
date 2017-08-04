@@ -10,8 +10,13 @@
 <link rel="stylesheet" href="/SiteAssets/RnR/Redeem/Redeemption/redeemption.css"></link>
 
 <!--Main-->
-<div ng-app="redeemApp" class="appmodel">
+<div ng-app="redeemApp" class="appmodel" >
     <div ng-controller="redeemCtl">
+			<div class="spinner" ng-hide="loaded" ></div>
+			<span ng-hide="loaded">
+				Loading.....
+			</span>
+		<div ng-cloak="" ng-show="loaded">
 		<section class="topSection">
 			<div class="container">
 				<div class="mainBox">
@@ -26,22 +31,24 @@
 								<h2 class="alignMedal">{{empMasterDetails[0].Balance?empMasterDetails[0].Balance:'0'}} </h2>
 								<label class="alignTop">Balanced Points</label>	
 							</div>
-							<span class="dropdownalign">
+							<span class="dropdownalign" ng-if="productDetails.length > 0">
 						<!--<a  class="btn btn-xs yellow-soft" href="/SitePages/Redeem%20History.aspx" title="View Redeem History">
 							<i class="fa fa-history"></i> 
 						</a>-->
-						Search :<input ng-model="query[queryBy]" />	
+						Search :<input class="serachBox" ng-model="search.Item_x0020_Name" placeholder="Search By Product Name"/>	
 							</span>
+							<span ng-if="productDetails.length > 0">
 							Sort By:
 							<select ng-model="Sort.valueId" ng-options="value.id as value.name for value in Sort.values" ng-change="onChange(Sort.valueId)"></select>
 							<i ng-show="!asc" class="fa fa-long-arrow-up black" ng-click="onChangeOrder(Sort.valueId)"></i>
 							<i ng-show="asc" class="fa fa-long-arrow-down black" ng-click="onChangeOrder(Sort.valueId)"></i>
-								<a class="btn blue" href="/SitePages/Redeem%20History.aspx" title="View Redeem History">
-									<i class="fa fa-history"></i> 
+										</span>
+								<a class="btn blue" style="height: 25px;" href="/SitePages/Redeem%20History.aspx" title="View Redeem History">
+									View History
 								</a>
 					</div>
 	                <div class="row">
-						<div ng-if="productDetails.length > 0" class="col-sm-3" ng-repeat="pd in productDetails | filter:query">
+						<div ng-if="productDetails.length > 0" class="col-sm-3" ng-repeat="pd in productDetails | filter:search:strict">
 							<div class="redeemBox"  ng-disabled="pd.Balance < 1">
 								<img ng-show="pd.Balance < 1" src="/SiteAssets/RnR/img/outOfStock.png" class="outOfStockImg" />	
 								<img src="{{pd.Url[0]?pd.Url[0].EncodedAbsThumbnailUrl:'/SiteAssets/RnR/img/defaultImage.png'}}" class="redeemImg img-responsive" />
@@ -71,5 +78,6 @@
 			</div>
 		</div>
 	</section>
+</div>
 </div>
 </div>

@@ -10,15 +10,21 @@
 <!--Application-->
 
 <div ng-app="redeemHistoryApp" class="topModal">
+
     <div ng-controller="redeemHistoryCtl">
+			<div class="spinner" ng-hide="loaded" ></div>
+			<span ng-hide="loaded">
+				Loading.....
+			</span>
+		<div ng-cloak="" ng-show="loaded">
     <div class="row" >
       <div>
     
     </div>
         <h4 class="masterHeading">Redeemption Pending Details:</h4> 
-		<span class="searchbutton">Search :<input ng-model="queryhistory[queryhistoryBy]" />	</span>
+		<!--<span class="searchbutton">Search :<input ng-model="queryhistory[queryhistoryBy]" />	</span>-->
             <a class="btn blue searchinput" href="/SitePages/Redemption.aspx" title="View Redeem">
-		    <i class="fa fa-search"></i> 
+		   View Redeem
 		</a>
     </div>
         <div class="col-md-12" >
@@ -83,4 +89,5 @@
 			</div>
 		</div>
     </div>
+</div>
 </div>

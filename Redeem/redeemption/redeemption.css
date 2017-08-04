@@ -39,7 +39,7 @@ margin-top: -30px;
 	float:right;
 }
 .dropdownalign{
-	margin-left: 200px;
+	margin-left: 120px;
 }
 .redeemBox .codeSpan{
  position: absolute;
@@ -89,4 +89,40 @@ margin-top: -30px;
 }
 .inputDisableQuantity{
 	margin-top: 5px !important;
+}
+@keyframes rotate360 {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@-webkit-keyframes rotate360 {
+  from { -webkit-transform: rotate(0deg); }
+  to { -webkit-transform: rotate(360deg); }
+}
+.spinner {
+  display:inline-block;
+  border-radius: 50px;
+  border-style: solid;
+  border-bottom-color: #3b5641;
+  border-top-color: #67b3a9;
+  border-left-color: #df7950;
+  border-right-color: #decb3f;
+  text-align: center;
+  vertical-align: middle;
+  position: relative;
+  animation: rotate360 1s linear infinite;
+  -webkit-animation: rotate360 1s linear infinite;
+
+  border-width: 4px;
+  width: 24px;
+  height: 24px;
+}
+.btn{
+    float: right !important;
+        padding: 0px 12px !important;
+        margin-top: 2px !important;
+    height: 23px !important;
+}
+.serachBox{
+    width:200px;
 }
