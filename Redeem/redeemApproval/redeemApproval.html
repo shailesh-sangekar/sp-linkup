@@ -25,10 +25,10 @@
                                 <th ng-click="orderByField='Emp_x0020_ID.First_x0020_Name'; reverseSort = !reverseSort">Employee Name<span ng-show="!reverseSort">^</span><span ng-show="reverseSort">v</span></th>
                                 <th ng-click="orderByField='Item_x0020_Code.Item_x0020_Code'; reverseSort = !reverseSort">Product Code <span ng-show="!reverseSort">^</span><span ng-show="reverseSort">v</span></th>
                                 <th ng-click="orderByField='Item_x0020_Code.Item_x0020_Name'; reverseSort = !reverseSort">Product Name <span ng-show="!reverseSort">^</span><span ng-show="reverseSort">v</span></th>
-                                <th ng-click="orderByField='Item_x0020_Code.Points'; reverseSort = !reverseSort">Points <span ng-show="!reverseSort">^</span><span ng-show="reverseSort">v</span></th>
-                                <th ng-click="orderByField='RedeemQuantity'; reverseSort = !reverseSort">Quantity <span ng-show="!reverseSort">^</span><span ng-show="reverseSort">v</span></th>
-                                <th style="text-align: center;">Approve</th>
-                                <th style="text-align: center;">Reject</th>
+                                <th class="centre1" ng-click="orderByField='Item_x0020_Code.Points'; reverseSort = !reverseSort">Points <span ng-show="!reverseSort">^</span><span ng-show="reverseSort">v</span></th>
+                                <th class="centre1" ng-click="orderByField='RedeemQuantity'; reverseSort = !reverseSort">Quantity <span ng-show="!reverseSort">^</span><span ng-show="reverseSort">v</span></th>
+                                <th class="centre1">Approve</th>
+                                <th class="centre1">Reject</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -45,17 +45,17 @@
                                 <td>
                                     <span>{{item.Item_x0020_Code.Item_x0020_Name}}</span>
                                 </td>
-                                <td>
-                                    <span class="centre">{{item.Item_x0020_Code.Points}}</span>
+                                <td class="centre1">
+                                    <span >{{item.Item_x0020_Code.Points}}</span>
                                 </td>
-                                <td>
-                                    <span class="centre">{{item.RedeemQuantity}}</span>
+                                <td class="centre1">
+                                    <span >{{item.RedeemQuantity}}</span>
                                 </td>
-                                <td>
-                                    <i class="fa fa-check colorApprove centre" style="color:green" aria-hidden="true" ng-click="updateApproval(item,1)"></i>
+                                <td class="centre1">
+                                    <i class="fa fa-check colorApprove" style="color:green" aria-hidden="true" ng-click="updateApproval(item,1)"></i>
                                 </td>
-                                <td>
-                                    <i class="fa fa-times colorReject centre" style="color:red" aria-hidden="true" ng-click="updateApproval(item,2)"></i>
+                                <td class="centre1">
+                                    <i class="fa fa-times colorReject" style="color:red" aria-hidden="true" ng-click="updateApproval(item,2)"></i>
                                 </td>
 
                             </tr>

@@ -42,6 +42,18 @@ margin-top: -30px;
 	margin-left: 90px;
 }
 .redeemBox .codeSpan{
+      opacity: 1;
+ position: absolute;
+    top: 13px;
+    left: 27px;
+    background: #e67a7a;
+    font-size: 11px;
+    padding: 3px 4px;
+    color: #fff;
+    border-radius: 2px;
+}
+.codeSpan1{
+    opacity: 0.2;
  position: absolute;
     top: 13px;
     left: 27px;
@@ -69,6 +81,7 @@ margin-top: -30px;
 }
 .redeemBox img {
     height: 95px;
+    width: 90px;
     margin: 0 auto;
 }
 .redeemImg{
@@ -125,4 +138,13 @@ margin-top: -30px;
 }
 .serachBox{
     width:200px;
+}
+.outOfStockImg{
+    z-index:2 !important;
+}
+.badge {
+        background: #f3565d !important;
+    }
+.badge.badge-success {
+    background-color: #45b6af !important;
 }

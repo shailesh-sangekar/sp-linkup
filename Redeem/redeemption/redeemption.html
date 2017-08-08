@@ -29,13 +29,13 @@
 							</div>
 							<div class="col-sm-5">
 								<h2 class="alignMedal">{{empMasterDetails[0].Balance?empMasterDetails[0].Balance:'0'}} </h2>
-							<label class="alignTop">Balanced Points | Used : {{totalUsedPts?totalUsedPts:"0"}} | Total Earned : {{totalpts?totalpts:'0'}}</label>
+							<label class="alignTop">Balance | Used : {{totalUsedPts?totalUsedPts:"0"}} | Total Earned : {{totalpts?totalpts:'0'}}</label>
 							</div>
 							<span class="dropdownalign" ng-if="productDetails.length > 0">
 						<!--<a  class="btn btn-xs yellow-soft" href="/SitePages/Redeem%20History.aspx" title="View Redeem History">
 							<i class="fa fa-history"></i> 
 						</a>-->
-					<input class="serachBox" ng-model="search.Item_x0020_Name" placeholder="Search By Product Name"/>	
+					<input class="serachBox" ng-model="query[queryBy]" placeholder="Search by Product Name"/>	
 							</span>
 							<span ng-if="productDetails.length > 0">
 							Sort By:
@@ -48,11 +48,12 @@
 								</a>
 					</div>
 	                <div class="row">
-						<div ng-if="productDetails.length > 0" class="col-sm-3" ng-repeat="pd in productDetails | filter:search:strict">
+						<div ng-if="productDetails.length > 0" class="col-sm-3" ng-repeat="pd in productDetails | filter:query">
 							<div class="redeemBox"  ng-disabled="pd.Balance < 1">
 								<img ng-show="pd.Balance < 1" src="/SiteAssets/RnR/img/outOfStock.png" class="outOfStockImg" />	
 								<img src="{{pd.Url[0]?pd.Url[0].EncodedAbsThumbnailUrl:'/SiteAssets/RnR/img/defaultImage.png'}}" class="redeemImg img-responsive" />
-								<span class="codeSpan">{{pd.Item_x0020_Code?pd.Item_x0020_Code:''}}</span>
+								<span ng-show="pd.Balance > 0" class="codeSpan">{{pd.Item_x0020_Code?pd.Item_x0020_Code:''}}</span>
+								<span ng-show="pd.Balance < 1" class="codeSpan1">{{pd.Item_x0020_Code?pd.Item_x0020_Code:''}}</span>
                                 <h5 class="overflowdata">{{pd.Item_x0020_Name?pd.Item_x0020_Name:''}}</h5>	
                                 <h4 class="height12">{{pd.Points?pd.Points:''}}Pts.</h4>
 								<label>Quantity</label><br/>

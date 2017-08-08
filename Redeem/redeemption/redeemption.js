@@ -2,7 +2,7 @@ function redeemCtl($scope, $http,$timeout) {
     var vm = $scope;
     vm.loaded = false; 
     vm.query = {};
-    vm.queryBy = '$';
+    vm.queryBy = 'Item_x0020_Name';
     vm.listName = 'RnR Product Catalog';
     vm.Redeemlist = 'RnR Employee Redemptions';
     vm.EmployeeList = 'Employee Personal Details Master';
@@ -193,7 +193,7 @@ function redeemCtl($scope, $http,$timeout) {
                 vm.newupdateRedem = redeeemPoints + vm.updateRedeempoints;
                 idFilter = '(ID eq \'' + itemId + '\')';
                 vm.idOptions = { filter: idFilter };
-                if (vm.newupdateRedem <= vm.empMasterDetails[0].Balance) {
+                if (redeeemPoints <= vm.empMasterDetails[0].Balance) {
                     spcrud.read($http, vm.listName, vm.idOptions).then(function (resp) {
                         if (resp.status === 200) {
                             vm.product = resp.data.d.results;
