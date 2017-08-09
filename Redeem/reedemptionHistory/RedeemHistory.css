@@ -47,3 +47,18 @@
   width: 24px;
   height: 24px;
 }
+.fontcolora{
+        color: white !important;
+}
+.centre1 {
+    text-align: center !important;
+}
+.th{
+    text-align: center !important;
+}
+.badge {
+        background: #f3565d !important;
+    }
+.badge.badge-success {
+    background-color: #45b6af !important;
+}

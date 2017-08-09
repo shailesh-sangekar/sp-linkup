@@ -32,22 +32,22 @@
 				<thead>
 					<tr>
                         <th>Image</th>
-					    <th>Code</th>
-                        <th>Name</th>
-						<th>Points</th>
-						<th>Quantity</th>	
-                        <th>Redeem Points</th>																	
+						<th><a class="fontcolora" href="" ng-click="orderByField='Code'; reverseSort = !reverseSort">Code</a></th>
+                        <th><a class="fontcolora"  href="" ng-click="orderByField='Name'; reverseSort = !reverseSort">Name</a></th>
+						<th class="centre1"><a class="fontcolora"  href="" ng-click="orderByField='Points'; reverseSort = !reverseSort">Points</a></th>
+						<th class="centre1"><a class="fontcolora"  href="" ng-click="orderByField='Quantity'; reverseSort = !reverseSort">Quantity</a></th>	
+                        <th class="centre1"><a class="fontcolora"  href="" ng-click="orderByField='Redeem_Points'; reverseSort = !reverseSort">Redeem_Points</a></th>																
 						<th>Status</th>
 					</tr>
 				</thead>
 				<tbody>
-                    <tr ng-repeat="item in redeemPendinglistemp | filter:queryhistory">
+                    <tr ng-repeat="item in redeemPendinglistemp | orderBy:'-Modified' |orderBy:orderByField:reverseSort">
                         <td><img src="{{item.Url[0]?item.Url[0].EncodedAbsThumbnailUrl:'/SiteAssets/RnR/img/defaultImage.png'}}" class="redeemImg img-table" /></td>
 					    <td>{{item.Item_x0020_Code.Item_x0020_Code}}</td>
                         <td>{{item.Item_x0020_Code.Item_x0020_Name}}</td>	
-					    <td>{{item.Item_x0020_Code.Points}}</td>
-						<td>{{item.RedeemQuantity}}</td>	
-                        <td>{{item.Item_x0020_Code.Points * item.RedeemQuantity}}</td>	
+					    <td class="centre1">{{item.Item_x0020_Code.Points}}</td>
+						<td class="centre1">{{item.RedeemQuantity}}</td>	
+                        <td class="centre1">{{item.Item_x0020_Code.Points * item.RedeemQuantity}}</td>	
                         <td class="pendingStatus"><b>{{item.Status}}</b></td>	
 					</tr>
                 </tbody>
@@ -63,22 +63,22 @@
 				<thead>
 					<tr>
                         <th>Image</th>
-					    <th>Code</th>
-                        <th>Name</th>
-						<th>Points</th>
-						<th>Quantity</th>	
-                        <th>Redeem Points</th>																	
-						<th>Status</th>
+						<th><a class="fontcolora"  href="" ng-click="orderByField='Code'; reverseSort = !reverseSort">Code</a></th>
+                        <th><a class="fontcolora"  href="" ng-click="orderByField='Name'; reverseSort = !reverseSort">Name</a></th>
+						<th class="centre1"><a class="fontcolora"  href="" ng-click="orderByField='Points'; reverseSort = !reverseSort">Points</a></th>
+						<th class="centre1"><a class="fontcolora"  href="" ng-click="orderByField='Quantity'; reverseSort = !reverseSort">Quantity</a></th>	
+                        <th class="centre1"><a class="fontcolora"  href="" ng-click="orderByField='Redeem_Points'; reverseSort = !reverseSort">Redeem_Points</a></th>																																	
+						<th><a class="fontcolora"  href="" ng-click="orderByField='Status'; reverseSort = !reverseSort">Status</a></th>
 					</tr>
 				</thead>
 				<tbody>
-                    <tr ng-repeat="item in redeemApprovedlistemp | filter:queryhistory">
+                    <tr ng-repeat="item in redeemApprovedlistemp | orderBy:'-Modified' |orderBy:orderByField:reverseSort">
                         <td><img src="{{item.Url[0]?item.Url[0].EncodedAbsThumbnailUrl:'/SiteAssets/RnR/img/defaultImage.png'}}" class="redeemImg img-table" /></td>
 					    <td>{{item.Item_x0020_Code.Item_x0020_Code}}</td>
                         <td>{{item.Item_x0020_Code.Item_x0020_Name}}</td>	
-					    <td>{{item.Item_x0020_Code.Points}}</td>
-						<td>{{item.RedeemQuantity}}</td>	
-                        <td>{{item.Item_x0020_Code.Points * item.RedeemQuantity}}</td>	
+					    <td class="centre1">{{item.Item_x0020_Code.Points}}</td>
+						<td class="centre1">{{item.RedeemQuantity}}</td>	
+                        <td class="centre1">{{item.Item_x0020_Code.Points * item.RedeemQuantity}}</td>	
                         <td ng-if="item.Status==='Approved'" class="approvedStatus"><b>{{item.Status}}</b></td>
                         <td ng-if="item.Status==='Rejected'" class="rejectedStatus"><b>{{item.Status}}</b></td>		
 					</tr>

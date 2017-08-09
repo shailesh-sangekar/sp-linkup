@@ -18,7 +18,8 @@ function stockApprovalCtl($scope, $http, $timeout, $modal, $log, $document) {
     Approved = 'Approved';
     Pending = 'Pending';
     Rejected = 'Rejected';
-    Active = 'Active';
+    Active='Active';
+
     vm.itemID = '';
     vm.itemCatalogID = '';
     approvedFilter = '((Status eq \'' + Approved + '\' ) or ( Status eq \'' + Rejected + '\' )) and (Item_x0020_Status eq \'' + Active + '\')';
