@@ -228,7 +228,7 @@ function redeemCtl($scope, $http,$timeout) {
                         }
                         else {
                             vm.product[0].Balance = parseFloat(vm.product[0].Balance);
-                            alert("Selected Products available stock is " + vm.product[0].Balance + " You cannot request more than available quantity.");
+                            alert("Sorry!! Only " + vm.product[0].Balance + " available in stock, you can't order more than that. ");
                         }
                     }
                     }, function (error) {
@@ -252,7 +252,7 @@ function redeemCtl($scope, $http,$timeout) {
         }
          else{
              vm.productDetails[id].Balance = parseFloat(vm.productDetails[id].Balance);
-             alert("Selected Product's available stock is " + vm.productDetails[id].Balance + " . You cannot request more than available quantity.");
+             alert("Sorry!! Only " + vm.productDetails[id].Balance + " available in stock, you can't order more than that. ");
         }
 
     };
