@@ -14,7 +14,9 @@
 <!--Main-->
 <div ng-app="redeemApprovalApp" style="margin-top: -30px;">
        <div ng-controller="redeemApprovalCtl">
-        <div class="row">
+           <div class="spinner" ng-hide="loaded"></div>
+        <span ng-hide="loaded">	
+        <div class="row" ng-show="loaded">
             <div class="col-md-12">
                 <div id="pendingTable" class="tab-content appraisalTabsContent" ng-if="gridItemsPending.length != 0">
                     <h2>Items Pending for Approval</h2>
@@ -119,6 +121,18 @@
 
                 </div>
             </div>
+            <modal visible="showModal">
+                <div class="modal-header">
+                    <h3 class="modal-title" id="modal-title">You Are Trying To Reject:</h3>
+                </div>
+                <div class="modal-body">
+                    <div>Product Name: {{item.Item_x0020_Name}}</div>
+                    <div>Please specify the reason for rejection:</div>
+                    <textarea rows="4" cols="50" ng-model="item.Reject_x0020_Comment"></textarea>
+                </div>
+                <button class="btn btn-primary" type="button" ng-click="RejectFunction(item)">OK</button>
+                <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
+            </modal>
         </div>
     </div>
 </div>

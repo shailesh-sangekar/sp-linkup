@@ -4,6 +4,7 @@ function redeemApprovalCtl($scope, $http) {
     vm.status = 'OK';
     vm.userDetails = '';
     vm.listName = 'RnR Employee Redemptions';
+    vm.loaded = false;
     vm.listNameProduct = 'RnR Product Catalog';
     vm.listEmployeeMaster = 'RnR Employee Master';
     empSelect = 'Redemption_x0020_Approved_x0020_/Title,Emp_x0020_ID/Employee_x0020_ID,Emp_x0020_ID/First_x0020_Name,Emp_x0020_ID/Last_x0020_Name,Item_x0020_Code/Item_x0020_Code,Item_x0020_Code/Item_x0020_Name,Item_x0020_Code/Points,Item_x0020_Code/Quantity,Item_x0020_Code/Items_x0020_Redemend,Item_x0020_Code/Available_x0020_Quantity,*';
@@ -11,7 +12,7 @@ function redeemApprovalCtl($scope, $http) {
     Approved = 'Approved';
     Pending = 'Pending';
     Rejected = 'Rejected';
-    Active='Active';
+    Active = 'Active';
     approvedFilter = 'Status eq \'' + Approved + '\' or Status eq \'' + Rejected + '\'';
     pendingFilter = 'Status eq \'' + Pending + '\'';
     vm.approvedOptions = {
@@ -56,29 +57,49 @@ function redeemApprovalCtl($scope, $http) {
         });
     };
     vm.readPending();
-
+    $timeout(function () {
+        vm.loaded = true;
+    }, 500);
 
     vm.updateApproval = function (item, num) {
         if (num === 1) {
 
             if (confirm("You are trying to approve! " + item.Item_x0020_Code.Item_x0020_Code)) {
-                    spcrud.update($http, vm.listName, item.ID, {
-                        'Status': 'Approved',
-                        'Redemption_x0020_Approved_x0020_Id': vm.userDetails.data.d.Id,
-                        'Redemption_x0020_Approved_x0020_0': new Date()
-                    }).then(function (response) {
-                        if (response.status === 204) {
-                            vm.readPending();
-                            vm.readApproved();
-                        }
-                    }, function (error) {
-                        console.log('error', error);
-                    });
+                spcrud.update($http, vm.listName, item.ID, {
+                    'Status': 'Approved',
+                    'Redemption_x0020_Approved_x0020_Id': vm.userDetails.data.d.Id,
+                    'Redemption_x0020_Approved_x0020_0': new Date()
+                }).then(function (response) {
+                    if (response.status === 204) {
+                        vm.readPending();
+                        vm.readApproved();
+                    }
+                }, function (error) {
+                    console.log('error', error);
+                });
 
             }
 
         } else {
             if (num === 2) {
+                var itemToEdit = item;
+                vm.toggleModalReject(itemToEdit);
+            }
+        }
+
+    };
+    vm.toggleModalReject = function (itemToEdit) {
+        vm.item = itemToEdit;
+        vm.showModal = !vm.showModal;
+    };
+    vm.cancel = function () {
+        vm.showModal = false;
+    }
+    vm.RejectFunction = function (item) {
+        if (confirm("You are trying to reject! ")) {
+            if (item.Reject_x0020_Comment == null) {
+                alert("You need to specify a reason for Rejection!")
+            } else {
                 if (confirm("You are trying to reject! " + item.Item_x0020_Code.Item_x0020_Code)) {
                     selectID = 'ID,Redemend';
                     itemFilter = 'Emp_x0020_ID/Employee_x0020_ID eq \'' + item.Emp_x0020_ID.Employee_x0020_ID + '\'';
@@ -93,7 +114,8 @@ function redeemApprovalCtl($scope, $http) {
                             spcrud.update($http, vm.listName, item.ID, {
                                 'Status': 'Rejected',
                                 'Redemption_x0020_Approved_x0020_Id': vm.userDetails.data.d.Id,
-                                'Redemption_x0020_Approved_x0020_0': new Date()
+                                'Redemption_x0020_Approved_x0020_0': new Date(),
+                                'Reject_x0020_Comment': item.Reject_x0020_Comment
                             }).then(function (response) {
                                 if (response.status === 204) {
                                     vm.readPending();
@@ -119,11 +141,49 @@ function redeemApprovalCtl($scope, $http) {
                         console.log('error', error);
                     });
                 }
-
             }
         }
-
     };
 }
+
+function modal() {
+    return {
+        template: '<div class="modal fade">' +
+            '<div class="modal-dialog">' +
+            '<div class="modal-content">' +
+            '<div class="modal-header">' +
+            '<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>' +
+            // '<h4 class="modal-title">{{ buttonClicked }} clicked!!</h4>' + 
+            '</div>' +
+            '<div class="modal-body" ng-transclude></div>' +
+            '</div>' +
+            '</div>' +
+            '</div>',
+        restrict: 'E',
+        transclude: true,
+        replace: true,
+        scope: true,
+        link: function postLink(scope, element, attrs) {
+            scope.$watch(attrs.visible, function (value) {
+                if (value == true)
+                    $(element).modal('show');
+                else
+                    $(element).modal('hide');
+            });
+
+            $(element).on('shown.bs.modal', function () {
+                scope.$apply(function () {
+                    scope.$parent[attrs.visible] = true;
+                });
+            });
+
+            $(element).on('hidden.bs.modal', function () {
+                scope.$apply(function () {
+                    scope.$parent[attrs.visible] = false;
+                });
+            });
+        }
+    };
+};
 //load
-angular.module('redeemApprovalApp', []).controller('redeemApprovalCtl', redeemApprovalCtl);
+angular.module('redeemApprovalApp', []).controller('redeemApprovalCtl', redeemApprovalCtl).directive('modal', modal);

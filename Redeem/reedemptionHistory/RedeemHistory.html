@@ -69,6 +69,7 @@
 						<th class="centre1"><a class="fontcolora"  href="" ng-click="orderByField='Quantity'; reverseSort = !reverseSort">Quantity</a></th>	
                         <th class="centre1"><a class="fontcolora"  href="" ng-click="orderByField='Redeem_Points'; reverseSort = !reverseSort">Redeem_Points</a></th>																																	
 						<th><a class="fontcolora"  href="" ng-click="orderByField='Status'; reverseSort = !reverseSort">Status</a></th>
+						<th><a class="fontcolora"  href="">Rejection Comment</a></th>
 					</tr>
 				</thead>
 				<tbody>
@@ -80,7 +81,8 @@
 						<td class="centre1">{{item.RedeemQuantity}}</td>	
                         <td class="centre1">{{item.Item_x0020_Code.Points * item.RedeemQuantity}}</td>	
                         <td ng-if="item.Status==='Approved'" class="approvedStatus"><b>{{item.Status}}</b></td>
-                        <td ng-if="item.Status==='Rejected'" class="rejectedStatus"><b>{{item.Status}}</b></td>		
+						<td ng-if="item.Status==='Rejected'" class="rejectedStatus"><b>{{item.Status}}</b></td>		
+						<td>{{item.Reject_x0020_Comment}}</td>
 					</tr>
                 </tbody>
 			</table>
