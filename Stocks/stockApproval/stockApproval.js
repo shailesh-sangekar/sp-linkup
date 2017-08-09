@@ -1,10 +1,12 @@
 //AngularJS controller to approve stockption request
-
-function stockApprovalCtl($scope, $http) {
+// angular.module('stockApprovalApp', ['ui.bootstrap']);
+// function stockApprovalCtl($scope, $http, $timeout, $dialog, $modal) {
+function stockApprovalCtl($scope, $http, $timeout, $modal, $log, $document) {
     /// Add your stuff here
     var vm = $scope;
     vm.status = 'OK';
     vm.userDetails = '';
+    vm.loaded = false;
     vm.Item_x0020_CodeId = '';
     vm.listName = 'RnR Product Catalog Approval';
     vm.listNameProduct = 'RnR Product Catalog';
@@ -64,6 +66,9 @@ function stockApprovalCtl($scope, $http) {
         });
     };
     vm.readPending();
+    $timeout(function () {
+        vm.loaded = true;
+    }, 500);
     vm.saveRejectComment = function (comment) {
         if (vm.rejectFlag == '') {
             if (vm.itemID != '') {
@@ -151,60 +156,131 @@ function stockApprovalCtl($scope, $http) {
 
         } else {
             if (num === 2) {
-                if (confirm("You are trying to reject! ")) {
-                    // selectAll = '*';
-                    // itemFilter = 'Item_x0020_Code eq \'' + item.Item_x0020_Code + '\'';
-                    // vm.productOptions = {
-                    //     select: selectAll,
-                    //     filter: itemFilter
-                    // }
-
-                    // spcrud.read($http, vm.listNameProduct, vm.productOptions).then(function (resp) {
-                    // vm.Item_x0020_CodeId = resp.data.d.results[0].ID;
-                    // if (resp.status === 200) {
-                    spcrud.update($http, vm.listName, item.ID, {
-                        'Status': 'Rejected',
-                        'Approved_x0020_ById': vm.userDetails.data.d.Id,
-                        'Approved_x0020_Date': new Date(),
-                        //'Quantity': item.Quantity + item.Updated_x0020_Quantity
-                    }).then(function (response) {
-                        if (response.status === 204) {
-                            vm.readPending();
-                            vm.readApproved();
-                            vm.itemID = item.ID;
-                        }
-                    }, function (error) {
-                        console.log('error', error);
-                    });
-                    spcrud.update($http, vm.listNameProduct, item.Item_x0020_CodeId, {
-                        'Status': 'Rejected',
-                        'Approved_x0020_ById': vm.userDetails.data.d.Id,
-                        'Approved_x0020_Date': new Date(),
-                        //'Quantity': item.Quantity + item.Updated_x0020_Quantity
-                    }).then(function (response) {
-                        if (response.status === 204) {
-                            // vm.readPending();
-                            // vm.readApproved();
-                            vm.itemCatalogID = item.Item_x0020_CodeId;
-                        }
-                    }, function (error) {
-                        console.log('error', error);
-                    });
-                    // }
-
-                    // }, function (error) {
-                    //     console.log('error', error);
-                    // });
-                } else {
-                    vm.rejectFlag = 'False';
-                }
+                var itemToEdit = item;
+                vm.toggleModalReject(itemToEdit);
 
             }
         }
 
     };
+    vm.toggleModalReject = function (itemToEdit) {
+        vm.item = itemToEdit;
+        vm.showModal = !vm.showModal;
+    };
+    vm.cancel = function () {
+        vm.showModal = false;
+    }
+    // vm.open = function (items,size) {
+    //     // var parentElem = parentSelector ?
+    //     //     angular.element($document[0].querySelector('.modal-demo ' + parentSelector)) : undefined;
+    //     var modalInstance = $modal.open({
+    //         //animation: $ctrl.animationsEnabled,
+    //         ariaLabelledBy: 'modal-title',
+    //         ariaDescribedBy: 'modal-body',
+    //         templateUrl: 'myModalContent.html',
+    //         controller: 'ModalInstanceCtrl',
+    //         controllerAs: '$ctrl',
+    //         size: size,
+    //         //appendTo: parentElem,
+    //         resolve: {
+    //             items: function () {
+    //                 return items;
+    //             }
+    //         }
+    //     });
+
+    //     modalInstance.result.then(function (selectedItem) {
+    //         vm.selected = selectedItem;
+    //     }, function () {
+    //         $log.info('Modal dismissed at: ' + new Date());
+    //     });
+    // };
+    vm.toggleModal = function (btnClicked) {
+        vm.buttonClicked = btnClicked;
+        vm.showModal = !vm.showModal;
+    };
+    vm.RejectFunction = function (item) {
+        if (confirm("You are trying to reject! ")) {
+            if (item.Reject_x0020_Comment == null) {
+                alert("You need to specify a reason for Rejection!")
+            } else {
+                spcrud.update($http, vm.listName, item.ID, {
+                    'Status': 'Rejected',
+                    'Approved_x0020_ById': vm.userDetails.data.d.Id,
+                    'Approved_x0020_Date': new Date(),
+                    'Reject_x0020_Comment': item.Reject_x0020_Comment
+                    //'Quantity': item.Quantity + item.Updated_x0020_Quantity
+                }).then(function (response) {
+                    if (response.status === 204) {
+                        vm.readPending();
+                        vm.readApproved();
+                        vm.itemID = item.ID;
+                    }
+                }, function (error) {
+                    console.log('error', error);
+                });
+                spcrud.update($http, vm.listNameProduct, item.Item_x0020_CodeId, {
+                    'Status': 'Rejected',
+                    'Approved_x0020_ById': vm.userDetails.data.d.Id,
+                    'Approved_x0020_Date': new Date(),
+                    'Reject_x0020_Comment': item.Reject_x0020_Comment
+                    //'Quantity': item.Quantity + item.Updated_x0020_Quantity
+                }).then(function (response) {
+                    if (response.status === 204) {
+                        vm.itemCatalogID = item.Item_x0020_CodeId;
+                    }
+                }, function (error) {
+                    console.log('error', error);
+                });
+                vm.showModal = false;
+            }
+
+
+        } else {
+            vm.rejectFlag = 'False';
+        }
+    };
 }
 
+function modal() {
+    return {
+        template: '<div class="modal fade">' +
+            '<div class="modal-dialog">' +
+            '<div class="modal-content">' +
+            '<div class="modal-header">' +
+            '<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>' +
+            // '<h4 class="modal-title">{{ buttonClicked }} clicked!!</h4>' + 
+            '</div>' +
+            '<div class="modal-body" ng-transclude></div>' +
+            '</div>' +
+            '</div>' +
+            '</div>',
+        restrict: 'E',
+        transclude: true,
+        replace: true,
+        scope: true,
+        link: function postLink(scope, element, attrs) {
+            scope.$watch(attrs.visible, function (value) {
+                if (value == true)
+                    $(element).modal('show');
+                else
+                    $(element).modal('hide');
+            });
+
+            $(element).on('shown.bs.modal', function () {
+                scope.$apply(function () {
+                    scope.$parent[attrs.visible] = true;
+                });
+            });
+
+            $(element).on('hidden.bs.modal', function () {
+                scope.$apply(function () {
+                    scope.$parent[attrs.visible] = false;
+                });
+            });
+        }
+    };
+};
 
 //load
-angular.module('stockApprovalApp', []).controller('stockApprovalCtl', stockApprovalCtl);
+angular.module('stockApprovalApp', ['ngSanitize', 'ui.bootstrap']).controller('stockApprovalCtl', stockApprovalCtl).directive('modal', modal); //.controller('ModalInstanceCtrl', ModalInstanceCtrl); //controller('EditCtrl', EditCtrl);

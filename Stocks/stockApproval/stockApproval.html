@@ -3,7 +3,10 @@
 <link rel="stylesheet" href="/SiteAssets/RnR/Stocks/Stock%20Approval/css/bootstrap.min.css">
 <!-- <link rel="stylesheet" href="/SiteAssets/RnR/Stocks/Stock%20Approval/css/font-awesome.css"> -->
 <link rel="stylesheet" href="/SiteAssets/RnR/Stocks/Stock%20Approval/css/style.css">
-
+<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.6.1/angular-animate.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.6.1/angular-sanitize.js"></script>
+<script src="http://angular-ui.github.com/bootstrap/ui-bootstrap-tpls-0.6.0.js"></script>
+<!-- <script src="//cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/2.5.0/ui-bootstrap-tpls.min.js"></script> -->
 <!--Application-->
 <!-- <script src="/sites/test/SiteAssets/spcrud.js"></script> -->
 <script src="/SiteAssets/RnR/Stocks/Stock%20Approval/stockApproval.js"></script>
@@ -11,126 +14,133 @@
 <link rel="stylesheet" href="/SiteAssets/RnR/Stocks/Stock%20Approval/stockApproval.css">
 <!--Main-->
 <div ng-app="stockApprovalApp" style="margin-top: -30px;">
-    <div ng-controller="stockApprovalCtl">
-
+    <div ng-controller="stockApprovalCtl" class="modal-demo">
+        <div class="spinner" ng-hide="loaded"></div>
+        <span ng-hide="loaded">				Loading.....			</span>
         <!-- add your html stuff -->
-        <div class="row">
+        <div class="row" ng-show="loaded">
             <div class="col-md-12">
-                <div id="pendingTable" class="tab-content appraisalTabsContent" ng-if="gridItemsPending.length != 0">
+                <div id="pendingTable" class="tab-content appraisalTabsContent">
                     <h2>Items Pending for Approval</h2>
-                    <table class="table StatusTable" style="margin-bottom:0px;">
+                    <table class="table StatusTable" style="margin-bottom:0px;" ng-if="gridItemsPending.length != 0">
                         <thead>
                             <tr>
                                 <th ng-click="orderByField='Item_x0020_Code.Item_x0020_Code'; reverseSort = !reverseSort">Code <span ng-show="!reverseSort">^</span><span ng-show="reverseSort">v</span></th>
-                                <th ng-click="orderByField='Points'; reverseSort = !reverseSort">Points <span ng-show="!reverseSort">^</span><span ng-show="reverseSort">v</span></th>
+                                <th class="centralalignmentOfText" ng-click="orderByField='Points'; reverseSort = !reverseSort">Points <span ng-show="!reverseSort">^</span><span ng-show="reverseSort">v</span></th>
                                 <th ng-click="orderByField='Item_x0020_Name'; reverseSort = !reverseSort">Name <span ng-show="!reverseSort">^</span><span ng-show="reverseSort">v</span></th>
-                                <th ng-click="orderByField='Quantity'; reverseSort = !reverseSort">Original Quantity <span ng-show="!reverseSort">^</span><span ng-show="reverseSort">v</span></th>
-                                <th ng-click="orderByField='Updated_x0020_Quantity'; reverseSort = !reverseSort">Updated Quaantity <span ng-show="!reverseSort">^</span><span ng-show="reverseSort">v</span></th>
-                                <th style="text-align: center;">Approve</th>
-                                <th style="text-align: center;">Reject</th>
+                                <th class="centralalignmentOfText" ng-click="orderByField='Quantity'; reverseSort = !reverseSort">Original Quantity <span ng-show="!reverseSort">^</span><span ng-show="reverseSort">v</span></th>
+                                <th class="centralalignmentOfText" ng-click="orderByField='Updated_x0020_Quantity'; reverseSort = !reverseSort">Updated Quantity <span ng-show="!reverseSort">^</span><span ng-show="reverseSort">v</span></th>
+                                <th class="centralalignmentOfText" ng-click="orderByField='Comments'; reverseSort = !reverseSort">Comments <span ng-show="!reverseSort">^</span><span ng-show="reverseSort">v</span></th>
+                                <th class="centralalignmentOfText">Approve</th>
+                                <th class="centralalignmentOfText">Reject</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr ng-repeat="item in gridItemsPending | orderBy:'-Modified' | orderBy:orderByField:reverseSort" ng-if="gridItemsPending.length != 0">
+                            <tr ng-repeat="item in gridItemsPending | orderBy:'-Modified' | orderBy:orderByField:reverseSort">
                                 <td>
-                                    <span class="centre">{{item.Item_x0020_Code.Item_x0020_Code}}</span>
+                                    <span>{{item.Item_x0020_Code.Item_x0020_Code}}</span>
                                 </td>
-                                <td>
-                                    <span class="centre">{{item.Points}}</span>
+                                <td class="centralalignmentOfText">
+                                    <span>{{item.Points}}</span>
                                 </td>
                                 <td>
                                     <span>{{item.Item_x0020_Name}}</span>
                                 </td>
-                                <td>
-                                    <span class="centre">{{item.Quantity}}</span>
+                                <td class="centralalignmentOfText">
+                                    <span>{{item.Quantity}}</span>
                                 </td>
-                                <td>
-                                    <span class="centre">{{item.Updated_x0020_Quantity}}</span>
+                                <td class="centralalignmentOfText">
+                                    <span>{{item.Updated_x0020_Quantity}}</span>
                                 </td>
-                                <td>
-                                    <i class="fa fa-check colorApprove centre" style="color:green" aria-hidden="true" ng-click="updateApproval(item,1)"></i>
+                                <td class="centralalignmentOfText">
+                                    <span>{{item.Comments}}</span>
                                 </td>
-                                <td>
-                                    <i class="fa fa-times colorReject centre" style="color:red" aria-hidden="true" data-toggle="modal" data-target="#myModal"
-                                        ng-click="updateApproval(item,2)"></i>
+                                <td class="centralalignmentOfText">
+                                    <i class="fa fa-check colorApprove centralalignmentOfText" aria-hidden="true" ng-click="updateApproval(item,1)"></i>
+                                </td>
+                                <td class="centralalignmentOfText">
+                                    <i class="fa fa-times colorReject centralalignmentOfText" aria-hidden="true" ng-click="updateApproval(item,2)"></i>
                                 </td>
 
                             </tr>
 
                         </tbody>
                     </table>
-
+                    <div ng-if="gridItemsPending.length <= 0">
+                        No records found...!
+                    </div>
                 </div>
                 <hr>
-                <div id="historyTable" class="tab-content appraisalTabsContent" ng-if="gridItemsApproved.length != 0">
+                <div id="historyTable" class="tab-content appraisalTabsContent">
                     <h2>Approval History</h2>
-                    <table class="table StatusTable" style="margin-bottom:0px;">
+                    <table class="table StatusTable" style="margin-bottom:0px;" ng-if="gridItemsApproved.length != 0">
                         <thead>
                             <tr>
                                 <th ng-click="orderByField='Item_x0020_Code.Item_x0020_Code'; reverseSort = !reverseSort">Code <span ng-show="!reverseSort">^</span><span ng-show="reverseSort">v</span></th>
-                                <th ng-click="orderByField='Points'; reverseSort = !reverseSort">Points <span ng-show="!reverseSort">^</span><span ng-show="reverseSort">v</span></th>
+                                <th class="centralalignmentOfText" ng-click="orderByField='Points'; reverseSort = !reverseSort">Points <span ng-show="!reverseSort">^</span><span ng-show="reverseSort">v</span></th>
                                 <th ng-click="orderByField='Item_x0020_Name'; reverseSort = !reverseSort">Name <span ng-show="!reverseSort">^</span><span ng-show="reverseSort">v</span></th>
-                                <th ng-click="orderByField='Quantity'; reverseSort = !reverseSort">Original Quantity <span ng-show="!reverseSort">^</span><span ng-show="reverseSort">v</span></th>
-                                <th ng-click="orderByField='Updated_x0020_Quantity'; reverseSort = !reverseSort">Updated Quaantity <span ng-show="!reverseSort">^</span><span ng-show="reverseSort">v</span></th>
-                                <th ng-click="orderByField='Status'; reverseSort = !reverseSort" style="text-align: center;">Status <span ng-show="!reverseSort">^</span><span ng-show="reverseSort">v</span></th>
-                                <th ng-click="orderByField='Approved_x0020_By.Title'; reverseSort = !reverseSort" style="text-align: center;">Approved By <span ng-show="!reverseSort">^</span><span ng-show="reverseSort">v</span></th>
+                                <th class="centralalignmentOfText" ng-click="orderByField='Quantity'; reverseSort = !reverseSort">Total Quantity <span ng-show="!reverseSort">^</span><span ng-show="reverseSort">v</span></th>
+                                <th class="centralalignmentOfText" ng-click="orderByField='Updated_x0020_Quantity'; reverseSort = !reverseSort">Updated Quantity <span ng-show="!reverseSort">^</span><span ng-show="reverseSort">v</span></th>
+                                <th ng-click="orderByField='Status'; reverseSort = !reverseSort" class="centralalignmentOfText">Status <span ng-show="!reverseSort">^</span><span ng-show="reverseSort">v</span></th>
+                                <th class="centralalignmentOfText" ng-click="orderByField='Comments'; reverseSort = !reverseSort">Comments <span ng-show="!reverseSort">^</span><span ng-show="reverseSort">v</span></th>
+                                <th ng-click="orderByField='Approved_x0020_By.Title'; reverseSort = !reverseSort">Approved By <span ng-show="!reverseSort">^</span><span ng-show="reverseSort">v</span></th>
                                 <th ng-click="orderByField='Approved_x0020_Date'; reverseSort = !reverseSort">Approved Date <span ng-show="!reverseSort">^</span><span ng-show="reverseSort">v</span></th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr ng-repeat="item in gridItemsApproved | orderBy:'-Modified' | orderBy:orderByField:reverseSort" ng-if="gridItemsApproved.length != 0">
+                            <tr ng-repeat="item in gridItemsApproved | orderBy:'-Modified' | orderBy:orderByField:reverseSort">
                                 <td>
-                                    <span class="centre">{{item.Item_x0020_Code.Item_x0020_Code}}</span>
+                                    <span>{{item.Item_x0020_Code.Item_x0020_Code}}</span>
                                 </td>
-                                <td>
-                                    <span class="centre">{{item.Points}}</span>
+                                <td class="centralalignmentOfText">
+                                    <span>{{item.Points}}</span>
                                 </td>
                                 <td>
                                     <span>{{item.Item_x0020_Name}}</span>
                                 </td>
-                                <td>
-                                    <span class="centre">{{item.Quantity}}</span>
+                                <td class="centralalignmentOfText">
+                                    <span>{{item.Quantity}}</span>
+                                </td>
+                                <td class="centralalignmentOfText">
+                                    <span>{{item.Updated_x0020_Quantity}}</span>
+                                </td>
+                                <td class="centralalignmentOfText">
+                                    <span>{{item.Status}}</span>
+                                </td>
+                                <td class="centralalignmentOfText">
+                                    <span>{{item.Comments}}</span>
                                 </td>
                                 <td>
-                                    <span class="centre">{{item.Updated_x0020_Quantity}}</span>
+                                    <span>{{item.Approved_x0020_By.Title}}</span>
                                 </td>
                                 <td>
-                                    <span class="centre">{{item.Status}}</span>
-                                </td>
-                                <td>
-                                    <span class="centre">{{item.Approved_x0020_By.Title}}</span>
-                                </td>
-                                <td>
-                                    <span class="centre" ng-bind="item.Approved_x0020_Date | date:'dd/MM/yyyy'"></span>
+                                    <span ng-bind="item.Approved_x0020_Date | date:'dd/MM/yyyy'"></span>
                                 </td>
 
                             </tr>
 
                         </tbody>
                     </table>
+                    <div ng-if="gridItemsApproved.length <= 0">
+                        No records found...!
+                    </div>
 
                 </div>
             </div>
-        </div>
-        <div class="modal fade" id="myModal" role="dialog">
-            <div class="modal-dialog">
-
-                <!-- Modal content-->
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                        <h4 class="modal-title">Modal Header</h4>
-                    </div>
-                    <div class="modal-body">
-                        <div>Please specify the reason for rejection:</div>
-                        <textarea rows="4" cols="50" ng-model="comment" ng-blur="saveRejectComment(comment)"></textarea>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Ok</button>
-                    </div>
+            <modal visible="showModal">
+                <div class="modal-header">
+                    <h3 class="modal-title" id="modal-title">You Are Trying To Reject:</h3>
                 </div>
-
-            </div>
+                <div class="modal-body">
+                    <div>Product Name: {{item.Item_x0020_Name}}</div>
+                    <div>Please specify the reason for rejection:</div>
+                    <textarea rows="4" cols="50" ng-model="item.Reject_x0020_Comment"></textarea>
+                </div>
+                <button class="btn btn-primary" type="button" ng-click="RejectFunction(item)">OK</button>
+                <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
+            </modal>
         </div>
+       
+        
     </div>
 </div>
