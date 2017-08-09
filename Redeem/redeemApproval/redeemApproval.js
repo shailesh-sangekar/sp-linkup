@@ -1,4 +1,4 @@
-function redeemApprovalCtl($scope, $http) {
+function redeemApprovalCtl($scope, $http,$timeout) {
     //default data
     var vm = $scope;
     vm.status = 'OK';
