@@ -1,7 +1,7 @@
 //AngularJS controller to approve stockption request
 // angular.module('stockApprovalApp', ['ui.bootstrap']);
 // function stockApprovalCtl($scope, $http, $timeout, $dialog, $modal) {
-function stockApprovalCtl($scope, $http, $timeout, $modal, $log, $document) {
+function stockApprovalCtl($scope, $http, $timeout) {
     /// Add your stuff here
     var vm = $scope;
     vm.status = 'OK';
@@ -18,7 +18,7 @@ function stockApprovalCtl($scope, $http, $timeout, $modal, $log, $document) {
     Approved = 'Approved';
     Pending = 'Pending';
     Rejected = 'Rejected';
-    Active='Active';
+    Active = 'Active';
 
     vm.itemID = '';
     vm.itemCatalogID = '';
@@ -103,65 +103,99 @@ function stockApprovalCtl($scope, $http, $timeout, $modal, $log, $document) {
     }
 
     vm.updateApproval = function (item, num) {
+        empSelect = 'Status';
+        Approved = 'Approved';
+        Rejected = 'Rejected';
+        Active = 'Active';
+        IDFilter = '(Status eq \'' + Approved + '\' or Status eq \'' + Rejected + '\') and ID eq \'' + item.ID + '\'';
+        vm.IDOptions = {
+            select: empSelect,
+            filter: IDFilter
+        };
+        // spcrud.read($http, vm.listName, vm.IDOptions).then(function (resp) {
+        //     if (resp.status === 200)
+        //         // if(resp.data.d.results.length!=0){}
+        //         // var Status = resp.data.d.results[0].Status;
+        //         if (resp.data.d.results.length == 0) {
         if (num === 1) {
+            spcrud.read($http, vm.listName, vm.IDOptions).then(function (respID) {
+                    if (respID.status === 200)
+                        // if(resp.data.d.results.length!=0){}
+                        // var Status = resp.data.d.results[0].Status;
+                        if (respID.data.d.results.length <= 0) {
 
-            if (confirm("You are trying to approve! ")) {
-                // var sum = item.Items_x0020_Redemend + item.StockQuantity;
-                // var difference = item.Item_x0020_Code.Quantity - item.Item_x0020_Code.Items_x0020_Redemend;
-                // if (sum > difference) {
-                //     alert('We do not have those many items in stock!');
-                // } else {
-                // selectAll = '*';
-                // itemFilter = 'Item_x0020_Code eq \'' + item.Item_x0020_Code + '\'';
-                // vm.productOptions = {
-                //     select: selectAll,
-                //     filter: itemFilter
-                // }
+                            if (confirm("You are trying to approve! ")) {
+                                // var sum = item.Items_x0020_Redemend + item.StockQuantity;
+                                // var difference = item.Item_x0020_Code.Quantity - item.Item_x0020_Code.Items_x0020_Redemend;
+                                // if (sum > difference) {
+                                //     alert('We do not have those many items in stock!');
+                                // } else {
+                                // selectAll = '*';
+                                // itemFilter = 'Item_x0020_Code eq \'' + item.Item_x0020_Code + '\'';
+                                // vm.productOptions = {
+                                //     select: selectAll,
+                                //     filter: itemFilter
+                                // }
 
-                // spcrud.read($http, vm.listNameProduct, vm.productOptions).then(function (resp) {
+                                // spcrud.read($http, vm.listNameProduct, vm.productOptions).then(function (resp) {
 
-                // if (resp.status === 200) {
-                // vm.Item_x0020_CodeId = resp.data.d.results[0].ID;
-                spcrud.update($http, vm.listName, item.ID, {
-                    'Status': 'Approved',
-                    'Approved_x0020_ById': vm.userDetails.data.d.Id,
-                    'Approved_x0020_Date': new Date(),
-                    'Quantity': item.Quantity + item.Updated_x0020_Quantity
-                }).then(function (response) {
-                    if (response.status === 204) {
-                        vm.readPending();
-                        vm.readApproved();
-                    }
-                }, function (error) {
+                                // if (resp.status === 200) {
+                                // vm.Item_x0020_CodeId = resp.data.d.results[0].ID;
+                                spcrud.update($http, vm.listName, item.ID, {
+                                    'Status': 'Approved',
+                                    'Approved_x0020_ById': vm.userDetails.data.d.Id,
+                                    'Approved_x0020_Date': new Date(),
+                                    'Quantity': item.Quantity + item.Updated_x0020_Quantity
+                                }).then(function (response) {
+                                    if (response.status === 204) {
+                                        vm.readPending();
+                                        vm.readApproved();
+                                    }
+                                }, function (error) {
+                                    console.log('error', error);
+                                });
+
+                                spcrud.update($http, vm.listNameProduct, item.Item_x0020_CodeId, {
+                                    'Status': 'Approved',
+                                    'Approved_x0020_ById': vm.userDetails.data.d.Id,
+                                    'Approved_x0020_Date': new Date(),
+                                    'Quantity': item.Quantity + item.Updated_x0020_Quantity
+                                }).then(function (error) {
+                                    console.log('error', error);
+                                });
+                                // }
+
+                                // }, function (error) {
+                                //     console.log('error', error);
+                                // });
+
+
+                            }
+                        } else {
+                            var Status = resp.data.d.results[0].Status;
+                            alert(" Item already " + Status);
+                        }
+                },
+
+                function (error) {
                     console.log('error', error);
                 });
-
-                spcrud.update($http, vm.listNameProduct, item.Item_x0020_CodeId, {
-                    'Status': 'Approved',
-                    'Approved_x0020_ById': vm.userDetails.data.d.Id,
-                    'Approved_x0020_Date': new Date(),
-                    'Quantity': item.Quantity + item.Updated_x0020_Quantity
-                }).then(function (error) {
-                    console.log('error', error);
-                });
-                // }
-
-                // }, function (error) {
-                //     console.log('error', error);
-                // });
-
-
-                // }
-
-            }
 
         } else {
             if (num === 2) {
                 var itemToEdit = item;
-                vm.toggleModalReject(itemToEdit);
+                if (confirm("You are trying to reject! ")) {
+                    vm.toggleModalReject(itemToEdit);
+                }
 
             }
         }
+        // } else {
+        //     alert(" Item already " + Status);
+        // }
+        // }, function (error) {
+        //     console.log('error', error);
+        // });
 
     };
     vm.toggleModalReject = function (itemToEdit) {
@@ -171,76 +205,75 @@ function stockApprovalCtl($scope, $http, $timeout, $modal, $log, $document) {
     vm.cancel = function () {
         vm.showModal = false;
     }
-    // vm.open = function (items,size) {
-    //     // var parentElem = parentSelector ?
-    //     //     angular.element($document[0].querySelector('.modal-demo ' + parentSelector)) : undefined;
-    //     var modalInstance = $modal.open({
-    //         //animation: $ctrl.animationsEnabled,
-    //         ariaLabelledBy: 'modal-title',
-    //         ariaDescribedBy: 'modal-body',
-    //         templateUrl: 'myModalContent.html',
-    //         controller: 'ModalInstanceCtrl',
-    //         controllerAs: '$ctrl',
-    //         size: size,
-    //         //appendTo: parentElem,
-    //         resolve: {
-    //             items: function () {
-    //                 return items;
-    //             }
-    //         }
-    //     });
-
-    //     modalInstance.result.then(function (selectedItem) {
-    //         vm.selected = selectedItem;
-    //     }, function () {
-    //         $log.info('Modal dismissed at: ' + new Date());
-    //     });
-    // };
     vm.toggleModal = function (btnClicked) {
         vm.buttonClicked = btnClicked;
         vm.showModal = !vm.showModal;
     };
     vm.RejectFunction = function (item) {
-        if (confirm("You are trying to reject! ")) {
-            if (item.Reject_x0020_Comment == null) {
-                alert("You need to specify a reason for Rejection!")
-            } else {
-                spcrud.update($http, vm.listName, item.ID, {
-                    'Status': 'Rejected',
-                    'Approved_x0020_ById': vm.userDetails.data.d.Id,
-                    'Approved_x0020_Date': new Date(),
-                    'Reject_x0020_Comment': item.Reject_x0020_Comment
-                    //'Quantity': item.Quantity + item.Updated_x0020_Quantity
-                }).then(function (response) {
-                    if (response.status === 204) {
-                        vm.readPending();
-                        vm.readApproved();
-                        vm.itemID = item.ID;
-                    }
-                }, function (error) {
-                    console.log('error', error);
-                });
-                spcrud.update($http, vm.listNameProduct, item.Item_x0020_CodeId, {
-                    'Status': 'Rejected',
-                    'Approved_x0020_ById': vm.userDetails.data.d.Id,
-                    'Approved_x0020_Date': new Date(),
-                    'Reject_x0020_Comment': item.Reject_x0020_Comment
-                    //'Quantity': item.Quantity + item.Updated_x0020_Quantity
-                }).then(function (response) {
-                    if (response.status === 204) {
-                        vm.itemCatalogID = item.Item_x0020_CodeId;
-                    }
-                }, function (error) {
-                    console.log('error', error);
-                });
-                vm.showModal = false;
-            }
+        empSelect = 'Status';
+        Approved = 'Approved';
+        Rejected = 'Rejected';
+        Active = 'Active';
+        IDFilter = '(Status eq \'' + Approved + '\' or Status eq \'' + Rejected + '\') and ID eq \'' + item.ID + '\'';
+        vm.IDOptions = {
+            select: empSelect,
+            filter: IDFilter
+        };
+        spcrud.read($http, vm.listName, vm.IDOptions).then(function (resp) {
+                    if (resp.status === 200)
+                        // if(resp.data.d.results.length!=0){}
+                        // var Status = resp.data.d.results[0].Status;
+                        if (resp.data.d.results.length <= 0) {
+                            if (item.Reject_x0020_Comment == null) {
+                                alert("You need to specify a reason for Rejection!")
+                            } else {
+                                spcrud.update($http, vm.listName, item.ID, {
+                                    'Status': 'Rejected',
+                                    'Approved_x0020_ById': vm.userDetails.data.d.Id,
+                                    'Approved_x0020_Date': new Date(),
+                                    'Reject_x0020_Comment': item.Reject_x0020_Comment
+                                    //'Quantity': item.Quantity + item.Updated_x0020_Quantity
+                                }).then(function (response) {
+                                    if (response.status === 204) {
+                                        vm.readPending();
+                                        vm.readApproved();
+                                        vm.itemID = item.ID;
+                                    }
+                                }, function (error) {
+                                    console.log('error', error);
+                                });
+                                spcrud.update($http, vm.listNameProduct, item.Item_x0020_CodeId, {
+                                    'Status': 'Rejected',
+                                    'Approved_x0020_ById': vm.userDetails.data.d.Id,
+                                    'Approved_x0020_Date': new Date(),
+                                    'Reject_x0020_Comment': item.Reject_x0020_Comment
+                                    //'Quantity': item.Quantity + item.Updated_x0020_Quantity
+                                }).then(function (response) {
+                                    if (response.status === 204) {
+                                        vm.itemCatalogID = item.Item_x0020_CodeId;
+                                    }
+                                }, function (error) {
+                                    console.log('error', error);
+                                });
+                                vm.showModal = false;
+                            }
+                        }
+                 else {
+                     var Status = resp.data.d.results[0].Status;
+                    alert(" Item already " + Status);
+                    vm.showModal = false;
+                }
+            },
+
+            function (error) {
+                console.log('error', error);
+            });
 
 
-        } else {
-            vm.rejectFlag = 'False';
-        }
-    };
+    // } else {
+    //     vm.rejectFlag = 'False';
+    // }
+};
 }
 
 function modal() {
@@ -284,4 +317,4 @@ function modal() {
 };
 
 //load
-angular.module('stockApprovalApp', ['ngSanitize', 'ui.bootstrap']).controller('stockApprovalCtl', stockApprovalCtl).directive('modal', modal); //.controller('ModalInstanceCtrl', ModalInstanceCtrl); //controller('EditCtrl', EditCtrl);
+angular.module('stockApprovalApp', []).controller('stockApprovalCtl', stockApprovalCtl).directive('modal', modal); //.controller('ModalInstanceCtrl', ModalInstanceCtrl); //controller('EditCtrl', EditCtrl);

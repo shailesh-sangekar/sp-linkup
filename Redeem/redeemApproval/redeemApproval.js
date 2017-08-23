@@ -1,4 +1,4 @@
-function redeemApprovalCtl($scope, $http,$timeout) {
+function redeemApprovalCtl($scope, $http, $timeout) {
     //default data
     var vm = $scope;
     vm.status = 'OK';
@@ -62,30 +62,55 @@ function redeemApprovalCtl($scope, $http,$timeout) {
     }, 500);
 
     vm.updateApproval = function (item, num) {
+        empSelect = 'Status';
+        Approved = 'Approved';
+        Rejected = 'Rejected';
+        Active = 'Active';
+        IDFilter = '(Status eq \'' + Approved + '\' or Status eq \'' + Rejected + '\') and ID eq \'' + item.ID + '\'';
+        vm.IDOptions = {
+            select: empSelect,
+            filter: IDFilter
+        };
+
         if (num === 1) {
+            spcrud.read($http, vm.listName, vm.IDOptions).then(function (resp) {
+                if (resp.status === 200)
+                    // var myJSON = JSON.stringify(resp.data.d.results);
 
-            if (confirm("You are trying to approve! " + item.Item_x0020_Code.Item_x0020_Code)) {
-                spcrud.update($http, vm.listName, item.ID, {
-                    'Status': 'Approved',
-                    'Redemption_x0020_Approved_x0020_Id': vm.userDetails.data.d.Id,
-                    'Redemption_x0020_Approved_x0020_0': new Date()
-                }).then(function (response) {
-                    if (response.status === 204) {
-                        vm.readPending();
-                        vm.readApproved();
+                    if (resp.data.d.results.length <= 0) {
+                        if (confirm("You are trying to approve! " + item.Item_x0020_Code.Item_x0020_Code)) {
+                            spcrud.update($http, vm.listName, item.ID, {
+                                'Status': 'Approved',
+                                'Redemption_x0020_Approved_x0020_Id': vm.userDetails.data.d.Id,
+                                'Redemption_x0020_Approved_x0020_0': new Date()
+                            }).then(function (response) {
+                                if (response.status === 204) {
+                                    vm.readPending();
+                                    vm.readApproved();
+                                }
+                            }, function (error) {
+                                console.log('error', error);
+                            });
+
+                        }
+                    } else {
+                        var Status = resp.data.d.results[0].Status;
+                        alert(" Item already " + Status);
                     }
-                }, function (error) {
-                    console.log('error', error);
-                });
-
-            }
+            }, function (error) {
+                console.log('error', error);
+            });
 
         } else {
             if (num === 2) {
                 var itemToEdit = item;
-                vm.toggleModalReject(itemToEdit);
+                if (confirm("You are trying to reject! ")) {
+                    vm.toggleModalReject(itemToEdit);
+                }
             }
         }
+
+
 
     };
     vm.toggleModalReject = function (itemToEdit) {
@@ -96,53 +121,67 @@ function redeemApprovalCtl($scope, $http,$timeout) {
         vm.showModal = false;
     }
     vm.RejectFunction = function (item) {
-        if (confirm("You are trying to reject! ")) {
-            if (item.Reject_x0020_Comment == null) {
-                alert("You need to specify a reason for Rejection!")
-            } else {
-                if (confirm("You are trying to reject! " + item.Item_x0020_Code.Item_x0020_Code)) {
-                    selectID = 'ID,Redemend';
-                    itemFilter = 'Emp_x0020_ID/Employee_x0020_ID eq \'' + item.Emp_x0020_ID.Employee_x0020_ID + '\'';
-                    vm.empOptions = {
-                        select: selectID,
-                        filter: itemFilter
-                    }
-                    spcrud.read($http, vm.listEmployeeMaster, vm.empOptions).then(function (resp) {
-                        if (resp.status === 200) {
-                            vm.Emp_x0020_CodeId = resp.data.d.results[0].ID;
-                            vm.Redemend = resp.data.d.results[0].Redemend;
-                            spcrud.update($http, vm.listName, item.ID, {
-                                'Status': 'Rejected',
-                                'Redemption_x0020_Approved_x0020_Id': vm.userDetails.data.d.Id,
-                                'Redemption_x0020_Approved_x0020_0': new Date(),
-                                'Reject_x0020_Comment': item.Reject_x0020_Comment
-                            }).then(function (response) {
-                                if (response.status === 204) {
-                                    vm.readPending();
-                                    vm.readApproved();
+        spcrud.read($http, vm.listName, vm.IDOptions).then(function (resp) {
+            if (resp.status === 200)
+                // var myJSON = JSON.stringify(resp.data.d.results);
+
+                if (resp.data.d.results.length <= 0) {
+                    if (item.Reject_x0020_Comment == null) {
+                        alert("You need to specify a reason for Rejection!")
+                    } else {
+                        if (confirm("You are trying to reject! " + item.Item_x0020_Code.Item_x0020_Code)) {
+                            selectID = 'ID,Redemend';
+                            itemFilter = 'Emp_x0020_ID/Employee_x0020_ID eq \'' + item.Emp_x0020_ID.Employee_x0020_ID + '\'';
+                            vm.empOptions = {
+                                select: selectID,
+                                filter: itemFilter
+                            }
+                            spcrud.read($http, vm.listEmployeeMaster, vm.empOptions).then(function (resp) {
+                                if (resp.status === 200) {
+                                    vm.Emp_x0020_CodeId = resp.data.d.results[0].ID;
+                                    vm.Redemend = resp.data.d.results[0].Redemend;
+                                    spcrud.update($http, vm.listName, item.ID, {
+                                        'Status': 'Rejected',
+                                        'Redemption_x0020_Approved_x0020_Id': vm.userDetails.data.d.Id,
+                                        'Redemption_x0020_Approved_x0020_0': new Date(),
+                                        'Reject_x0020_Comment': item.Reject_x0020_Comment
+                                    }).then(function (response) {
+                                        if (response.status === 204) {
+                                            vm.readPending();
+                                            vm.readApproved();
+                                        }
+                                    }, function (error) {
+                                        console.log('error', error);
+                                    });
+                                    spcrud.update($http, vm.listNameProduct, item.Item_x0020_CodeId, {
+                                        'Items_x0020_Redemend': item.Item_x0020_Code.Items_x0020_Redemend - item.RedeemQuantity
+                                    }).then(function (error) {
+                                        console.log('error', error);
+                                    });
+                                    var finalRedemend = vm.Redemend - (item.Item_x0020_Code.Points * item.RedeemQuantity);
+                                    spcrud.update($http, vm.listEmployeeMaster, vm.Emp_x0020_CodeId, {
+                                        'Redemend': finalRedemend
+                                    }).then(function (error) {
+                                        console.log('error', error);
+                                    });
                                 }
+
                             }, function (error) {
-                                console.log('error', error);
-                            });
-                            spcrud.update($http, vm.listNameProduct, item.Item_x0020_CodeId, {
-                                'Items_x0020_Redemend': item.Item_x0020_Code.Items_x0020_Redemend - item.RedeemQuantity
-                            }).then(function (error) {
-                                console.log('error', error);
-                            });
-                            var finalRedemend = vm.Redemend - (item.Item_x0020_Code.Points * item.RedeemQuantity);
-                            spcrud.update($http, vm.listEmployeeMaster, vm.Emp_x0020_CodeId, {
-                                'Redemend': finalRedemend
-                            }).then(function (error) {
                                 console.log('error', error);
                             });
                         }
 
-                    }, function (error) {
-                        console.log('error', error);
-                    });
+                    }
+
+                } else {
+                    var Status = resp.data.d.results[0].Status;
+                    alert(" Item already " + Status);
+                    vm.showModal = false;
                 }
-            }
-        }
+        }, function (error) {
+            console.log('error', error);
+        });
+        // }
     };
 }
 
