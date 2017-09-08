@@ -10,11 +10,16 @@ function stockManagementCtl($scope, $http) {
     vm.IsVisible = false;
     vm.IsVisibleWhenReduced = false;
     vm.SaveButton = false;
+    vm.RejectedSaveButton = false;
     vm.AddButton = true;
     vm.ClearButton = true;
     vm.ClearEditButton = false;
     vm.checkID = '';
     vm.isDisabledQuantity = false;
+    vm.isDisabledPoints = false;
+    vm.isDisabledDescription = false;
+    vm.isDisabledProductName = false;
+    vm.isDisablesPicture = false;
     vm.isTotalDisabledQuantity = true;
     vm.Imageadd = true;
     vm.ImageUpdate = false;
@@ -25,7 +30,9 @@ function stockManagementCtl($scope, $http) {
     Pending = 'Pending';
     Rejected = 'Rejected';
     orderbyModified = 'Modified desc';
-    pendingFilter = '((Status eq \'' + Pending + '\' ) or ( Status eq \'' + Rejected + '\' )) and (Item_x0020_Status eq \'' + Active + '\')';
+    // pendingFilter = '((Status eq \'' + Pending + '\' ) or ( Status eq \'' + Rejected + '\' )) and (Item_x0020_Status eq \'' + Active + '\')';
+    pendingFilter = 'Status eq \'' + Pending + '\'   and Item_x0020_Status eq \'' + Active + '\'';
+    RejectedFilter = ' Status eq \'' + Rejected + '\'  and Item_x0020_Status eq \'' + Active + '\'';
     approvedFilter = 'Status eq \'' + Approved + '\' and Item_x0020_Status eq \'' + Active + '\'';
     // Tabs
     $(".nav-tabs a").click(function () {
@@ -36,6 +43,11 @@ function stockManagementCtl($scope, $http) {
         select: itemSelect,
         expand: itemExpand,
         filter: pendingFilter
+    };
+    vm.RejectedOptions = {
+        select: itemSelect,
+        expand: itemExpand,
+        filter: RejectedFilter
     };
     vm.approvedOptions = {
         filter: approvedFilter
@@ -53,13 +65,15 @@ function stockManagementCtl($scope, $http) {
                 vm.id = resp.data.d.results[ItemCount].ID + 1;
             }
             vm.appendimg();
+            // vm.appendimgtoapproval();
         }, function (error) {
         });
     };
     vm.read();
     /* ----------------------------------------------------------------------------------------------------*/
-    // Read List RnR Product catalog approval (Pending and rejected)
+    // Read List RnR Product catalog approval (Pending)
     vm.readList = function () {
+     
         spcrud.read($http, vm.ApprovalList, vm.pendingOptions).then(function (resp) {
             if (resp.status === 200)
                 vm.ApprovalItemDetails = resp.data.d.results;
@@ -71,10 +85,26 @@ function stockManagementCtl($scope, $http) {
                 vm.productid = resp.data.d.results[ItemCount].ID + 1;
             }
             vm.appendimgtoapproval();
+            // vm.appendimgtoapprovalForUploadedImage();
+            
         }, function (error) {
         });
     };
     vm.readList();
+    /* ----------------------------------------------------------------------------------------------------*/
+    // Read List RnR Product catalog approval (Rejected)
+    vm.readRnRApprovalListForRejectedProducts = function () {
+     
+        spcrud.read($http, vm.ApprovalList, vm.RejectedOptions).then(function (RejectedProductResp) {
+            if (RejectedProductResp.status === 200)
+                vm.RejectedProductDetails = RejectedProductResp.data.d.results;
+            vm.RejectedProductImages();
+            // vm.appendimgtoapprovalForUploadedImage();
+            
+        }, function (error) {
+        });
+    };
+    vm.readRnRApprovalListForRejectedProducts();
     /* ----------------------------------------------------------------------------------------------------*/
     vm.readImageList = function () {
         spcrud.read($http, vm.ImageList).then(function (resp) {
@@ -88,7 +118,7 @@ function stockManagementCtl($scope, $http) {
     };
     vm.readImageList();
     /* ----------------------------------------------------------------------------------------------------*/
-    
+
     //Calculate total Quantity
     vm.TotalQuantity = function (resp) {
         vm.Item.TotalQuantity = vm.Item.NewQuantity + vm.Item.Quantity;
@@ -100,38 +130,55 @@ function stockManagementCtl($scope, $http) {
         vm.Item.Comments = null;
     }
     /* ----------------------------------------------------------------------------------------------------*/
-    
+
     // Add New Item to RnR product catalog list
     vm.AddProduct = function (resp) {
         vm.read();
         vm.readList();
-        var itemId = resp.ID;
         if (resp.Item_x0020_Name == undefined) {
             alert("Enter Product Name");
         }
         else if (resp.Points == undefined) {
-            alert("Enter Points");
+            alert("Points cannot be blank OR out of range");
         }
         else if (resp.Quantity == undefined) {
-            alert("Enter Quanity");
+            alert("Quantity cannot be blank OR out of range");
         }
         else {
-            // var v=Math.random();
-            spcrud.create($http, vm.RnRProductCatalog, { 'Title': 'Item Adding', 'Status': 'Pending', 'Item_x0020_Code': 'ESPP77100' + vm.productid , 'Points': resp.Points, 'Quantity': 0, 'Updated_x0020_Quantity': resp.Quantity, 'Item_x0020_Name': resp.Item_x0020_Name, 'Item_x0020_Description': resp.Item_x0020_Description, 'Item_x0020_Status': 'Active' }
+            spcrud.create($http, vm.RnRProductCatalog, { 
+                'Title': 'Item Adding', 
+                'Status': 'Pending', 
+                'Item_x0020_Code': 'ESPP77100' + vm.productid, 
+                'Points': resp.Points, 'Quantity': 0, 
+                'Updated_x0020_Quantity': resp.Quantity, 
+                'Item_x0020_Name': resp.Item_x0020_Name, 
+                'Item_x0020_Description': resp.Item_x0020_Description, 
+                'Item_x0020_Status': 'Active' }
             ).then(function (resp) {
                 vm.itemId = resp.data.d.ID;
-                spcrud.create($http, vm.ApprovalList, { 'Title': 'Item Adding', 'Status': 'Pending', 'Item_x0020_CodeId': vm.itemId, 'Points': resp.data.d.Points, 'Quantity': 0, 'Updated_x0020_Quantity': resp.data.d.Updated_x0020_Quantity, 'Item_x0020_Name': resp.data.d.Item_x0020_Name, 'Item_x0020_Description': resp.data.d.Item_x0020_Description, 'Item_x0020_Status': 'Active' }
+                spcrud.create($http, vm.ApprovalList, { 
+                    'Title': 'Item Adding', 
+                    'Status': 'Pending', 
+                    'Item_x0020_CodeId': vm.itemId, 
+                    'Points': resp.data.d.Points, 
+                    'Quantity': resp.data.d.Updated_x0020_Quantity, 
+                    'Updated_x0020_Quantity': 0, 
+                    'Item_x0020_Name': resp.data.d.Item_x0020_Name, 
+                    'Item_x0020_Description': resp.data.d.Item_x0020_Description, 
+                    'Item_x0020_Status': 'Active' }
                 ).then(function (response) {
-
                     vm.uploadFile();
-                    vm.appendimg();
+                   // vm.FileUpload = null;
+                    //vm.appendimgtoapproval();
                     alert("Product Added Successfully! And sent for Approval");
                     vm.readList();
                     vm.claer();
                 });
             });
         }
+        angular.element("input[type='file']").val(null);
     }
+
     vm.readImageList();
     /*------------------------------------------------------------ Image code ----------------------------------*/
     vm.uploadFile = function () {
@@ -153,7 +200,6 @@ function stockManagementCtl($scope, $http) {
                 callback();
             }
         })(0, function () { deferred.resolve(); });
-
         //Below function call all the functions (GetFileBuffer,UploadFile,GettheLibraryItem,UpdatingTheItemColumns)
         function ProcessFiles(ind) {
             var deferred = $.Deferred();
@@ -168,6 +214,9 @@ function stockManagementCtl($scope, $http) {
                         // update item code in image list
                         spcrud.update($http, vm.ImageList, listItem.d.Id, { 'Item_x0020_CodeId': vm.itemId }
                         ).then(function (resp) {
+                            angular.element("input[type='file']").val(null);
+                            vm.readList();
+                            vm.readImageList();
                         });
                     });
                     getItem.fail(onError);
@@ -193,7 +242,7 @@ function stockManagementCtl($scope, $http) {
         // Below code Add the file to the file collection in the Shared Documents folder.
         function addFileToFolder(arrayBuffer, ind) {
             var fileName = vm.itemId + fileInput[0].files[ind].name;
-                     // Construct the endpoint.
+            // Construct the endpoint.
             var fileCollectionEndpoint = String.format(
                 "{0}/_api/web/getfolderbyserverrelativeurl('{1}')/files" +
                 "/add(overwrite=true, url='{2}')",
@@ -255,26 +304,30 @@ function stockManagementCtl($scope, $http) {
     function onError(error) {
         //alert(error.responseText);
     }
-
-
     /*---------------------------------------------------------------------------------------------------------- */
-
-
     vm.claer = function () {
         vm.Item = null;
-        // vm.Item.Image = null;
+        //vm.Imageadd = null;
         vm.SaveButton = vm.SaveButton ? false : false;
+        vm.RejectedSaveButton = vm.RejectedSaveButton ? false : false;
         vm.IsVisible = vm.IsVisible ? false : false;
         vm.AddButton = vm.AddButton ? true : true;
-        vm.FileUpload=null;
+        vm.FileUpload = null;
+        vm.FileUploadUpdate = null;
     }
     /* ----------------------------------------------------------------------------------------------------- */
     vm.claerEdit = function () {
         vm.Item = null;
         vm.AddButton = vm.AddButton ? false : true;
         vm.SaveButton = vm.SaveButton ? false : false;
+        vm.RejectedSaveButton = vm.RejectedSaveButton ? false : false;
         vm.IsVisible = vm.IsVisible ? false : true;
         vm.isDisabledQuantity = false;
+        vm.isDisabledProductName = false;
+        vm.isDisablesPicture = false;
+        vm.isDisabledPoints = false;
+        vm.isDisabledDescription = false;
+        vm.FileUploadUpdate = null;
     }
     /* ----------------------------------------------------------------------------------------------------- */
     vm.OnEdit = function (resp) {
@@ -290,11 +343,46 @@ function stockManagementCtl($scope, $http) {
                 vm.CheckItems = response.data.d.results[0].Status;
             }
             if (vm.CheckItems == 'Pending') {
-                alert('Cannot Update Item ,It is already in pending state!');
+                alert('The selected item already pending for approval');
             }
             else {
-                vm.Item = resp;
-                vm.SaveButton = vm.SaveButton ? true : true;
+                    
+                    vm.Item = resp;
+                    vm.SaveButton = vm.SaveButton ? true : true;
+                    vm.IsVisible = vm.IsVisible ? false : true;
+                    vm.AddButton = vm.AddButton ? false : false;
+                    vm.isDisabledQuantity = true;
+                    vm.isDisabledPoints = true;
+                    vm.isDisabledDescription = true;
+                    vm.isDisabledProductName = true;
+                    vm.isDisablesPicture = true;
+                    // vm.Imageadd = false;
+                    // vm.ImageUpdate = true;
+                    vm.ClearButton = false;
+                    vm.ClearEditButton = true;
+            }
+        });
+    }
+
+    vm.read();
+    // ---------------------------------------------- Edit Rejected Products ----------------------------------
+vm.EditRejected = function (EditResponse){
+               // Read Item ID for rejected Item
+        vm.RejectedItemCode = EditResponse.Item_x0020_Code.Item_x0020_Code;
+        
+        approvedFilter = 'Item_x0020_Code eq \'' + vm.RejectedItemCode + '\''; 
+        vm.ProductIDOptions = {
+        filter: approvedFilter
+    };        
+        spcrud.read($http, vm.RnRProductCatalog, vm.ProductIDOptions).then(function (RejectResponse) {
+            if (RejectResponse.status === 200)
+              vm.RejectedProductID =  RejectResponse.data.d.results[0].ID;
+            
+        }, function (error) {
+        });
+                vm.Item = EditResponse;
+                vm.SaveButton = vm.SaveButton ? false : false;
+                vm.RejectedSaveButton = vm.RejectedSaveButton ? true : true;
                 vm.IsVisible = vm.IsVisible ? false : true;
                 vm.AddButton = vm.AddButton ? false : false;
                 vm.isDisabledQuantity = true;
@@ -302,89 +390,120 @@ function stockManagementCtl($scope, $http) {
                 vm.ImageUpdate = true;
                 vm.ClearButton = false;
                 vm.ClearEditButton = true;
-            }
-        });
-    }
+}
 
-    vm.read();
     /* ----------------------------------------------------------------------------------------------------- */
     // Update Item to RnR Product Catalog Approval list
     vm.UpdateItem = function (resp) {
         filterListByItemCode = 'Item_x0020_Code/Item_x0020_Code eq \'' + resp.Item_x0020_Code + '\'';
-        vm.ImageUpdateItemID = resp.ID;
-        if (resp.Item_x0020_Name == undefined) {
-            alert("Enter Item Name");
-        }
-        else if (resp.Points == undefined) {
-            alert("Enter Points");
-        }
-        else if (resp.ID != null) {
+        vm.ImageUpdateItemID = resp.Item_x0020_Code;
+        vm.UpdateItemCodeForDeletedImage = resp.ID;
+         if (resp.ID != null) {
             spcrud.read($http, vm.ApprovalList, vm.filterByItemCode).then(function (response) {
                 if (response.status === 200) {
                     vm.CheckItems = response.data.d.results[0].Status;
                 }
                 if (vm.CheckItems == 'Pending') {
-                    alert('Cannot Update Item ,It is already in pending state!');
+                    alert('The selected item already pending for approval!');
                     vm.claerEdit();
                 }
                 else {
                     vm.flag = 1;
                     if (vm.flag != '') {
                         vm.UpdateditemId = resp.ID;
-                        // vm.ItemCodeToUpdate = resp.Item_x0020_Code;
-                        spcrud.create($http, vm.ApprovalList, { 'Title': 'Item Adding', 'Status': 'Pending', 'Item_x0020_CodeId': resp.ID, 'Points': resp.Points, 'Quantity': resp.Quantity, 'Updated_x0020_Quantity': resp.NewQuantity, 'Item_x0020_Name': resp.Item_x0020_Name, 'Item_x0020_Description': resp.Item_x0020_Description, 'Comments': resp.Comments }
-
+                        spcrud.create($http, vm.ApprovalList, { 
+                            'Title': 'Item Adding', 
+                            'Status': 'Pending', 
+                            'Item_x0020_CodeId': resp.ID, 
+                            'Points': resp.Points, 
+                            'Quantity': resp.Quantity, 
+                            'Updated_x0020_Quantity': resp.NewQuantity, 
+                            'Item_x0020_Name': resp.Item_x0020_Name, 
+                            'Item_x0020_Description': resp.Item_x0020_Description, 
+                            'Comments': resp.Comments 
+                        }
                         ).then(function (createresp) {
-                            spcrud.update($http, vm.RnRProductCatalog, resp.ID, { 'Comments': resp.Comments }
-
-                            ).then(function (resp) {
-                                if (jQuery('#FileUploadUpdate')[0].files.length != 0) {
-                                   
-                                    updateImageIDFilter = 'Item_x0020_CodeId eq \'' + vm.ImageUpdateItemID + '\'';
-                                    vm.FilterdImageID = {
-                                        filrer: updateImageIDFilter
-                                    };
-                                    spcrud.read($http, vm.ImageList, vm.FilterdImageID).then(function (resp) {
-                                        if (resp.status === 200)
-
-                                            vm.ImageDetailsDetails = resp.data.d.results;
-                                        vm.ImageId = resp.data.d.results[0].ID;
-                                         // }, function (error) {
-                                        // vm.UpdateItemID= resp.ID;
-                                  
-                                    spcrud.del($http, vm.ImageList, vm.ImageId).then(function (resp) {
-                                        vm.uploadUpdatedFile();
-                                        vm.appendimgtoapproval();
-                                    });
-                                 });
-                                }
                                 alert("Product Updated Successfully! And sent for approval.");
                                 vm.read();
                                 vm.claer();
                                 vm.SaveButton = vm.SaveButton ? false : false;
                                 vm.AddButton = vm.AddButton ? true : true;
                                 vm.isDisabledQuantity = false;
+                                vm.isDisabledPoints = false;
+                                vm.isDisabledDescription= false;
+                                vm.isDisabledProductName = false;
                                 vm.IsVisibleWhenReduced = false;
+                                vm.isDisablesPicture = false;
                                 vm.Imageadd = true;
                                 vm.ImageUpdate = false;
-                                vm.read();
                                 vm.readList();
-
                             });
-                        });
+                       // });
                     }
                 }
             }, function (error) {
-
             });
-
         } else {
             alert("Cannot Update Item");
         }
+           vm.readImageList();
     }
-    /*------------------------------------------------------------ Image code ----------------------------------*/
-    vm.uploadUpdatedFile = function (event) {
+// --------------------------------------------------------- Edit Rejected Products----------------------------
+vm.UpdateRejectedItem = function (RejectedItemresp)
+{
+      vm.UpdatedId  = RejectedItemresp.ID;
+        vm.ImageUpdateItemID = RejectedItemresp.Item_x0020_Code.Item_x0020_Code;
+       spcrud.update($http, vm.ApprovalList, vm.UpdatedId , { 
+           'Status': 'Pending', 
+        //    'Item_x0020_CodeId': RejectedItemresp.Id, 
+           'Points': RejectedItemresp.Points, 
+           'Quantity': RejectedItemresp.Quantity, 
+           'Updated_x0020_Quantity': RejectedItemresp.NewQuantity, 
+           'Item_x0020_Name': RejectedItemresp.Item_x0020_Name, 
+           'Item_x0020_Description': RejectedItemresp.Item_x0020_Description, 
+           'Comments': RejectedItemresp.Comments 
+        }).then(function (createresp) {
+            
+                // Image update
+                    if (jQuery('#FileUploadUpdate')[0].files.length != 0) {
+                        updateImageIDFilter = 'Item_x0020_Code/Item_x0020_Code eq \'' + vm.ImageUpdateItemID + '\'';
+                        vm.FilterdImageID = {
+                                                select: itemSelect,
+                                                expand: itemExpand,
+                                                filter: updateImageIDFilter
+                                            };
+                        spcrud.read($http, vm.ImageList, vm.FilterdImageID).then(function (resp) {
+                                     if (resp.status === 200)
+                                        vm.ImageDetailsDetails = resp.data.d.results;
+                                        vm.ImageId = resp.data.d.results[0].ID; 
+                                         }).then(function (resp) {
 
+                                        // Delete previous image
+                                        spcrud.del($http, vm.ImageList, vm.ImageId).then(function (resp) {
+                                         
+                                              vm.uploadUpdatedFile();
+                                                alert("Product Updated Successfully! And sent for approval.");
+                                vm.read();
+                                vm.claer();
+                                vm.SaveButton = vm.SaveButton ? false : false;
+                                vm.AddButton = vm.AddButton ? true : true;
+                                vm.isDisabledQuantity = false;
+                                vm.isDisabledPoints = false;
+                                vm.isDisabledDescription= false;
+                                vm.isDisabledProductName = false;
+                                vm.IsVisibleWhenReduced = false;
+                                vm.isDisablesPicture = false;
+                                vm.Imageadd = true;
+                                vm.ImageUpdate = false;
+                                vm.readList();
+                                vm.readRnRApprovalListForRejectedProducts();
+                                        });
+                                      });
+                                }
+           });
+}
+    /* ----------------------------------------------------------------------------------------------------- */
+   vm.uploadUpdatedFile = function (){
         var deferred = $.Deferred();
         var serverRelativeUrlToFolder = '/RnR Product Images';    //Ex: '/sites/<Site>/<SubSite>/<LibraryName>';
         var fileInput = jQuery('#FileUploadUpdate');
@@ -406,8 +525,12 @@ function stockManagementCtl($scope, $http) {
                 addFile.done(function (file, status, xhr) {
                     var getItem = getListItem(file.d.ListItemAllFields.__deferred.uri);
                     getItem.done(function (listItem, status, xhr) {
-                        spcrud.update($http, vm.ImageList, listItem.d.Id, { 'Item_x0020_CodeId': vm.UpdateditemId }
+                        // update item code in image list
+                        spcrud.update($http, vm.ImageList, listItem.d.Id, { 'Item_x0020_CodeId':vm.RejectedProductID }
                         ).then(function (resp) {
+                            angular.element("input[type='file']").val(null);
+                            vm.readList();
+                            vm.readImageList();
                         });
                     });
                     getItem.fail(onError);
@@ -417,6 +540,7 @@ function stockManagementCtl($scope, $http) {
             getFile.fail(onError);
             return deferred.promise();
         }
+        // Below code Get the local file as an array buffer.
         function getFileBuffer(ind) {
             var deferred = jQuery.Deferred();
             var reader = new FileReader();
@@ -429,17 +553,14 @@ function stockManagementCtl($scope, $http) {
             reader.readAsArrayBuffer(fileInput[0].files[ind]);
             return deferred.promise();
         }
-
+        // Below code Add the file to the file collection in the Shared Documents folder.
         function addFileToFolder(arrayBuffer, ind) {
-
-           // var fileName = fileInput[0].files[ind].name;
-             var fileName = vm.itemId + fileInput[0].files[ind].name;
-
+            var fileName = vm.RejectedProductID+ fileInput[0].files[ind].name;
+            // Construct the endpoint.
             var fileCollectionEndpoint = String.format(
                 "{0}/_api/web/getfolderbyserverrelativeurl('{1}')/files" +
                 "/add(overwrite=true, url='{2}')",
                 serverUrl, serverRelativeUrlToFolder, fileName);
-
             return jQuery.ajax({
                 url: fileCollectionEndpoint,
                 type: "POST",
@@ -476,12 +597,11 @@ function stockManagementCtl($scope, $http) {
         }
         return deferred.promise();
     }
-
     function onError(error) {
+            alert('Something went wrong please contact admin !');
     }
-
-
-    /* ----------------------------------------------------------------------------------------------------- */
+   
+   //------------------------------------------------------------------------------------------------------
     // Delete Functionality
     vm.OnDelete = function (resp) {
 
@@ -509,11 +629,7 @@ function stockManagementCtl($scope, $http) {
                             spcrud.update($http, vm.ApprovalList, response.data.d.results[0].ID, { 'Item_x0020_Status': 'Inactive' }
                             ).then(function (resp) {
                             });
-                            // if (confirm()="")
-                            //{
-                            confirm("Product Deleted Successfully!.");
-                            //}
-
+                            confirm("Product Deleted Successfully !");
                             vm.read();
                         });
                     }
@@ -560,6 +676,42 @@ function stockManagementCtl($scope, $http) {
         }, this);
 
     }
+
+    // -------------------------------- Iamges for rejected products -------------------------------
+
+    vm.RejectedProductImages = function () {
+        vm.RejectedProductDetails.forEach(function (productItem) {
+            var id = productItem.Item_x0020_Code;
+            nameFilter = 'Item_x0020_Code eq \'' + id.Item_x0020_Code + '\'';
+            var Options = { filter: nameFilter };
+            spcrud.getImg($http, vm.ImageList, Options).then(function (response) {
+                if (response.status === 200)
+                    vm.Url = response.data.d.results;
+                vm.RejectedProductDetails.find(f => f.Item_x0020_Code == id).Url = response.data.d.results;
+            }, function (error) {
+
+            });
+
+        }, this);
+
+    }
+
+    // vm.appendimgtoapprovalForUploadedImage = function () {
+    //  //   vm.RejectedProductDetails.forEach(function (productItem) {
+    //       //  var id = productItem.Item_x0020_Code;
+    //         nameFilter = 'Item_x0020_Code eq \'' +  vm.ImageUpdateItemID + '\'';
+    //         var Options = { filter: nameFilter };
+    //         spcrud.getImg($http, vm.ImageList, Options).then(function (response) {
+    //             if (response.status === 200)
+    //                 vm.Url = response.data.d.results;
+    //             vm.RejectedProductDetails.find(f => f.Item_x0020_Code == vm.ImageUpdateItemID).Url = response.data.d.results;
+    //         }, function (error) {
+
+    //         });
+
+    //   //  }, this);
+
+    // }
 }
 /* ----------------------------------------------------------------------------------------------------- */
 angular.module('stockManagemenApp', []).controller('stockManagementCtl', stockManagementCtl);
