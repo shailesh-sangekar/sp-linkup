@@ -23,28 +23,30 @@
 							 <span style="margin-left: 820px"><input ng-model="searchText" placeholder="Search" ng-change="Search(item)">
 								 
 							</span> 
-							 <h4 class="masterHeading">Product Master</h4>
+							 <h4 class="masterHeading" style="margin-top: -40 !important;">Product Master</h4>
 							<div class="row ItemRow">
 								<div class="col-md-3" ng-model="ItemForm">
 									<div class="formBox">
 										<div class="form-group">
 											<label class="pointFormLabel">Product Name</label>
 											<span style="color:red">*</span>
-											<input type="text" class="form-control pointFormText" name="Name" ng-model="Item.Item_x0020_Name" maxlength="50" required/>
+											<input type="text" class="form-control pointFormText" name="Name" ng-model="Item.Item_x0020_Name" maxlength="50" required
+											ng-disabled="isDisabledProductName"/>
 											<!-- <h4>{{pd.Name.$valid}}Enter Item Name</h4> -->
 											<!-- <span ng-show="!pd.Name.length">Please enter Item Name</span> -->
 										</div>
 										<div class="form-group">
 											<label class="pointFormLabel">Description</label>
-											<input type="text" class="form-control pointFormText" ng-model="Item.Item_x0020_Description" />
+											<input type="text" class="form-control pointFormText" ng-model="Item.Item_x0020_Description" 
+											ng-disabled="isDisabledDescription"/>
 										</div>
 										<div class="row">
 											<div class="col-md-12">
 												<div class="form-group">
 													<label class="pointFormLabel">Points</label>
 													<span style="color:red">*</span>
-													<input type="number" class="form-control pointFormText" ng-model="Item.Points" min="0" maxlength="4" max="9999" required
-													/>
+													<input type="number" class="form-control pointFormText" ng-model="Item.Points" min="0" maxlength="5" max="99999" required
+													ng-disabled="isDisabledPoints"/>
 													<!-- <span class="error" ng-show="pd.Points.$error.required">Required!</span> -->
 												</div>
 											</div>
@@ -52,8 +54,8 @@
 												<div class="form-group">
 													<label class="pointFormLabel">Qty.</label>
 													<span style="color:red">*</span>
-													<input type="number" class="form-control pointFormText" ng-model="Item.Quantity" min="0" max="9999" ng-change="TotalQuantity(item)"
-													 maxlength="4" required ng-disabled="isDisabledQuantity" />
+													<input type="number" class="form-control pointFormText" ng-model="Item.Quantity" min="0" max="99999" ng-change="TotalQuantity(item)"
+													 maxlength="5" required ng-disabled="isDisabledQuantity" />
 												</div>
 											</div>
 											<div class="col-md-12" ng-show="IsVisible">
@@ -61,7 +63,7 @@
 													<label class="pointFormLabel">New Qty.</label>
 													<!-- <span style="color:red">*</span> -->
 													<input type="number" class="form-control pointFormText" ng-model="Item.NewQuantity" ng-change="TotalQuantity(item)" ng-blur="Validator(Item)"
-													 min="-{{Item.Quantity}}" max="9999" required />
+													 min="-{{Item.Quantity}}" max="99999" required />
 												</div>
 											</div>
 											<div class="col-md-12" ng-show="IsVisibleWhenReduced">
@@ -82,7 +84,8 @@
 											<div class="col-md-12">
 												<div class="form-group">
 													<label class="pointFormLabel">Product Picture</label>
-													<input type="file" class="itemPicture" files-input ng-model="Item.files" id="FileUpload" multiple/>		
+													<input type="file" class="itemPicture" files-input ng-model="Item.files" id="FileUpload" multiple
+													ng-disabled="isDisablesPicture"/>		
 												</div>
 											</div>
 										</div>
@@ -90,20 +93,22 @@
 											<div class="col-md-12">
 												<div class="form-group">
 													<label class="pointFormLabel">Product Picture</label>
-													<input type="file" fileread="ProductPicture" files-input ng-model="Item.filesupdate" ng-change="ProductPictureUpdate(Item)" id="FileUploadUpdate"/>
+													<input type="file" class="itemPicture" fileread="ProductPicture" files-input ng-model="Item.filesupdate" ng-change="ProductPictureUpdate(Item)" id="FileUploadUpdate"/>
 												</div>
 											</div>
 										</div> 
 										<input type="button" class="formSubmitBtn" id="AddButton" ng-click="AddProduct(Item)" value="Add" ng-show="AddButton" />
-										<input type="button" id="SaveButton" class="formSubmitBtn" ng-click="UpdateItem(Item)" value="Save" ng-show="SaveButton"                    />
+										<input type="button" id="SaveButton" class="formSubmitBtn" ng-click="UpdateItem(Item)" value="Save" ng-show="SaveButton"/>
+										<input type="button" id="RejectedSaveButton" class="formSubmitBtn" ng-click="UpdateRejectedItem(Item)" value="Save" ng-show="RejectedSaveButton"/>
 										<input type="button" class="formSubmitBtn" ng-click="claer()" value="Clear" ng-show="ClearButton" />
 										<input type="button" class="formSubmitBtn" ng-click="claerEdit()" value="Clear" ng-show="ClearEditButton" />
 									</div>
 								</div>
 								<div class="col-md-9">
 									<ul class="nav nav-tabs pointTabs">
-										<li class="active"><a href="#tab1">Product Master</a></li>
+										<li class="active"><a href="#tab1">Approved Products</a></li>
 										<li><a href="#tab2">Products For Approval</a></li>
+										<li><a href="#tab3">Rejected Products</a></li>
 									</ul>
 									<div class="tab-content appraisalTabsContent">
 										<div id="tab1" class="tab-pane fade in active" style="overflow-y: scroll; height:300px;">
@@ -126,7 +131,7 @@
           														Points <span ng-show="orderByField == 'Points'"><span ng-show="!reverseSort">^</span><span ng-show="reverseSort">v</span></span>
          													</a>
 														</th>
-														<th>
+														<th> 
 															<a href="#" style="color:white" ng-click="orderByField='Quantity'; reverseSort = !reverseSort">
           														Quantity <span ng-show="orderByField == 'Quantity'"><span ng-show="!reverseSort">^</span><span ng-show="reverseSort">v</span></span>
          													</a>
@@ -142,7 +147,7 @@
           														Balance<span ng-show="orderByField == 'Balance'"><span ng-show="!reverseSort">^</span><span ng-show="reverseSort">v</span></span>
          													</a>
 														</th>
-														<th>Action</th>
+														<th align="center">Action</th>
 													</tr>
 												</thead>
 												<tbody>
@@ -152,12 +157,12 @@
 															 style="height: 35px;width:35px;" />
 														</td>
 														<td>{{Item.Item_x0020_Code}}</td>
-														<td>{{Item.Item_x0020_Name}}</td>
-														<td>{{Item.Points}}</td>
-														<td>{{Item.Quantity}}</td>
-														<td>{{Item.Items_x0020_Redemend}}</td>
-														<td>{{Item.Comments}}</td>
-														<td>{{Item.Balance | number}}</td>
+														<td align="center">{{Item.Item_x0020_Name}}</td>
+														<td align="center">{{Item.Points}}</td>
+														<td align="center">{{Item.Quantity}}</td>
+														<td align="center">{{Item.Items_x0020_Redemend}}</td>
+														<td align="center">{{Item.Comments}}</td>
+														<td align="center">{{Item.Balance | number}}</td>
 														<!-- <td><button type="button" class="glyphicon glyphicon-edit" ng-click="OnEdit(Item)"> </button></td>  -->
 														<td><span><i style="color:green" title="Edit" class="fa fa-pencil-square-o" ng-click="OnEdit(Item)"></i></span>
 															<span><i style="color:red ;margin-left: 13px" title="Delete" class="fa fa-trash-o" ng-click="OnDelete(Item)"></i></span>
@@ -199,12 +204,12 @@
           														Updated Quantity <span ng-show="orderByField == 'UpdatedQuantity'"><span ng-show="!reverseSort">^</span><span ng-show="reverseSort">v</span></span>
          													</a>
 														</th>
-														<th>
+														<!-- <th>
 															<a href="#" style="color:white" ng-click="orderByField='Status'; reverseSort = !reverseSort">
           														Status <span ng-show="orderByField == 'Status'"><span ng-show="!reverseSort">^</span><span ng-show="reverseSort">v</span></span>
          													</a>
-														</th>
-														<th>Rejection Comment </th>
+														</th> -->
+														<!-- <th>Rejection Comment </th> -->
 													</tr>
 												</thead>
 												<tbody>
@@ -218,8 +223,68 @@
 														<td>{{ApprovalItem.Points}}</td>
 														<td>{{ApprovalItem.Quantity}}</td>
 														<td>{{ApprovalItem.Updated_x0020_Quantity}}</td>
-														<td>{{ApprovalItem.Status}}</td>
-														<td>{{ApprovalItem.Reject_x0020_Comment}}</td>
+														<!-- <td>{{ApprovalItem.Status}}</td> -->
+														<!-- <td>{{ApprovalItem.Reject_x0020_Comment}}</td> -->
+													</tr>
+												</tbody>
+											</table>
+										</div>
+											<div id="tab3" class="tab-pane fade in" style="overflow-y: scroll; height:300px;">
+											<table class="table itemTable" style="margin-bottom:15px;">
+												<thead>
+													<tr>
+														<th>Image</th>
+														<th>
+															<a href="#" style="color:white" ng-click="orderByField='ProductCode'; reverseSort = !reverseSort">
+          														Product Code <span ng-show="orderByField == 'ProductCode'"><span ng-show="!reverseSort">^</span><span ng-show="reverseSort">v</span></span>
+         													</a>
+														</th>
+														<th>
+															<a href="#" style="color:white" ng-click="orderByField='ProductName'; reverseSort = !reverseSort">
+          														Product Name <span ng-show="orderByField == 'ProductName'"><span ng-show="!reverseSort">^</span><span ng-show="reverseSort">v</span></span>
+         													</a>
+														</th>
+														<th>
+															<a href="#" style="color:white" ng-click="orderByField='Points'; reverseSort = !reverseSort">
+          														Points <span ng-show="orderByField == 'Points'"><span ng-show="!reverseSort">^</span><span ng-show="reverseSort">v</span></span>
+         													</a>
+														</th>
+														<th>
+															<a href="#" style="color:white" ng-click="orderByField='Quantity'; reverseSort = !reverseSort">
+          														Quantity <span ng-show="orderByField == 'Quantity'"><span ng-show="!reverseSort">^</span><span ng-show="reverseSort">v</span></span>
+         													</a>
+														</th>
+														<th>
+															<a href="#" style="color:white" ng-click="orderByField='UpdatedQuantity'; reverseSort = !reverseSort">
+          														Updated Quantity <span ng-show="orderByField == 'UpdatedQuantity'"><span ng-show="!reverseSort">^</span><span ng-show="reverseSort">v</span></span>
+         													</a>
+														</th>
+														<!-- <th>
+															<a href="#" style="color:white" ng-click="orderByField='Status'; reverseSort = !reverseSort">
+          														Status <span ng-show="orderByField == 'Status'"><span ng-show="!reverseSort">^</span><span ng-show="reverseSort">v</span></span>
+         													</a>
+														</th> -->
+														<th>Rejection Comment </th>
+														<th>Action</th>
+													</tr>
+												</thead>
+												<tbody>
+													<tr ng-repeat="RejectedItems in RejectedProductDetails | orderBy:'-Modified' | orderBy:orderByField:reverseSort | filter:searchText">
+														<td>
+															<img src="{{RejectedItems.Url[0]?RejectedItems.Url[0].EncodedAbsThumbnailUrl:'/SiteAssets/RnR/img/defaultImage.png'}}" class="redeemImg img-responsive"
+															 style="height: 35px;width:35px;" />
+														</td>
+														<td>{{RejectedItems.Item_x0020_Code.Item_x0020_Code}}</td>
+														<td align="center">{{RejectedItems.Item_x0020_Name}}</td>
+														<td align="center">{{RejectedItems.Points}}</td>
+														<td align="center">{{RejectedItems.Quantity}}</td>
+														<td align="center">{{RejectedItems.Updated_x0020_Quantity}}</td>
+														<!-- <td>{{ApprovalItem.Status}}</td> -->
+														<td align="center">{{RejectedItems.Reject_x0020_Comment}}</td>
+														<td align="center"><span><i style="color:green" title="Edit" class="fa fa-pencil-square-o" ng-click="EditRejected(RejectedItems)"></i></span>
+															<!-- <span><i style="color:red ;margin-left: 13px" title="Delete" class="fa fa-trash-o" ng-click="Delete(Item)"></i></span> -->
+														</td>
+														
 													</tr>
 												</tbody>
 											</table>
