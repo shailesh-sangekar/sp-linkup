@@ -1,5 +1,5 @@
-function hrDashboardCtl($scope, $http, $timeout) {
+function employeeDashboardCtl($scope, $http, $timeout) {
 
 }
 //load
-angular.module('hrDashboardApp', []).controller('hrDashboardCtl', hrDashboardCtl);
+angular.module('employeeDashboardApp', []).controller('employeeDashboardCtl', employeeDashboardCtl);
