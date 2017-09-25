@@ -202,8 +202,9 @@ function stockApprovalCtl($scope, $http, $timeout) {
         vm.item = itemToEdit;
         vm.showModal = !vm.showModal;
     };
-    vm.cancel = function () {
+    vm.cancel = function (item) {
         vm.showModal = false;
+        item.Reject_x0020_Comment=null;
     }
     vm.toggleModal = function (btnClicked) {
         vm.buttonClicked = btnClicked;
@@ -224,7 +225,7 @@ function stockApprovalCtl($scope, $http, $timeout) {
                         // if(resp.data.d.results.length!=0){}
                         // var Status = resp.data.d.results[0].Status;
                         if (resp.data.d.results.length <= 0) {
-                            if (item.Reject_x0020_Comment == null) {
+                            if (item.Reject_x0020_Comment == null||item.Reject_x0020_Comment=="") {
                                 alert("You need to specify a reason for Rejection!")
                             } else {
                                 spcrud.update($http, vm.listName, item.ID, {
@@ -262,6 +263,7 @@ function stockApprovalCtl($scope, $http, $timeout) {
                      var Status = resp.data.d.results[0].Status;
                     alert(" Item already " + Status);
                     vm.showModal = false;
+                    item=null;
                 }
             },
 

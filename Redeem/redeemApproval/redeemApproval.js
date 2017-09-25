@@ -117,8 +117,9 @@ function redeemApprovalCtl($scope, $http, $timeout) {
         vm.item = itemToEdit;
         vm.showModal = !vm.showModal;
     };
-    vm.cancel = function () {
+    vm.cancel = function (item) {
         vm.showModal = false;
+        item.Reject_x0020_Comment=null;
     }
     vm.RejectFunction = function (item) {
         spcrud.read($http, vm.listName, vm.IDOptions).then(function (resp) {
@@ -126,10 +127,9 @@ function redeemApprovalCtl($scope, $http, $timeout) {
                 // var myJSON = JSON.stringify(resp.data.d.results);
 
                 if (resp.data.d.results.length <= 0) {
-                    if (item.Reject_x0020_Comment == null) {
+                    if (item.Reject_x0020_Comment == null||item.Reject_x0020_Comment=="") {
                         alert("You need to specify a reason for Rejection!")
                     } else {
-                        if (confirm("You are trying to reject! " + item.Item_x0020_Code.Item_x0020_Code)) {
                             selectID = 'ID,Redemend';
                             itemFilter = 'Emp_x0020_ID/Employee_x0020_ID eq \'' + item.Emp_x0020_ID.Employee_x0020_ID + '\'';
                             vm.empOptions = {
@@ -169,7 +169,7 @@ function redeemApprovalCtl($scope, $http, $timeout) {
                             }, function (error) {
                                 console.log('error', error);
                             });
-                        }
+                        vm.showModal = false;
 
                     }
 
@@ -177,6 +177,7 @@ function redeemApprovalCtl($scope, $http, $timeout) {
                     var Status = resp.data.d.results[0].Status;
                     alert(" Item already " + Status);
                     vm.showModal = false;
+                    item=null;
                 }
         }, function (error) {
             console.log('error', error);
