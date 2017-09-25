@@ -1,29 +1,48 @@
+<!--Third Party-->
+<script src="/SiteAssets/HRDashboard/angular.js"></script>
+
+<!--Application-->
+<script src="/SiteAssets/HRDashboard/spcrud.js"></script>
+<link rel="stylesheet" href="/SiteAssets/HRDashboard/EmployeeList/employeeList.css"></link>
+<script src="/SiteAssets/HRDashboard/EmployeeList/employeeList.js"></script>
+
 <div ng-app="employeeListApp" class="appmodel">
     <div ng-controller="employeeListCtl">
-        <section class="topSection">
-            <div class="container">
-                <div class="mainBox">
+        <div class="spinner" ng-hide="loaded"></div>
+        <span ng-hide="loaded">
+				Loading.....
+			</span>
+        <div ng-cloak="" ng-show="loaded">
+            <div class="row">
+                <div class="col-md-12">
                     <h4 class="masterHeading">Employee List</h4>
-                    <table class="table itemTable">
-                        <thead>
-                            <tr>
-                                <th>Emp Id</th>
-                                <th>Emp Name</th>
-                                <th>Emp SkypeId</th>
-                                <th>Emp Contact No</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>10457</td>
-                                <td>Sayali Tidke</td>
-                                <td>Sayali.tidke</td>
-                                <td>8600047175</td>
-                            </tr>
-                        </tbody>
-                    </table>
+                    <div class="scrollTable">
+                        <table class="table table-striped table-bordered table-hover table-checkable order-column">
+                            <thead>
+                                <tr>
+                                    <th>Emp Id</th>
+                                    <th>Name</th>
+                                    <th>Email Id</th>
+                                    <th>Contact No</th>
+                                    <th>Resignation Date</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="item in gridItemsResigned">
+                                    <td>{{item.Employee_x0020_ID?item.Employee_x0020_ID:'N/A'}}</td>
+                                    <td>{{item.Account_x0020_Holder_x0020_Name?item.Account_x0020_Holder_x0020_Name:'N/A'}}</td>
+                                    <td>{{item.Email_x0020_ID_x0020_Official?item.Email_x0020_ID_x0020_Official:'N/A'}}</td>
+                                    <td>{{item.Personal_x0020_Contact_x0020_Num?item.Personal_x0020_Contact_x0020_Num:'N/A'}}</td>
+                                    <td>{{item.Resignation_x0020_Date?item.Resignation_x0020_Date:'N/A'}}</td>
+                                    <!--<td><button class="viewMoreBtn" ng-click="viewMoreButton(item.Employee_x0020_ID)"><i class="fa fa-external-link" aria-hidden="true"></i> View More</button></td>-->
+                                    <td><a class="viewMoreBtn" href="/SitePages/Employee%20Dashboard.aspx" ng-click="viewMoreButton(item.Employee_x0020_ID)" title="View Redeem">View More</a></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
-        </section>
+        </div>
     </div>
 </div>

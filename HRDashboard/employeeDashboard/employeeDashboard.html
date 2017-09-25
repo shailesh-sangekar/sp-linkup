@@ -1,9 +1,18 @@
+<!--Third Party-->
+<script src="/SiteAssets/HRDashboard/angular.js"></script>
+
+<!--Application-->
+<script src="/SiteAssets/HRDashboard/spcrud.js"></script>
+<link rel="stylesheet" href="/SiteAssets/HRDashboard/EmployeeDashboard/employeeDashboard.css"></link>
+<script src="/SiteAssets/HRDashboard/EmployeeDashboard/employeeDashboard.js"></script>
+
 <div ng-app="employeeDashboardApp" class="appmodel">
     <div ng-controller="employeeDashboardCtl">
         <section class="topSection">
             <div class="container">
                 <div class="mainBox">
                     <h4 class="masterHeading">Dashboard Details</h4>
+                    <a class="viewMoreBtn" href="/SitePages/Employee%20List.aspx">View List</a> UserID: {{UserId}}
                 </div>
             </div>
         </section>

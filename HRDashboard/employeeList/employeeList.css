@@ -1,3 +1,49 @@
-.new {
-    color: pink;
+.viewMoreBtn {
+    border-radius: 3px!important;
+    font-family: "Open Sans", sans-serif;
+    background: #fb5557;
+    border-color: #fb5557;
+    color: #fff!important;
+    font-size: 12px;
+    cursor: pointer;
+    border: 1px solid #ddd;
+    padding: 5px 12px;
+    font-weight: 600;
+    margin-top: -5px;
+    transition: 0.3s all ease-out;
+}
+
+.viewMoreBtn:hover {
+    background: #fb5557;
+    border-color: #fb5557;
+    color: #fff!important;
+}
+
+.viewMoreBtn i {
+    margin-right: 3px;
+}
+
+.scrollTable {
+    min-height: 600px !important;
+    max-height: 600px !important;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.spinner {
+    display: inline-block;
+    border-radius: 50px;
+    border-style: solid;
+    border-bottom-color: #3b5641;
+    border-top-color: #67b3a9;
+    border-left-color: #df7950;
+    border-right-color: #decb3f;
+    text-align: center;
+    vertical-align: middle;
+    position: relative;
+    animation: rotate360 1s linear infinite;
+    -webkit-animation: rotate360 1s linear infinite;
+    border-width: 4px;
+    width: 24px;
+    height: 24px;
 }
