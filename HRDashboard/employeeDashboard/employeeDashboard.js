@@ -11,6 +11,7 @@ function employeeDashboardCtl($scope, $http, $timeout) {
     }
     vm.processForm();
     vm.listEmployeeTimesheet = 'Employee Timesheet';
+    vm.listEmployeeLeaves = 'Employee Leaves Master';
     vm.loaded = false;
     empSelect = '*';
     empExpand = '';
@@ -22,11 +23,21 @@ function employeeDashboardCtl($scope, $http, $timeout) {
     };
     
     vm.gridItemsTimesheet = [];
+    vm.gridItemsLeaves = [];
     vm.readTimesheet = function() {
         spcrud.read($http, vm.listEmployeeTimesheet, vm.timesheetOptions).then(function(resp) {
             if (resp.status === 200)
-                var myJSON = JSON.stringify(resp.data.d.results);
             vm.gridItemsTimesheet = resp.data.d.results;
+            vm.loaded = true;
+        }, function(error) {
+            console.log('error', error);
+        });
+
+    };
+    vm.readLeaves = function() {
+        spcrud.read($http, vm.listEmployeeLeaves, vm.timesheetOptions).then(function(resp) {
+            if (resp.status === 200)
+            vm.gridItemsLeaves = resp.data.d.results;
             vm.loaded = true;
         }, function(error) {
             console.log('error', error);
