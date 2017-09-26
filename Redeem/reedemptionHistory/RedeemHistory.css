@@ -1,64 +1,79 @@
-.img-table{
-        display: block;
+.img-table {
+    display: block;
     max-width: 100%;
     height: 60px;
+}
 
-}
-.searchbutton{
-    float: right; 
-    margin-right: 150px; 
+.searchbutton {
+    float: right;
+    margin-right: 150px;
     margin-top: -35px;
 }
-.searchinput{
-    float: right; 
-    margin-right: 31px; 
+
+.searchinput {
+    float: right;
+    margin-right: 31px;
     margin-top: -35px;
-        height: 28px;
-        padding: 3px 12px !important;
+    height: 28px;
+    padding: 3px 12px !important;
 }
-.topModal{
+
+.topModal {
     margin-top: -30px;
 }
 
 @keyframes rotate360 {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
 }
 
 @-webkit-keyframes rotate360 {
-  from { -webkit-transform: rotate(0deg); }
-  to { -webkit-transform: rotate(360deg); }
+    from {
+        -webkit-transform: rotate(0deg);
+    }
+    to {
+        -webkit-transform: rotate(360deg);
+    }
 }
-.spinner {
-  display:inline-block;
-  border-radius: 50px;
-  border-style: solid;
-  border-bottom-color: #3b5641;
-  border-top-color: #67b3a9;
-  border-left-color: #df7950;
-  border-right-color: #decb3f;
-  text-align: center;
-  vertical-align: middle;
-  position: relative;
-  animation: rotate360 1s linear infinite;
-  -webkit-animation: rotate360 1s linear infinite;
 
-  border-width: 4px;
-  width: 24px;
-  height: 24px;
+.spinner {
+    display: inline-block;
+    border-radius: 50px;
+    border-style: solid;
+    border-bottom-color: #3b5641;
+    border-top-color: #67b3a9;
+    border-left-color: #df7950;
+    border-right-color: #decb3f;
+    text-align: center;
+    vertical-align: middle;
+    position: relative;
+    animation: rotate360 1s linear infinite;
+    -webkit-animation: rotate360 1s linear infinite;
+    border-width: 4px;
+    width: 24px;
+    height: 24px;
 }
-.fontcolora{
-        color: white !important;
+
+.fontcolora {
+    color: white !important;
 }
+
 .centre1 {
     text-align: center !important;
 }
-.th{
+
+.th {
     text-align: center !important;
 }
+
 .badge {
-        background: #f3565d !important;
-    }
+    background: #f3565d !important;
+}
+
 .badge.badge-success {
     background-color: #45b6af !important;
 }
