@@ -19,9 +19,9 @@ function employeeDashboardCtl($scope, $http, $timeout) {
     TimesheetFilter = 'Title eq \'' + vm.UserId + '\'';
     // TimesheetFilter = 'Title eq \'' + vm.UserId + '\' and Submitted_x0020_Status eq \'' + Pending + '\'';
     EmployeeFilter = 'Employee_x0020_ID eq \'' + vm.UserId + '\'';
-    CertFilter = EmployeeFilter + ' and Start_x0020_Date ge datetime\'' + (new Date()).getFullYear() +
-        '-01-01T00:00:00Z' + '\' and Start_x0020_Date le datetime' + (new Date()).getFullYear() +
-        '-12-31T23:59:59Z';
+    CertFilter = EmployeeFilter + ' and Start_x0020_Date ge datetime \'' + (new Date()).getFullYear() +
+        '-01-01T00:00:00Z' + '\' and Start_x0020_Date le datetime  \'' + (new Date()).getFullYear() +
+        '-12-31T23:59:59Z\'';
     vm.timesheetOptions = {
         select: empSelect,
         expand: empExpand,

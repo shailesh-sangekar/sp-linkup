@@ -1,3 +1,124 @@
-.new {
-    color: pink;
+.viewListBtn {
+    border-radius: 3px!important;
+    font-family: "Open Sans", sans-serif;
+    background: #fb5557;
+    border-color: #fb5557;
+    color: #fff!important;
+    font-size: 12px;
+    cursor: pointer;
+    border: 1px solid #ddd;
+    padding: 5px 12px;
+    font-weight: 600;
+    transition: 0.3s all ease-out;
+    float: right;
+    margin-right: 31px;
+    margin-top: -38px;
+    height: 28px;
+    padding: 3px 12px !important;
+}
+
+.viewListBtn:hover {
+    background: #fb5557;
+    border-color: #fb5557;
+    color: #fff!important;
+}
+
+.viewListBtn i {
+    margin-right: 3px;
+}
+
+.scrollTable {
+    min-height: 220px !important;
+    max-height: 220px !important;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.spinner {
+    display: inline-block;
+    border-radius: 50px;
+    border-style: solid;
+    border-bottom-color: #3b5641;
+    border-top-color: #67b3a9;
+    border-left-color: #df7950;
+    border-right-color: #decb3f;
+    text-align: center;
+    vertical-align: middle;
+    position: relative;
+    animation: rotate360 1s linear infinite;
+    -webkit-animation: rotate360 1s linear infinite;
+    border-width: 4px;
+    width: 24px;
+    height: 24px;
+}
+
+.masterHeading {
+    margin-top: 0;
+    margin-bottom: 15px;
+    font-size: 40px;
+    font-weight: 500;
+}
+
+.dashboardBox {
+    background: #fff;
+    padding: 15px;
+    margin-bottom: 15px;
+    box-shadow: 0px 1px 4px rgba(148, 148, 148, 0.3);
+}
+
+.boxContainer {
+    background: #E9ECF3;
+    padding: 15px 15px;
+    padding-bottom: 0;
+}
+
+@media (min-width:992px) {
+    .boxContainer .col-md-6:nth-child(even) {
+        padding-left: 7px!important;
+    }
+    .boxContainer .col-md-6:nth-child(odd) {
+        padding-right: 7px!important;
+    }
+}
+
+.dashboardBoxHeading {
+    border-bottom: 1px solid #f1f1f1;
+    font-size: 17px;
+    font-weight: 600;
+    font-family: "Open Sans", sans-serif;
+    color: #464646;
+    padding-bottom: 10px;
+    background: #fff;
+    border-radius: 0;
+    padding-top: 4px;
+    padding-left: 0px;
+    letter-spacing: 0px;
+}
+
+.dashboardBoxBody ul {
+    list-style-type: none;
+    padding-left: 0px;
+    height: 122px;
+    overflow-y: auto;
+}
+
+.dashboardBoxBody ul li {
+    font-family: "Open Sans", sans-serif;
+    color: #4a4a4a;
+    line-height: 2em;
+    font-size: 12px;
+}
+
+.dashboardBoxBody {
+    padding: 15px 0;
+    padding-bottom: 0;
+    height: 130px;
+    overflow-y: auto;
+}
+
+.dashboardBoxBody1 {
+    padding: 15px 0;
+    padding-bottom: 0;
+    height: 110px;
+    overflow-y: auto;
 }

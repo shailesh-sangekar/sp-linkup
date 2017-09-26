@@ -9,16 +9,11 @@
 <div ng-app="employeeDashboardApp" class="appmodel">
     <div ng-controller="employeeDashboardCtl">
         <section class="topSection">
-            <div class="container">
-                <div class="mainBox">
-                    <!--<h4 class="masterHeading">Dashboard Details</h4>
-                    <a class="viewMoreBtn" href="/SitePages/Employee%20List.aspx">View List</a> UserID: {{UserId}}-->
-                    <!--<div class="mainBox">-->
-                    <div>
-                        <h4 class="masterHeading" style="line-height: 0.6 !important;">Sayali Tidke <small>( {{UserId}} )</small></h4>
-                        <!--<label class="viewListBtn" style="margin-right: 178px;">UserID: {{UserId}}</label>-->
-                        <a class="viewListBtn" href="/SitePages/Employee%20List.aspx">View List</a>
-                    </div>
+            <div class="mainBox">
+                <div>
+                    <h4 class="masterHeading" style="line-height: 0.6 !important;">Sayali Tidke <small>( {{UserId}} )</small></h4>
+                    <!--<label class="viewListBtn" style="margin-right: 178px;">UserID: {{UserId}}</label>-->
+                    <a class="viewListBtn" href="/SitePages/Employee%20List.aspx">View List</a>
                 </div>
             </div>
         </section>
@@ -59,7 +54,7 @@
                                 <div class="dashboardBox">
                                     <div class="dashboardBoxHeading">Leaves Details</div>
                                     <div class="dashboardBoxBody">
-                                        Leaves Taken : {{numFullDayLeave?numFullDayLeave:'0'}}
+                                        Leaves Taken : {{numFullDayLeave}}
                                         <br> Full Day Absence : {{numFullDayAbsence}}
                                         <br> Half Day Leave : {{numHalfDayLeave}}
                                         <br> Half Day Absence : {{numHalfDayAbsence}}
