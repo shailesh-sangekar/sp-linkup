@@ -28,7 +28,7 @@ function employeeDashboardCtl($scope, $http, $timeout) {
         '-01-01T00:00:00Z' + '\' and Start_x0020_Date le   \'' + (new Date()).getFullYear() +
         '-12-31T23:59:59Z\'';
     var status = "Active";
-    var projectTeamMembersListFilter = '(Emp_x0020_ID/ID eq ' + '\'' + vm.UserId + '\') and (Status eq \'' + status + '\')';
+    var projectTeamMembersListFilter = '(Project_x0020_Master_x0020_ID eq ' + '\'' + vm.UserId + '\') and (Status eq \'' + status + '\')';
     vm.projectTeamMembersListOptions = {
         select: "Project_x0020_Master_x0020_ID",
         expand: empExpand,
