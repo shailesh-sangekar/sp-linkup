@@ -54,11 +54,12 @@
                                 <div class="dashboardBox">
                                     <div class="dashboardBoxHeading">Leaves Details</div>
                                     <div class="dashboardBoxBody">
-                                        Leaves Taken : {{numFullDayLeave}}
+                                        Balance : 2
+                                        <br> Full Day Leave : {{numFullDayLeave}}
                                         <br> Full Day Absence : {{numFullDayAbsence}}
                                         <br> Half Day Leave : {{numHalfDayLeave}}
                                         <br> Half Day Absence : {{numHalfDayAbsence}}
-                                        <br> Balance : 2
+
                                     </div>
                                 </div>
                             </div>
@@ -68,10 +69,10 @@
                                 <div class="dashboardBox">
                                     <div class="dashboardBoxHeading">TimeSheet Details</div>
                                     <div class="dashboardBoxBody">
-                                        Pending : {{numPendingTimeSheet}}
-                                        <br> Not Submitted : {{numNotSubmitted}}
+                                        Approved : {{numApproved}}
                                         <br> Partially Approved : {{numPartiallyApproved}}
-                                        <br> Approved : {{numApproved}}
+                                        <br> Pending : {{numPendingTimeSheet}}
+                                        <br> Not Submitted : {{numNotSubmitted}}
                                         <br> Submitted : {{numSubmitted}}
                                     </div>
                                 </div>
@@ -82,11 +83,9 @@
                                 <div class="dashboardBox">
                                     <div class="dashboardBoxHeading">RNR Details</div>
                                     <div class="dashboardBoxBody">
-                                        Leaves Taken : 2
-                                        <br> Half Day Leave : 2
-                                        <br> Full Day Absence : 2
-                                        <br> Half Day Absence : 2
-                                        <br> Balance : 2
+                                        Balance : {{empMasterDetails[0].Balance}}
+                                        <br> Used : {{totalUsedPts}}
+                                        <br> Total Earned : {{totalpts}}
                                     </div>
                                 </div>
                             </div>

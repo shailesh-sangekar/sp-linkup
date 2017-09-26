@@ -11,6 +11,8 @@ function employeeDashboardCtl($scope, $http, $timeout) {
     vm.listEmployeeTimesheet = 'Employee Timesheet';
     vm.listEmployeeLeaves = 'Leave Request Master';
     vm.listEmployeeCertificates = 'Certification Master';
+    vm.EmployeeMasterList = 'RnR Employee Master';
+    vm.Redeemlist = 'RnR Employee Redemptions';
     vm.loaded = false;
     FullDayCount: Number = 0;
     empSelect = '*';
@@ -19,8 +21,8 @@ function employeeDashboardCtl($scope, $http, $timeout) {
     TimesheetFilter = 'Title eq \'' + vm.UserId + '\'';
     // TimesheetFilter = 'Title eq \'' + vm.UserId + '\' and Submitted_x0020_Status eq \'' + Pending + '\'';
     EmployeeFilter = 'Employee_x0020_ID eq \'' + vm.UserId + '\'';
-    CertFilter = EmployeeFilter + ' and Start_x0020_Date ge datetime \'' + (new Date()).getFullYear() +
-        '-01-01T00:00:00Z' + '\' and Start_x0020_Date le datetime  \'' + (new Date()).getFullYear() +
+    CertFilter = EmployeeFilter + ' and Start_x0020_Date ge  \'' + (new Date()).getFullYear() +
+        '-01-01T00:00:00Z' + '\' and Start_x0020_Date le   \'' + (new Date()).getFullYear() +
         '-12-31T23:59:59Z\'';
     vm.timesheetOptions = {
         select: empSelect,
@@ -99,7 +101,7 @@ function employeeDashboardCtl($scope, $http, $timeout) {
         spcrud.read($http, vm.listEmployeeCertificates, vm.certOptions).then(function(resp) {
             if (resp.status === 200)
                 vm.gridItemsCertificates = resp.data.d.results;
-            console.log('Timesheet Details');
+            console.log('Certificates Details');
             console.log(vm.gridItemsCertificates);
             vm.loaded = true;
         }, function(error) {
@@ -108,6 +110,44 @@ function employeeDashboardCtl($scope, $http, $timeout) {
 
     };
     vm.readCertificates();
+    vm.readlist = function() {
+        var status = "Pending";
+        var redeemFilter = '(Emp_x0020_ID/ID eq ' + '\'' + vm.UserId + '\') and (Status eq \'' + status + '\')';
+        vm.redeemOptions = {
+            select: empSelect,
+            expand: empExpand,
+            filter: redeemFilter
+        };
+        spcrud.read($http, vm.Redeemlist, vm.redeemOptions).then(function(response) {
+            if (response.status === 200)
+                vm.redeemlistemp = response.data.d.results;
+            vm.availablepts = 0;
+            vm.totalUsedPts = 0;
+            vm.redeemlistemp.forEach(function(item) {
+                vm.availablepts = item.Item_x0020_Code.Points * item.RedeemQuantity;
+                vm.totalUsedPts = vm.availablepts + vm.totalUsedPts;
+
+            }, this);
+            vm.readempMasterlist();
+        }, function(error) {
+            console.log('error', error);
+        });
+    }
+    vm.readempMasterlist = function() {
+        vm.totalpts = 0;
+        spcrud.read($http, vm.EmployeeMasterList, vm.nameFilterOptions).then(function(response) {
+            if (response.status === 200)
+                vm.empMasterDetails = response.data.d.results;
+            vm.empMasterDetails[0].Balance = parseFloat(vm.empMasterDetails[0].Balance);
+            vm.totalpts = vm.empMasterDetails[0].Balance + vm.totalUsedPts;
+            // console.log(vm.totalpts);
+            // console.log(vm.empMasterDetails[0].Balance);
+            // console.log(vm.totalUsedPts);
+        }, function(error) {
+            console.log('error', error);
+        });
+    }
+    vm.readlist();
 }
 //load
 angular.module('employeeDashboardApp', []).controller('employeeDashboardCtl', employeeDashboardCtl);
