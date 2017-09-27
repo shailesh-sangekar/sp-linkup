@@ -8,8 +8,9 @@ function employeeDashboardCtl($scope, $http, $timeout, $window, $location) {
         vm.UserId = localStorage.getItem("UserID");
         vm.UserName = localStorage.getItem("UserName");
         if (vm.UserId == null) {
-            $location.path('/SitePages/Employee%20List.aspx');
-            // $window.location.href("/SitePages/Employee%20List.aspx");
+            self.location = "http://espld209/SitePages/Employee%20List.aspx";
+            //$location.path('http://espld209/SitePages/Employee%20List.aspx');
+            // $(window).location("http://espld209/SitePages/Employee%20List.aspx");
         }
     }
     vm.processForm();
