@@ -1,5 +1,4 @@
 function employeeListCtl($scope, $http, $timeout) {
-    //default data
     var vm = $scope;
     vm.loaded = false;
     vm.status = 'OK';
@@ -30,11 +29,26 @@ function employeeListCtl($scope, $http, $timeout) {
     };
     vm.readResigned();
     vm.viewMoreButton = function(employeeId, employeeName) {
-        console.log(employeeId);
-        console.log(employeeName);
         localStorage.setItem("UserID", (employeeId));
         localStorage.setItem("UserName", (employeeName));
     }
+    vm.formatDate = function(date) {
+        var d = new Date(date),
+            month = '' + (d.getMonth() + 1),
+            day = '' + d.getDate(),
+            year = d.getFullYear();
+        if (month.length < 2) month = '0' + month;
+        if (day.length < 2) day = '0' + day;
+
+        return [day, month, year].join('-');
+    }
+    vm.convertToDate = function(stringDate) {
+        console.log(stringDate);
+        var dateOut = new Date(stringDate);
+        dateOut.setDate(dateOut.getDate() + 1);
+        console.log(dateOut);
+        return dateOut;
+    };
 }
 
 //load
