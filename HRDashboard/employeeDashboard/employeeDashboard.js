@@ -1,4 +1,4 @@
-function employeeDashboardCtl($scope, $http, $timeout) {
+function employeeDashboardCtl($scope, $http, $timeout, $window, $location) {
     var vm = $scope;
     vm.UserId = '';
     vm.loaded = false;
@@ -7,9 +7,16 @@ function employeeDashboardCtl($scope, $http, $timeout) {
     vm.processForm = function() {
         vm.UserId = localStorage.getItem("UserID");
         vm.UserName = localStorage.getItem("UserName");
+        if (vm.UserId == null) {
+            $location.path('/SitePages/Employee%20List.aspx');
+            // $window.location.href("/SitePages/Employee%20List.aspx");
+        }
     }
     vm.processForm();
-
+    $(window).unload(function() {
+        localStorage.removeItem('UserID');
+        localStorage.removeItem('UserName');
+    });
     vm.listEmployeeTimesheet = 'Employee Timesheet';
     vm.listEmployeeLeaves = 'Employee Leaves Master';
     vm.listEmployeeCertificates = 'Certification Master';
@@ -105,7 +112,6 @@ function employeeDashboardCtl($scope, $http, $timeout) {
         }, function(error) {
             console.log('error', error);
         });
-
     };
     vm.readCertificates();
     vm.readempMasterlist = function() {
@@ -120,34 +126,32 @@ function employeeDashboardCtl($scope, $http, $timeout) {
             if (response.status === 200)
                 vm.empMasterDetails = response.data.d.results[0];
             vm.empMasterDetails.Balance = parseFloat(vm.empMasterDetails.Balance);
-            vm.loaded = true;
         }, function(error) {
             console.log('error', error);
         });
     }
     vm.readempMasterlist();
     vm.readProjectTeamMembersList = function() {
-
         spcrud.read($http, vm.ProjectTeamMembersList, vm.projectTeamMembersListOptions).then(function(response) {
             if (response.status === 200)
                 vm.projectTeamMembersList = response.data.d.results;
+            vm.readProjectsList(vm.projectTeamMembersList);
         }, function(error) {
             console.log('error', error);
         });
     }
+    vm.readProjectTeamMembersList();
     vm.readProjectsList = function(projectTeamMembersList) {
         var Count = 0;
         vm.projectsList = projectTeamMembersList;
         var projectsListFilter = '';
         vm.projectsList.forEach(function(item) {
-
             if (Count === (projectTeamMembersList.length - 1)) {
                 projectsListFilter = projectsListFilter + ' (Project_x0020_Master_x0020_ID eq ' + '\'' + item.Project_x0020_Master_x0020_ID + '\')';
             } else {
                 projectsListFilter = projectsListFilter + ' (Project_x0020_Master_x0020_ID eq ' + '\'' + item.Project_x0020_Master_x0020_ID + '\') or';
             }
             Count++;
-
         }, this);
         var projSelect = 'Delivery_x0020_Manager/Title,Project_x0020_Manager/Title,Delivery_x0020_Unit/Title,*';
         var projExpand = 'Delivery_x0020_Manager/Title,Project_x0020_Manager/Title,Delivery_x0020_Unit/Title';
@@ -159,7 +163,6 @@ function employeeDashboardCtl($scope, $http, $timeout) {
         spcrud.read($http, vm.ProjectsList, vm.projectsListOptions).then(function(response) {
             if (response.status === 200)
                 vm.empProjectDetails = response.data.d.results;
-            console.log(vm.empProjectDetails);
             if (vm.empProjectDetails.length > 0) {
                 vm.showProjectTable = true;
             } else {
@@ -170,6 +173,5 @@ function employeeDashboardCtl($scope, $http, $timeout) {
             console.log('error', error);
         });
     }
-    vm.readProjectTeamMembersList();
 }
 angular.module('employeeDashboardApp', []).controller('employeeDashboardCtl', employeeDashboardCtl);

@@ -1,5 +1,4 @@
 function employeeListCtl($scope, $http, $timeout) {
-    //default data
     var vm = $scope;
     vm.loaded = false;
     vm.status = 'OK';
@@ -30,8 +29,6 @@ function employeeListCtl($scope, $http, $timeout) {
     };
     vm.readResigned();
     vm.viewMoreButton = function(employeeId, employeeName) {
-        console.log(employeeId);
-        console.log(employeeName);
         localStorage.setItem("UserID", (employeeId));
         localStorage.setItem("UserName", (employeeName));
     }

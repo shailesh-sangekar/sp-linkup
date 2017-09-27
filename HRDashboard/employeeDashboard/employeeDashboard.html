@@ -1,6 +1,5 @@
 <!--Third Party-->
 <script src="/SiteAssets/HRDashboard/angular.js"></script>
-
 <!--Application-->
 <script src="/SiteAssets/HRDashboard/spcrud.js"></script>
 <link rel="stylesheet" href="/SiteAssets/HRDashboard/EmployeeDashboard/employeeDashboard.css"></link>
@@ -12,12 +11,11 @@
         <span ng-hide="loaded">
 				Loading.....
 			</span>
-        <div ng-cloak="" ng-show="loaded">
+        <div ng-cloak="" ng-show="loaded" ng-if="UserId">
             <section class="topSection">
                 <div class="mainBox">
                     <div>
                         <h4 class="masterHeading">{{UserName}} <small>( {{UserId}} )</small></h4>
-                        <!--<label class="viewListBtn" style="margin-right: 178px;">UserID: {{UserId}}</label>-->
                         <a class="viewListBtn" href="/SitePages/Employee%20List.aspx">View List</a>
                     </div>
                 </div>
@@ -54,19 +52,19 @@
                 <div class="boxContainer">
                     <div class="row">
                         <div class="col-md-12">
-                            <div class="col-md-5">
+                            <div class="col-md-4">
                                 <div>
                                     <div class="dashboardBox">
                                         <div class="dashboardBoxHeading">Leaves Details</div>
                                         <div class="dashboardBoxBody1">
                                             <div class="col-md-6">
                                                 <b class="spantag">Balance : </b>{{gridItemsLeaves.Actual_x0020_Balance?gridItemsLeaves.Actual_x0020_Balance:'N/A'}}
-                                                <br><b class="spantag">FullDay Leave : </b>{{gridItemsLeaves.L_x0020_Taken?gridItemsLeaves.L_x0020_Taken:'N/A'}}
-                                                <br><b class="spantag">FullDay Absent : </b>{{gridItemsLeaves.A_x0020_Taken?gridItemsLeaves.A_x0020_Taken:'N/A'}}
+                                                <br><b class="spantag">Full Day Leave : </b>{{gridItemsLeaves.L_x0020_Taken?gridItemsLeaves.L_x0020_Taken:'N/A'}}
+                                                <br><b class="spantag">Full Day Absence : </b>{{gridItemsLeaves.A_x0020_Taken?gridItemsLeaves.A_x0020_Taken:'N/A'}}
                                             </div>
                                             <div class="col-md-6">
-                                                <b class="spantag">HalfDay Leave : </b>{{gridItemsLeaves.HL_x0020_Taken?gridItemsLeaves.HL_x0020_Taken:'N/A'}}
-                                                <br><b class="spantag">HalfDay Absent : </b>{{gridItemsLeaves.HA_x0020_Taken?gridItemsLeaves.HA_x0020_Taken:'N/A'}}
+                                                <b class="spantag">Half Day Leave : </b>{{gridItemsLeaves.HL_x0020_Taken?gridItemsLeaves.HL_x0020_Taken:'N/A'}}
+                                                <br><b class="spantag">Half Day Absence : </b>{{gridItemsLeaves.HA_x0020_Taken?gridItemsLeaves.HA_x0020_Taken:'N/A'}}
                                             </div>
 
                                         </div>
@@ -79,26 +77,26 @@
                                         <div class="dashboardBoxHeading">TimeSheet Details</div>
                                         <div class="dashboardBoxBody1">
                                             <div class="col-md-6">
-                                                <b class="spantag">Approved : </b>{{numApproved?numApproved:'0'}}
-                                                <br><b class="spantag">Pending : </b>{{numPendingTimeSheet?numPendingTimeSheet:'0'}}
+                                                <b class="spantag">Pending : </b>{{numPendingTimeSheet?numPendingTimeSheet:'0'}}
+                                                <br><b class="spantag">Approved : </b>{{numApproved?numApproved:'0'}}
                                             </div>
                                             <div class="col-md-6">
-                                                <b class="spantag">Not Submitted : </b>{{numNotSubmitted?numNotSubmitted:'0'}}
-                                                <br><b class="spantag">Submitted : </b>{{numSubmitted?numSubmitted:'0'}}
+                                                <b class="spantag">Submitted : </b>{{numSubmitted?numSubmitted:'0'}}
+                                                <br><b class="spantag">Not Submitted : </b>{{numNotSubmitted?numNotSubmitted:'0'}}
                                             </div>
                                             <span class="marginSpan"><b class="spantag">Partially Approved : </b>{{numPartiallyApproved?numPartiallyApproved:'0'}}</span>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-3">
+                            <div class="col-md-4">
                                 <div>
                                     <div class="dashboardBox">
                                         <div class="dashboardBoxHeading">RNR Details</div>
                                         <div class="dashboardBoxBody1">
-                                            <b class="spantag">Balance : </b>{{empMasterDetails.Balance?empMasterDetails.Balance:'0'}}
-                                            <br><b class="spantag">Used : </b>{{empMasterDetails.Redemend?empMasterDetails.Redemend:'0'}}
-                                            <br><b class="spantag">Total Earned : </b>{{empMasterDetails.Total_x0020_Reward_x0020_Points?empMasterDetails.Total_x0020_Reward_x0020_Points:'0'}}
+                                            <b class="spantag">RnR Balance : </b>{{empMasterDetails.Balance?empMasterDetails.Balance:'0'}}
+                                            <br><b class="spantag">RnR Used Points : </b>{{empMasterDetails.Redemend?empMasterDetails.Redemend:'0'}}
+                                            <br><b class="spantag">Total RnR Points Earned : </b>{{empMasterDetails.Total_x0020_Reward_x0020_Points?empMasterDetails.Total_x0020_Reward_x0020_Points:'0'}}
                                         </div>
                                     </div>
                                 </div>
@@ -114,10 +112,9 @@
                                                 <thead>
                                                     <tr>
                                                         <th class="spantag">Code</th>
-                                                        <th class="spantag">Certificate Name</th>
-                                                        <th class="spantag">Certification Date</th>
+                                                        <th class="spantag">Name</th>
+                                                        <th class="spantag">Date</th>
                                                         <th class="spantag">Amount</th>
-                                                        <!--<th>Reimbursed Amount</th>-->
                                                         <th class="spantag">Status</th>
                                                     </tr>
                                                 </thead>
@@ -129,7 +126,6 @@
                                                         <td>Claimed:{{item.Claimed_x0020_Amount?item.Claimed_x0020_Amount:'N/A'}}
                                                             <br>Reimbursed:{{item.Reimbursed_x0020_Amount?item.Reimbursed_x0020_Amount:'N/A'}}
                                                         </td>
-                                                        <!--<td>{{item.Reimbursed_x0020_Amount?item.Reimbursed_x0020_Amount:'N/A'}}</td>-->
                                                         <td>{{item.Status?item.Status:'N/A'}}</td>
                                                     </tr>
                                                 </tbody>
@@ -152,11 +148,9 @@
                                                         <th class="spantag">Project Name</th>
                                                         <th class="spantag">Type</th>
                                                         <th class="spantag">Delivery Unit</th>
-                                                        <th class="spantag">Billable / Non - Billable</th>
+                                                        <th class="spantag">Billable Status</th>
                                                         <th class="spantag">Project Manager</th>
                                                         <th class="spantag">Status</th>
-                                                        <!--<th>Reimbursed Amount</th>-->
-
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -165,9 +159,6 @@
                                                         <td>{{item.Project_x0020_Type?item.Project_x0020_Type:'N/A'}}</td>
                                                         <td>{{item.Delivery_x0020_Unit.Title?item.Delivery_x0020_Unit.Title:'N/A'}}</td>
                                                         <td>{{item.Billable_x002f_Non_x002d_Billabl?item.Billable_x002f_Non_x002d_Billabl:'N/A'}}</td>
-                                                        <!--<td>Claimed:{{item.Claimed_x0020_Amount?item.Claimed_x0020_Amount:'N/A'}}
-                                                        <br>Reimbursed:{{item.Reimbursed_x0020_Amount?item.Reimbursed_x0020_Amount:'N/A'}}
-                                                    </td>-->
                                                         <td>{{item.Project_x0020_Manager.Title?item.Project_x0020_Manager.Title:'N/A'}}</td>
                                                         <td>{{item.Status?item.Status:'N/A'}}</td>
                                                     </tr>
