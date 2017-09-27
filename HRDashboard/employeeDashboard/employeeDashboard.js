@@ -23,7 +23,6 @@ function employeeDashboardCtl($scope, $http, $timeout) {
     empExpand = '';
     Pending = 'Approved';
     TimesheetFilter = 'Title eq \'' + vm.UserId + '\'';
-    // TimesheetFilter = 'Title eq \'' + vm.UserId + '\' and Submitted_x0020_Status eq \'' + Pending + '\'';
     EmployeeFilter = 'Employee_x0020_ID eq \'' + vm.UserId + '\'';
     EmployeeLeaveFilter = EmployeeFilter + ' and Year eq  \'' + (new Date()).getFullYear() + '\'';
     CertFilter = EmployeeFilter + ' and Start_x0020_Date ge  \'' + (new Date()).getFullYear() +
@@ -33,7 +32,6 @@ function employeeDashboardCtl($scope, $http, $timeout) {
     var projectTeamMembersListFilter = '(Team_x0020_Members/Title eq ' + '\'' + vm.UserName + '\') and (Status eq \'' + status + '\')';
     vm.projectTeamMembersListOptions = {
         select: "Project_x0020_Master_x0020_ID",
-        //select: empSelect,
         expand: empExpand,
         filter: projectTeamMembersListFilter
     };
@@ -110,47 +108,29 @@ function employeeDashboardCtl($scope, $http, $timeout) {
 
     };
     vm.readCertificates();
-    vm.readRedeemList = function() {
-        var status = "Pending";
-        var redeemFilter = '(Emp_x0020_ID/ID eq ' + '\'' + vm.UserId + '\') and (Status eq \'' + status + '\')';
+    vm.readempMasterlist = function() {
+        vm.totalpts = 0;
+        var redeemFilter = '(Emp_x0020_ID/Employee_x0020_ID eq ' + '\'' + vm.UserId + '\')';
         vm.redeemOptions = {
             select: empSelect,
             expand: empExpand,
             filter: redeemFilter
         };
-        spcrud.read($http, vm.Redeemlist, vm.redeemOptions).then(function(response) {
+        spcrud.read($http, vm.EmployeeMasterList, vm.redeemOptions).then(function(response) {
             if (response.status === 200)
-                vm.redeemlistemp = response.data.d.results;
-            vm.availablepts = 0;
-            vm.totalUsedPts = 0;
-            vm.redeemlistemp.forEach(function(item) {
-                vm.availablepts = item.Item_x0020_Code.Points * item.RedeemQuantity;
-                vm.totalUsedPts = vm.availablepts + vm.totalUsedPts;
-
-            }, this);
-            vm.readempMasterlist();
+                vm.empMasterDetails = response.data.d.results[0];
+            vm.empMasterDetails.Balance = parseFloat(vm.empMasterDetails.Balance);
+            vm.loaded = true;
         }, function(error) {
             console.log('error', error);
         });
     }
-    vm.readempMasterlist = function() {
-        vm.totalpts = 0;
-        spcrud.read($http, vm.EmployeeMasterList, vm.nameFilterOptions).then(function(response) {
-            if (response.status === 200)
-                vm.empMasterDetails = response.data.d.results;
-            vm.empMasterDetails[0].Balance = parseFloat(vm.empMasterDetails[0].Balance);
-            vm.totalpts = vm.empMasterDetails[0].Balance + vm.totalUsedPts;
-        }, function(error) {
-            console.log('error', error);
-        });
-    }
-    vm.readRedeemList();
+    vm.readempMasterlist();
     vm.readProjectTeamMembersList = function() {
 
         spcrud.read($http, vm.ProjectTeamMembersList, vm.projectTeamMembersListOptions).then(function(response) {
             if (response.status === 200)
                 vm.projectTeamMembersList = response.data.d.results;
-            vm.readProjectsList(vm.projectTeamMembersList);
         }, function(error) {
             console.log('error', error);
         });
@@ -169,8 +149,8 @@ function employeeDashboardCtl($scope, $http, $timeout) {
             Count++;
 
         }, this);
-        var projSelect = 'Delivery_x0020_Manager/Title,Project_x0020_Manager/Title,*';
-        var projExpand = 'Delivery_x0020_Manager/Title,Project_x0020_Manager/Title';
+        var projSelect = 'Delivery_x0020_Manager/Title,Project_x0020_Manager/Title,Delivery_x0020_Unit/Title,*';
+        var projExpand = 'Delivery_x0020_Manager/Title,Project_x0020_Manager/Title,Delivery_x0020_Unit/Title';
         vm.projectsListOptions = {
             select: projSelect,
             expand: projExpand,
@@ -179,6 +159,7 @@ function employeeDashboardCtl($scope, $http, $timeout) {
         spcrud.read($http, vm.ProjectsList, vm.projectsListOptions).then(function(response) {
             if (response.status === 200)
                 vm.empProjectDetails = response.data.d.results;
+            console.log(vm.empProjectDetails);
             if (vm.empProjectDetails.length > 0) {
                 vm.showProjectTable = true;
             } else {
@@ -191,5 +172,4 @@ function employeeDashboardCtl($scope, $http, $timeout) {
     }
     vm.readProjectTeamMembersList();
 }
-//load
 angular.module('employeeDashboardApp', []).controller('employeeDashboardCtl', employeeDashboardCtl);

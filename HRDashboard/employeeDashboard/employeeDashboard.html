@@ -96,9 +96,9 @@
                                     <div class="dashboardBox">
                                         <div class="dashboardBoxHeading">RNR Details</div>
                                         <div class="dashboardBoxBody1">
-                                            <b class="spantag">Balance : </b>{{empMasterDetails[0].Balance?empMasterDetails[0].Balance:'N/A'}}
-                                            <br><b class="spantag">Used : </b>{{totalUsedPts?totalUsedPts:'0'}}
-                                            <br><b class="spantag">Total Earned : </b>{{totalpts?totalpts:'N/A'}}
+                                            <b class="spantag">Balance : </b>{{empMasterDetails.Balance?empMasterDetails.Balance:'N/A'}}
+                                            <br><b class="spantag">Used : </b>{{empMasterDetails.Redemend?empMasterDetails.Redemend:'0'}}
+                                            <br><b class="spantag">Total Earned : </b>{{empMasterDetails.Total_x0020_Reward_x0020_Points?empMasterDetails.Total_x0020_Reward_x0020_Points:'N/A'}}
                                         </div>
                                     </div>
                                 </div>
@@ -151,7 +151,8 @@
                                                     <tr>
                                                         <th class="spantag">Project Name</th>
                                                         <th class="spantag">Type</th>
-                                                        <th class="spantag">Billable/Non-Billable</th>
+                                                        <th class="spantag">Delivery Unit</th>
+                                                        <th class="spantag">Billable / Non - Billable</th>
                                                         <th class="spantag">Project Manager</th>
                                                         <th class="spantag">Status</th>
                                                         <!--<th>Reimbursed Amount</th>-->
@@ -162,6 +163,7 @@
                                                     <tr ng-repeat="item in empProjectDetails">
                                                         <td>{{item.Title?item.Title:'N/A'}}</td>
                                                         <td>{{item.Project_x0020_Type?item.Project_x0020_Type:'N/A'}}</td>
+                                                        <td>{{item.Delivery_x0020_Unit.Title?item.Delivery_x0020_Unit.Title:'N/A'}}</td>
                                                         <td>{{item.Billable_x002f_Non_x002d_Billabl?item.Billable_x002f_Non_x002d_Billabl:'N/A'}}</td>
                                                         <!--<td>Claimed:{{item.Claimed_x0020_Amount?item.Claimed_x0020_Amount:'N/A'}}
                                                         <br>Reimbursed:{{item.Reimbursed_x0020_Amount?item.Reimbursed_x0020_Amount:'N/A'}}

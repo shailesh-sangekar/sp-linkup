@@ -14,8 +14,8 @@
 }
 
 .viewMoreBtn:hover {
-    background: #fb5557;
-    border-color: #fb5557;
+    background: #01b070;
+    border-color: #01b070;
     color: #fff!important;
 }
 
@@ -24,8 +24,8 @@
 }
 
 .scrollTable {
-    min-height: 600px !important;
-    max-height: 600px !important;
+    min-height: 467px !important;
+    max-height: 467px !important;
     overflow-y: auto;
     overflow-x: hidden;
 }
@@ -54,4 +54,8 @@
     font-size: 40px;
     font-weight: 500;
     line-height: 0.6 !important;
+}
+
+.spantag {
+    color: #777;
 }
