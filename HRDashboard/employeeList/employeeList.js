@@ -35,6 +35,13 @@ function employeeListCtl($scope, $http, $timeout) {
         localStorage.setItem("UserID", (employeeId));
         localStorage.setItem("UserName", (employeeName));
     }
+    vm.convertToDate=function(ResignDate){
+        // var collectionDate = '2002-04-26 09:00:00'; 
+    console.log('R'+ResignDate);
+    $scope.newDate =new Date(ResignDate);
+    console.log('s'+$scope.newDate);
+    return $scope.newDate;
+    }
 }
 
 //load
