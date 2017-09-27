@@ -112,13 +112,17 @@
 .dashboardBoxBody {
     padding: 15px 0;
     padding-bottom: 0;
-    height: 130px;
+    height: 170px;
     overflow-y: auto;
 }
 
 .dashboardBoxBody1 {
     padding: 15px 0;
     padding-bottom: 0;
-    height: 110px;
+    height: 85px;
     overflow-y: auto;
+}
+
+.marginSpan {
+    margin-left: 5px;
 }

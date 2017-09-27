@@ -29,9 +29,11 @@ function employeeListCtl($scope, $http, $timeout) {
 
     };
     vm.readResigned();
-    vm.viewMoreButton = function(employeeId) {
+    vm.viewMoreButton = function(employeeId, employeeName) {
         console.log(employeeId);
+        console.log(employeeName);
         localStorage.setItem("UserID", (employeeId));
+        localStorage.setItem("UserName", (employeeName));
     }
 }
 
