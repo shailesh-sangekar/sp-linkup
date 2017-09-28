@@ -8,13 +8,12 @@
 
 <div ng-app="employeeListApp" class="appmodel">
     <div ng-controller="employeeListCtl">
-
-        <div class="spinner" ng-hide="loadedSpinner"></div>
-        <span ng-hide="loadedSpinner">
+        <div class="spinner" ng-hide="spinnerloaded"></div>
+        <span ng-hide="spinnerloaded">
 				Loading.....
 			</span>
-        <div ng-show="ESPLHR">
-            <div ng-cloak="" ng-show="loaded">
+        <div ng-cloak="" ng-show="loaded">
+            <div ng-show="ESPLHR">
                 <div class="row">
                     <div class="col-md-12">
                         <h4 class="masterHeading">Resigned Employee List</h4>
@@ -36,10 +35,7 @@
                                         <td>{{item.Account_x0020_Holder_x0020_Name?item.Account_x0020_Holder_x0020_Name:'N/A'}}</td>
                                         <td>{{item.Email_x0020_ID_x0020_Official?item.Email_x0020_ID_x0020_Official:'N/A'}}</td>
                                         <td>{{item.Personal_x0020_Contact_x0020_Num?item.Personal_x0020_Contact_x0020_Num:'N/A'}}</td>
-                                        <!-- <td ng-bind="item.Redemption_x0020_Approved_x0020_0 | date:'dd/MM/yyyy'"></td> -->
-                                        <!-- <td>{{item.Resignation_x0020_Date?item.Resignation_x0020_Date:'N/A'}}</td> -->
                                         <td>{{convertToDate(item.Resignation_x0020_Date) | date:'dd/MM/yyyy'}}</td>
-                                        <!--<td><button class="viewMoreBtn" ng-click="viewMoreButton(item.Employee_x0020_ID)"><i class="fa fa-external-link" aria-hidden="true"></i> View More</button></td>-->
                                         <td><a class="viewMoreBtn" href="/SitePages/Employee%20Dashboard.aspx" ng-click="viewMoreButton(item.Employee_x0020_ID,item.Account_x0020_Holder_x0020_Name,item.Resignation_x0020_Date)" title="View Redeem">View More</a></td>
                                     </tr>
                                 </tbody>
@@ -48,9 +44,10 @@
                     </div>
                 </div>
             </div>
+            <div ng-show="NotAuthorised">
+                <b>You Are Not Authorized To View This Page.</b>
+            </div>
         </div>
-        <div ng-show="!ESPLHR">
-            You are not authorised to view this page.
-        </div>
+
     </div>
 </div>

@@ -7,12 +7,12 @@
 
 <div ng-app="employeeDashboardApp" class="appmodel">
     <div ng-controller="employeeDashboardCtl">
-        <div ng-show="ESPLHR">
-            <div class="spinner" ng-hide="loaded"></div>
-            <span ng-hide="loaded">
+        <div class="spinner" ng-hide="loaded"></div>
+        <span ng-hide="loaded">
 				Loading.....
 			</span>
-            <div ng-cloak="" ng-show="loaded" ng-if="UserId">
+        <div ng-cloak="" ng-show="loaded" ng-if="UserId">
+            <div ng-show="ESPLHR">
                 <section class="topSection">
                     <div class="mainBox">
                         <div>
@@ -182,9 +182,6 @@
                     </div>
                 </section>
             </div>
-        </div>
-        <div ng-show="!ESPLHR">
-            You are not authorised to view this page.
         </div>
     </div>
 </div>

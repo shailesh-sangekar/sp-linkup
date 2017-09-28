@@ -3,6 +3,7 @@ function employeeDashboardCtl($scope, $http, $timeout, $window, $location) {
     vm.UserId = '';
     vm.ESPLHR = false;
     vm.GroupFound = false;
+    vm.NotAuthorised1 = false;
     vm.loaded = false;
     vm.status = 'OK';
     vm.userDetails = '';
@@ -13,10 +14,8 @@ function employeeDashboardCtl($scope, $http, $timeout, $window, $location) {
         vm.UserResignDate = localStorage.getItem("UserResignDate");
         if (vm.UserId == null) {
             self.location = "http://espld209/SitePages/Employee%20List.aspx";
-            //$location.path('http://espld209/SitePages/Employee%20List.aspx');
-            // $(window).location("http://espld209/SitePages/Employee%20List.aspx");
         } else {
-
+            vm.getData();
         }
     }
     vm.convertToDate = function(UserResignDate) {
@@ -29,9 +28,7 @@ function employeeDashboardCtl($scope, $http, $timeout, $window, $location) {
             var collectionDate = arr[1] + '-' + arr[0] + '-' + arr[2];
             $scope.newDate = new Date(collectionDate);
             // console.log('s' + $scope.newDate);
-            
         }
-
     }
     $(window).unload(function() {
         localStorage.removeItem('UserID');
@@ -52,7 +49,7 @@ function employeeDashboardCtl($scope, $http, $timeout, $window, $location) {
     TimesheetFilter = 'Title eq \'' + vm.UserId + '\'';
     EmployeeFilter = 'Employee_x0020_ID eq \'' + vm.UserId + '\'';
     EmployeeLeaveFilter = EmployeeFilter + ' and Year eq  \'' + (new Date()).getFullYear() + '\'';
-    CertFilter = EmployeeFilter + ' and Start_x0020_Date ge  \'' + $scope.newDate + '\' and Start_x0020_Date le   \'' +$scope.newDate.setYear($scope.newDate.getFullYear() - 1)+'\'';
+    CertFilter = EmployeeFilter + ' and Start_x0020_Date ge  \'' + $scope.newDate + '\' and Start_x0020_Date le   \'' + $scope.newDate.setYear((new Date($scope.newDate)).getFullYear() - 1) + '\'';
     var status = "Active";
     var projectTeamMembersListFilter = '(Team_x0020_Members/Title eq ' + '\'' + vm.UserName + '\') and (Status eq \'' + status + '\')';
     vm.projectTeamMembersListOptions = {
@@ -89,16 +86,25 @@ function employeeDashboardCtl($scope, $http, $timeout, $window, $location) {
                     if (response.data.d.Groups.results[i].LoginName == 'ESPL HR') {
                         vm.ESPLHR = true;
                         vm.GroupFound = true;
+                        vm.NotAuthorised = false;
                         vm.processForm();
+                    } else {
+                        vm.NotAuthorised = true;
                     }
-                    // break;
                 }
+                // break;
             }
         }, function(error) {
             console.log('error', error);
         });
     };
     vm.readPeopleList();
+    vm.getData = function() {
+        vm.readTimesheet();
+        vm.readLeaves();
+        vm.readempMasterlist();
+        vm.readProjectTeamMembersList();
+    }
     vm.readTimesheet = function() {
         spcrud.read($http, vm.listEmployeeTimesheet, vm.timesheetOptions).then(function(resp) {
             if (resp.status === 200)
@@ -128,7 +134,7 @@ function employeeDashboardCtl($scope, $http, $timeout, $window, $location) {
             console.log('error', error);
         });
     };
-    vm.readTimesheet();
+
     vm.readLeaves = function() {
         spcrud.read($http, vm.listEmployeeLeaves, vm.employeeOptions).then(function(resp) {
             if (resp.status === 200)
@@ -142,7 +148,7 @@ function employeeDashboardCtl($scope, $http, $timeout, $window, $location) {
             console.log('error', error);
         });
     };
-    vm.readLeaves();
+
     vm.readCertificates = function() {
         spcrud.read($http, vm.listEmployeeCertificates, vm.certOptions).then(function(resp) {
             if (resp.status === 200)
@@ -173,7 +179,7 @@ function employeeDashboardCtl($scope, $http, $timeout, $window, $location) {
             console.log('error', error);
         });
     }
-    vm.readempMasterlist();
+
     vm.readProjectTeamMembersList = function() {
         spcrud.read($http, vm.ProjectTeamMembersList, vm.projectTeamMembersListOptions).then(function(response) {
             if (response.status === 200)
@@ -183,7 +189,7 @@ function employeeDashboardCtl($scope, $http, $timeout, $window, $location) {
             console.log('error', error);
         });
     }
-    vm.readProjectTeamMembersList();
+
     vm.readProjectsList = function(projectTeamMembersList) {
         var Count = 0;
         vm.projectsList = projectTeamMembersList;

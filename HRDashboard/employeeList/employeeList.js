@@ -1,9 +1,11 @@
 function employeeListCtl($scope, $http, $timeout) {
     var vm = $scope;
+    vm.count = 0;
     vm.ESPLHR = false;
-    vm.GroupFound = false;
+    vm.GroupFound = false
+    vm.NotAuthorised = false;
+    vm.spinnerloaded = false;
     vm.loaded = false;
-    vm.loadedSpinner = false;
     vm.status = 'OK';
     vm.userDetails = '';
     vm.listEmployeePersonalDetailsMaster = 'Employee Personal Details Master';
@@ -19,6 +21,7 @@ function employeeListCtl($scope, $http, $timeout) {
     };
 
     vm.gridItemsResigned = [];
+
     vm.readPeopleList = function() {
         spcrud.getCurrentUser($http).then(function(response) {
             if (response.status === 200)
@@ -29,26 +32,27 @@ function employeeListCtl($scope, $http, $timeout) {
                 if (vm.GroupFound == false) {
                     if (response.data.d.Groups.results[i].LoginName == 'ESPL HR') {
                         vm.ESPLHR = true;
+                        vm.NotAuthorised = false;
                         vm.GroupFound = true;
-                        vm.loadedSpinner = true;
-                        vm.readResigned();
                     } else {
-                        vm.loadedSpinner = true;
+                        vm.NotAuthorised = true;
                     }
-                    // break;
                 }
             }
         }, function(error) {
             console.log('error', error);
         });
     };
-    vm.readPeopleList();
+
+
     vm.readResigned = function() {
         spcrud.read($http, vm.listEmployeePersonalDetailsMaster, vm.resignedOptions).then(function(resp) {
             if (resp.status === 200)
                 var myJSON = JSON.stringify(resp.data.d.results);
             vm.gridItemsResigned = resp.data.d.results;
+            vm.spinnerloaded = true;
             vm.loaded = true;
+            vm.readPeopleList();
         }, function(error) {
             console.log('error', error);
         });
@@ -73,6 +77,10 @@ function employeeListCtl($scope, $http, $timeout) {
         }
 
     }
+    vm.readResigned();
+
+
+
 }
 
 //load
