@@ -18,8 +18,33 @@
 }
 
 .viewListBtn:hover {
+    background: #01b070;
+    border-color: #01b070;
+    color: #fff!important;
+}
+
+.viewTabBtn {
+    border-radius: 3px!important;
+    font-family: "Open Sans", sans-serif;
     background: #fb5557;
     border-color: #fb5557;
+    color: #fff!important;
+    font-size: 12px;
+    cursor: pointer;
+    border: 1px solid #ddd;
+    padding: 5px 12px;
+    font-weight: 600;
+    transition: 0.3s all ease-out;
+    float: right;
+    /*margin-right: 31px;*/
+    margin-top: -8px;
+    height: 28px;
+    padding: 3px 12px !important;
+}
+
+.viewTabBtn:hover {
+    background: #01b070;
+    border-color: #01b070;
     color: #fff!important;
 }
 

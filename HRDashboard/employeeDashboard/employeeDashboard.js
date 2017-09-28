@@ -7,6 +7,7 @@ function employeeDashboardCtl($scope, $http, $timeout, $window, $location) {
     vm.processForm = function() {
         vm.UserId = localStorage.getItem("UserID");
         vm.UserName = localStorage.getItem("UserName");
+        vm.UserResignDate = localStorage.getItem("UserResignDate");
         if (vm.UserId == null) {
             self.location = "http://espld209/SitePages/Employee%20List.aspx";
             //$location.path('http://espld209/SitePages/Employee%20List.aspx');
@@ -95,7 +96,11 @@ function employeeDashboardCtl($scope, $http, $timeout, $window, $location) {
         spcrud.read($http, vm.listEmployeeLeaves, vm.employeeOptions).then(function(resp) {
             if (resp.status === 200)
                 vm.gridItemsLeaves = resp.data.d.results[0];
+            console.log(vm.gridItemsLeaves);
             vm.gridItemsLeaves.Actual_x0020_Balance = parseFloat(vm.gridItemsLeaves.Actual_x0020_Balance);
+            vm.halfLeave = parseFloat(vm.gridItemsLeaves.HL_x0020_Taken) * 0.5;
+            vm.halfAbscent = parseFloat(vm.gridItemsLeaves.HA_x0020_Taken) * 0.5;
+            vm.totalLeaves = parseFloat(vm.gridItemsLeaves.L_x0020_Taken) + parseFloat(vm.gridItemsLeaves.A_x0020_Taken) + vm.halfLeave + vm.halfAbscent;
         }, function(error) {
             console.log('error', error);
         });

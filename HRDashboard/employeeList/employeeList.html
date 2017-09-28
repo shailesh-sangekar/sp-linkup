@@ -38,7 +38,7 @@
                                     <!-- <td>{{item.Resignation_x0020_Date?item.Resignation_x0020_Date:'N/A'}}</td> -->
                                     <td>{{convertToDate(item.Resignation_x0020_Date) | date:'dd/MM/yyyy'}}</td>
                                     <!--<td><button class="viewMoreBtn" ng-click="viewMoreButton(item.Employee_x0020_ID)"><i class="fa fa-external-link" aria-hidden="true"></i> View More</button></td>-->
-                                    <td><a class="viewMoreBtn" href="/SitePages/Employee%20Dashboard.aspx" ng-click="viewMoreButton(item.Employee_x0020_ID,item.Account_x0020_Holder_x0020_Name)" title="View Redeem">View More</a></td>
+                                    <td><a class="viewMoreBtn" href="/SitePages/Employee%20Dashboard.aspx" ng-click="viewMoreButton(item.Employee_x0020_ID,item.Account_x0020_Holder_x0020_Name,item.Resignation_x0020_Date)" title="View Redeem">View More</a></td>
                                 </tr>
                             </tbody>
                         </table>

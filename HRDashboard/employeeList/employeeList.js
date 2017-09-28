@@ -28,16 +28,24 @@ function employeeListCtl($scope, $http, $timeout) {
 
     };
     vm.readResigned();
-    vm.viewMoreButton = function(employeeId, employeeName) {
+    vm.viewMoreButton = function(employeeId, employeeName, empResignDate) {
         localStorage.setItem("UserID", (employeeId));
         localStorage.setItem("UserName", (employeeName));
+        localStorage.setItem("UserResignDate", (empResignDate));
     }
-    vm.convertToDate=function(ResignDate){
+    vm.convertToDate = function(ResignDate) {
         // var collectionDate = '2002-04-26 09:00:00'; 
-    console.log('R'+ResignDate);
-    $scope.newDate =new Date(ResignDate);
-    console.log('s'+$scope.newDate);
-    return $scope.newDate;
+        // console.log('R' + ResignDate);
+        if (ResignDate == '' || ResignDate == null) {
+            return 'N/A';
+        } else {
+            var arr = ResignDate.split("-");
+            var collectionDate = arr[1] + '-' + arr[0] + '-' + arr[2];
+            $scope.newDate = new Date(collectionDate);
+            // console.log('s' + $scope.newDate);
+            return $scope.newDate;
+        }
+
     }
 }
 
