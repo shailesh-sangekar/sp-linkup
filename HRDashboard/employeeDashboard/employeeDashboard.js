@@ -6,6 +6,7 @@ function employeeDashboardCtl($scope, $http, $timeout, $window, $location) {
     vm.loaded = false;
     vm.status = 'OK';
     vm.userDetails = '';
+    $scope.newDate = '';
     vm.processForm = function() {
         vm.UserId = localStorage.getItem("UserID");
         vm.UserName = localStorage.getItem("UserName");
@@ -17,6 +18,20 @@ function employeeDashboardCtl($scope, $http, $timeout, $window, $location) {
         } else {
 
         }
+    }
+    vm.convertToDate = function(UserResignDate) {
+        // var collectionDate = '2002-04-26 09:00:00'; 
+        // console.log('R' + ResignDate);
+        if (UserResignDate == '' || UserResignDate == null) {
+            return 'N/A';
+        } else {
+            var arr = UserResignDate.split("-");
+            var collectionDate = arr[1] + '-' + arr[0] + '-' + arr[2];
+            $scope.newDate = new Date(collectionDate);
+            // console.log('s' + $scope.newDate);
+            
+        }
+
     }
     $(window).unload(function() {
         localStorage.removeItem('UserID');
@@ -37,9 +52,7 @@ function employeeDashboardCtl($scope, $http, $timeout, $window, $location) {
     TimesheetFilter = 'Title eq \'' + vm.UserId + '\'';
     EmployeeFilter = 'Employee_x0020_ID eq \'' + vm.UserId + '\'';
     EmployeeLeaveFilter = EmployeeFilter + ' and Year eq  \'' + (new Date()).getFullYear() + '\'';
-    CertFilter = EmployeeFilter + ' and Start_x0020_Date ge  \'' + (new Date()).getFullYear() +
-        '-01-01T00:00:00Z' + '\' and Start_x0020_Date le   \'' + (new Date()).getFullYear() +
-        '-12-31T23:59:59Z\'';
+    CertFilter = EmployeeFilter + ' and Start_x0020_Date ge  \'' + $scope.newDate + '\' and Start_x0020_Date le   \'' +$scope.newDate.setYear($scope.newDate.getFullYear() - 1)+'\'';
     var status = "Active";
     var projectTeamMembersListFilter = '(Team_x0020_Members/Title eq ' + '\'' + vm.UserName + '\') and (Status eq \'' + status + '\')';
     vm.projectTeamMembersListOptions = {
