@@ -67,11 +67,7 @@ function employeeDashboardCtl($scope, $http, $timeout, $window, $location) {
         expand: empExpand,
         filter: CertFilter
     };
-    vm.employeeOptions = {
-        select: empSelect,
-        expand: empExpand,
-        filter: EmployeeLeaveFilter
-    };
+
     vm.gridItemsTimesheet = [];
     vm.gridItemsLeaves = [];
     vm.gridItemsCertificates = [];
@@ -136,6 +132,12 @@ function employeeDashboardCtl($scope, $http, $timeout, $window, $location) {
     };
 
     vm.readLeaves = function() {
+        EmployeeLeaveFilter = EmployeeFilter + ' and Year eq  \'' + (new Date()).getFullYear() + '\'';
+        vm.employeeOptions = {
+            select: empSelect,
+            expand: empExpand,
+            filter: EmployeeLeaveFilter
+        };
         spcrud.read($http, vm.listEmployeeLeaves, vm.employeeOptions).then(function(resp) {
             if (resp.status === 200)
                 vm.gridItemsLeaves = resp.data.d.results[0];
