@@ -35,7 +35,7 @@
                                         <td>{{item.Account_x0020_Holder_x0020_Name?item.Account_x0020_Holder_x0020_Name:'N/A'}}</td>
                                         <td>{{item.Email_x0020_ID_x0020_Official?item.Email_x0020_ID_x0020_Official:'N/A'}}</td>
                                         <td>{{item.Personal_x0020_Contact_x0020_Num?item.Personal_x0020_Contact_x0020_Num:'N/A'}}</td>
-                                        <td>{{convertToDate(item.Resignation_x0020_Date) | date:'dd/MM/yyyy'}}</td>
+                                        <td>{{item.Resignation_x0020_Date?item.Resignation_x0020_Date:'N/A'}}</td>
                                         <td><a class="viewMoreBtn" href="/SitePages/Employee%20Dashboard.aspx" ng-click="viewMoreButton(item.Employee_x0020_ID,item.Account_x0020_Holder_x0020_Name,item.Resignation_x0020_Date)" title="View Redeem">View More</a></td>
                                     </tr>
                                 </tbody>
