@@ -50,6 +50,16 @@ function employeeListCtl($scope, $http, $timeout) {
             if (resp.status === 200)
                 var myJSON = JSON.stringify(resp.data.d.results);
             vm.gridItemsResigned = resp.data.d.results;
+            console.log(vm.gridItemsResigned);
+            vm.gridItemsResigned.forEach(f => {
+                if (f.Resignation_x0020_Date != null) {
+                    f.Resignation_x0020_Date = f.Resignation_x0020_Date.substring(0, 10);
+                }
+
+            });
+            // vm.gridItemsResigned.forEach(function(item) {
+            //     item.Resignation_x0020_Date = item.Resignation_x0020_Date.substring(0, 8);
+            // }, this);
             vm.spinnerloaded = true;
             vm.loaded = true;
             vm.readPeopleList();

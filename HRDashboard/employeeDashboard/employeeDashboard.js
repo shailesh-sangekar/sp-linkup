@@ -69,10 +69,6 @@ function employeeDashboardCtl($scope, $http, $timeout, $window, $location) {
     empExpand = '';
     Pending = 'Approved';
     TimesheetFilter = 'Title eq \'' + vm.UserId + '\'';
-    EmployeeFilter = 'Employee_x0020_ID eq \'' + vm.UserId + '\'';
- 
-    EmployeeLeaveFilter = EmployeeFilter + ' and Year eq  \'' + (new Date()).getFullYear() + '\'';
-    
     var status = "Active";
     var projectTeamMembersListFilter = '(Team_x0020_Members/Title eq ' + '\'' + vm.UserName + '\') and (Status eq \'' + status + '\')';
     vm.projectTeamMembersListOptions = {
@@ -84,12 +80,6 @@ function employeeDashboardCtl($scope, $http, $timeout, $window, $location) {
         select: empSelect,
         expand: empExpand,
         filter: TimesheetFilter
-    };
-    
-    vm.employeeOptions = {
-        select: empSelect,
-        expand: empExpand,
-        filter: EmployeeLeaveFilter
     };
     vm.gridItemsTimesheet = [];
     vm.gridItemsLeaves = [];
@@ -156,8 +146,15 @@ function employeeDashboardCtl($scope, $http, $timeout, $window, $location) {
         });
     };
 
-    vm.readLeaves = function () {
-        spcrud.read($http, vm.listEmployeeLeaves, vm.employeeOptions).then(function (resp) {
+    vm.readLeaves = function() {
+        EmployeeFilter = 'Employee_x0020_ID eq \'' + vm.UserId + '\'';
+        EmployeeLeaveFilter = EmployeeFilter + ' and Year eq  \'' + (new Date()).getFullYear() + '\'';
+        vm.employeeOptions = {
+            select: empSelect,
+            expand: empExpand,
+            filter: EmployeeLeaveFilter
+        };
+        spcrud.read($http, vm.listEmployeeLeaves, vm.employeeOptions).then(function(resp) {
             if (resp.status === 200)
                 vm.gridItemsLeaves = resp.data.d.results[0];
             console.log(vm.gridItemsLeaves);
