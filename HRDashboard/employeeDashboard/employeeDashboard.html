@@ -7,20 +7,21 @@
 
 <div ng-app="employeeDashboardApp" class="appmodel">
     <div ng-controller="employeeDashboardCtl">
-        <div class="spinner" ng-hide="loaded"></div>
-        <span ng-hide="loaded">
+        <div ng-show="ESPLHR">
+            <div class="spinner" ng-hide="loaded"></div>
+            <span ng-hide="loaded">
 				Loading.....
 			</span>
-        <div ng-cloak="" ng-show="loaded" ng-if="UserId">
-            <section class="topSection">
-                <div class="mainBox">
-                    <div>
-                        <h4 class="masterHeading">{{UserName}} <small>( {{UserId}} )</small></h4>
-                        <a class="viewListBtn" href="/SitePages/Employee%20List.aspx">View Resigned Emp List</a>
+            <div ng-cloak="" ng-show="loaded" ng-if="UserId">
+                <section class="topSection">
+                    <div class="mainBox">
+                        <div>
+                            <h4 class="masterHeading">{{UserName}} <small>( {{UserId}} )</small></h4>
+                            <a class="viewListBtn" href="/SitePages/Employee%20List.aspx">View Resigned Emp List</a>
+                        </div>
                     </div>
-                </div>
-            </section>
-            <!--<section>
+                </section>
+                <!--<section>
             <div class="boxContainer">
                 <div class="row">
                     <div class="col-md-12">
@@ -48,129 +49,130 @@
                 </div>
             </div>
         </section>-->
-            <section>
-                <div class="boxContainer">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="col-md-4">
-                                <div>
-                                    <div class="dashboardBox">
-                                        <div class="dashboardBoxHeading">Leaves
-                                            <a class="viewTabBtn" href="/sitepages/bulkleaveapproval.aspx" title="Approve Leaves">Approve Leaves</a>
-                                        </div>
-                                        <div class="dashboardBoxBody1">
-                                            <div class="col-md-6">
-                                                <b class="spantag">Balance : </b>{{gridItemsLeaves.Actual_x0020_Balance?gridItemsLeaves.Actual_x0020_Balance:'N/A'}}
-                                                <br><b class="spantag">Full Day Leave : </b>{{gridItemsLeaves.L_x0020_Taken?gridItemsLeaves.L_x0020_Taken:'N/A'}}
-                                                <br><b class="spantag">Full Day Absent : </b>{{gridItemsLeaves.A_x0020_Taken?gridItemsLeaves.A_x0020_Taken:'N/A'}}
+                <section>
+                    <div class="boxContainer">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="col-md-4">
+                                    <div>
+                                        <div class="dashboardBox">
+                                            <div class="dashboardBoxHeading">Leaves
+                                                <a class="viewTabBtn" href="/sitepages/bulkleaveapproval.aspx" title="Approve Leaves">Approve Leaves</a>
                                             </div>
-                                            <div class="col-md-6">
-                                                <b class="spantag">Total Taken : </b>{{totalLeaves}}
-                                                <b class="spantag">Half Day Leave : </b>{{gridItemsLeaves.HL_x0020_Taken?gridItemsLeaves.HL_x0020_Taken:'N/A'}}
-                                                <br><b class="spantag">Half Day Absent : </b>{{gridItemsLeaves.HA_x0020_Taken?gridItemsLeaves.HA_x0020_Taken:'N/A'}}
-                                            </div>
+                                            <div class="dashboardBoxBody1">
+                                                <div class="col-md-6">
+                                                    <b class="spantag">Balance : </b>{{gridItemsLeaves.Actual_x0020_Balance?gridItemsLeaves.Actual_x0020_Balance:'N/A'}}
+                                                    <br><b class="spantag">Full Day Leave : </b>{{gridItemsLeaves.L_x0020_Taken?gridItemsLeaves.L_x0020_Taken:'N/A'}}
+                                                    <br><b class="spantag">Full Day Absent : </b>{{gridItemsLeaves.A_x0020_Taken?gridItemsLeaves.A_x0020_Taken:'N/A'}}
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <b class="spantag">Total Taken : </b>{{totalLeaves}}
+                                                    <b class="spantag">Half Day Leave : </b>{{gridItemsLeaves.HL_x0020_Taken?gridItemsLeaves.HL_x0020_Taken:'N/A'}}
+                                                    <br><b class="spantag">Half Day Absent : </b>{{gridItemsLeaves.HA_x0020_Taken?gridItemsLeaves.HA_x0020_Taken:'N/A'}}
+                                                </div>
 
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div>
-                                    <div class="dashboardBox">
-                                        <div class="dashboardBoxHeading">TimeSheet
-                                            <a class="viewTabBtn" href="/SitePages/BulkTimesheetApproval.aspx" title="Approve Timesheet">Approve Timesheet</a>
-                                        </div>
-                                        <div class="dashboardBoxBody1">
-                                            <div class="col-md-6">
-                                                <b class="spantag">Pending : </b>{{numPendingTimeSheet?numPendingTimeSheet:'0'}}
-                                                <br><b class="spantag">Approved : </b>{{numApproved?numApproved:'0'}}
                                             </div>
-                                            <div class="col-md-6">
-                                                <b class="spantag">Submitted : </b>{{numSubmitted?numSubmitted:'0'}}
-                                                <br><b class="spantag">Not Submitted : </b>{{numNotSubmitted?numNotSubmitted:'0'}}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div>
+                                        <div class="dashboardBox">
+                                            <div class="dashboardBoxHeading">TimeSheet
+                                                <a class="viewTabBtn" href="/SitePages/BulkTimesheetApproval.aspx" title="Approve Timesheet">Approve Timesheet</a>
                                             </div>
-                                            <span class="marginSpan"><b class="spantag">Partially Approved : </b>{{numPartiallyApproved?numPartiallyApproved:'0'}}</span>
+                                            <div class="dashboardBoxBody1">
+                                                <div class="col-md-6">
+                                                    <b class="spantag">Pending : </b>{{numPendingTimeSheet?numPendingTimeSheet:'0'}}
+                                                    <br><b class="spantag">Approved : </b>{{numApproved?numApproved:'0'}}
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <b class="spantag">Submitted : </b>{{numSubmitted?numSubmitted:'0'}}
+                                                    <br><b class="spantag">Not Submitted : </b>{{numNotSubmitted?numNotSubmitted:'0'}}
+                                                </div>
+                                                <span class="marginSpan"><b class="spantag">Partially Approved : </b>{{numPartiallyApproved?numPartiallyApproved:'0'}}</span>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div>
-                                    <div class="dashboardBox">
-                                        <div class="dashboardBoxHeading">RNR</div>
-                                        <div class="dashboardBoxBody1">
-                                            <b class="spantag">RnR Balance : </b>{{empMasterDetails.Balance?empMasterDetails.Balance:'0'}}
-                                            <br><b class="spantag">RnR Used Points : </b>{{empMasterDetails.Redemend?empMasterDetails.Redemend:'0'}}
-                                            <br><b class="spantag">Total RnR Points Earned : </b>{{empMasterDetails.Total_x0020_Reward_x0020_Points?empMasterDetails.Total_x0020_Reward_x0020_Points:'0'}}
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-12">
-                            <div class="col-md-6">
-                                <div>
-                                    <div class="dashboardBox">
-                                        <div class="dashboardBoxHeading">Certification</div>
-                                        <div class="dashboardBoxBody">
-                                            <table ng-if="showTable" class="table table-striped table-bordered table-hover table-checkable order-column">
-                                                <thead>
-                                                    <tr>
-                                                        <th class="spantag">Code</th>
-                                                        <th class="spantag">Name</th>
-                                                        <th class="spantag">Date</th>
-                                                        <th class="spantag">Amount</th>
-                                                        <th class="spantag">Status</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <tr ng-repeat="item in gridItemsCertificates">
-                                                        <td>{{item.Certification_x0020_Code?item.Certification_x0020_Code:'N/A'}}</td>
-                                                        <td>{{item.Certification_x0020_Name?item.Certification_x0020_Name:'N/A'}}</td>
-                                                        <td><span ng-bind="item.Certification_x0020_Date | date:'dd/MM/yyyy'"></span></td>
-                                                        <td>Claimed:{{item.Claimed_x0020_Amount?item.Claimed_x0020_Amount:'N/A'}}
-                                                            <br>Reimbursed:{{item.Reimbursed_x0020_Amount?item.Reimbursed_x0020_Amount:'N/A'}}
-                                                        </td>
-                                                        <td>{{item.Status?item.Status:'N/A'}}</td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                            <div ng-if="!showTable">
-                                                <b>No records found...!</b>
+                                <div class="col-md-4">
+                                    <div>
+                                        <div class="dashboardBox">
+                                            <div class="dashboardBoxHeading">RNR</div>
+                                            <div class="dashboardBoxBody1">
+                                                <b class="spantag">RnR Balance : </b>{{empMasterDetails.Balance?empMasterDetails.Balance:'0'}}
+                                                <br><b class="spantag">RnR Used Points : </b>{{empMasterDetails.Redemend?empMasterDetails.Redemend:'0'}}
+                                                <br><b class="spantag">Total RnR Points Earned : </b>{{empMasterDetails.Total_x0020_Reward_x0020_Points?empMasterDetails.Total_x0020_Reward_x0020_Points:'0'}}
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-6">
-                                <div>
-                                    <div class="dashboardBox">
-                                        <div class="dashboardBoxHeading">Project</div>
-                                        <div class="dashboardBoxBody">
-                                            <table ng-if="showProjectTable" class="table table-striped table-bordered table-hover table-checkable order-column">
-                                                <thead>
-                                                    <tr>
-                                                        <th class="spantag">Project Name</th>
-                                                        <th class="spantag">Type</th>
-                                                        <th class="spantag">Delivery Unit</th>
-                                                        <th class="spantag">Billable Status</th>
-                                                        <th class="spantag">Project Manager</th>
-                                                        <th class="spantag">Status</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <tr ng-repeat="item in empProjectDetails">
-                                                        <td>{{item.Title?item.Title:'N/A'}}</td>
-                                                        <td>{{item.Project_x0020_Type?item.Project_x0020_Type:'N/A'}}</td>
-                                                        <td>{{item.Delivery_x0020_Unit.Title?item.Delivery_x0020_Unit.Title:'N/A'}}</td>
-                                                        <td>{{item.Billable_x002f_Non_x002d_Billabl?item.Billable_x002f_Non_x002d_Billabl:'N/A'}}</td>
-                                                        <td>{{item.Project_x0020_Manager.Title?item.Project_x0020_Manager.Title:'N/A'}}</td>
-                                                        <td>{{item.Status?item.Status:'N/A'}}</td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                            <div ng-if="!showProjectTable">
-                                                <b>No records found...!</b>
+                            <div class="col-md-12">
+                                <div class="col-md-6">
+                                    <div>
+                                        <div class="dashboardBox">
+                                            <div class="dashboardBoxHeading">Certification</div>
+                                            <div class="dashboardBoxBody">
+                                                <table ng-if="showTable" class="table table-striped table-bordered table-hover table-checkable order-column">
+                                                    <thead>
+                                                        <tr>
+                                                            <th class="spantag">Code</th>
+                                                            <th class="spantag">Name</th>
+                                                            <th class="spantag">Date</th>
+                                                            <th class="spantag">Amount</th>
+                                                            <th class="spantag">Status</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr ng-repeat="item in gridItemsCertificates">
+                                                            <td>{{item.Certification_x0020_Code?item.Certification_x0020_Code:'N/A'}}</td>
+                                                            <td>{{item.Certification_x0020_Name?item.Certification_x0020_Name:'N/A'}}</td>
+                                                            <td><span ng-bind="item.Certification_x0020_Date | date:'dd/MM/yyyy'"></span></td>
+                                                            <td>Claimed:{{item.Claimed_x0020_Amount?item.Claimed_x0020_Amount:'N/A'}}
+                                                                <br>Reimbursed:{{item.Reimbursed_x0020_Amount?item.Reimbursed_x0020_Amount:'N/A'}}
+                                                            </td>
+                                                            <td>{{item.Status?item.Status:'N/A'}}</td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                                <div ng-if="!showTable">
+                                                    <b>No records found...!</b>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div>
+                                        <div class="dashboardBox">
+                                            <div class="dashboardBoxHeading">Project</div>
+                                            <div class="dashboardBoxBody">
+                                                <table ng-if="showProjectTable" class="table table-striped table-bordered table-hover table-checkable order-column">
+                                                    <thead>
+                                                        <tr>
+                                                            <th class="spantag">Project Name</th>
+                                                            <th class="spantag">Type</th>
+                                                            <th class="spantag">Delivery Unit</th>
+                                                            <th class="spantag">Billable Status</th>
+                                                            <th class="spantag">Project Manager</th>
+                                                            <th class="spantag">Status</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr ng-repeat="item in empProjectDetails">
+                                                            <td>{{item.Title?item.Title:'N/A'}}</td>
+                                                            <td>{{item.Project_x0020_Type?item.Project_x0020_Type:'N/A'}}</td>
+                                                            <td>{{item.Delivery_x0020_Unit.Title?item.Delivery_x0020_Unit.Title:'N/A'}}</td>
+                                                            <td>{{item.Billable_x002f_Non_x002d_Billabl?item.Billable_x002f_Non_x002d_Billabl:'N/A'}}</td>
+                                                            <td>{{item.Project_x0020_Manager.Title?item.Project_x0020_Manager.Title:'N/A'}}</td>
+                                                            <td>{{item.Status?item.Status:'N/A'}}</td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                                <div ng-if="!showProjectTable">
+                                                    <b>No records found...!</b>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -178,8 +180,11 @@
                             </div>
                         </div>
                     </div>
-                </div>
-            </section>
+                </section>
+            </div>
+        </div>
+        <div ng-show="!ESPLHR">
+            You are not authorised to view this page.
         </div>
     </div>
 </div>

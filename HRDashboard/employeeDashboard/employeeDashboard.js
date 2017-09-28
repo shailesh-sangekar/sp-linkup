@@ -1,6 +1,8 @@
 function employeeDashboardCtl($scope, $http, $timeout, $window, $location) {
     var vm = $scope;
     vm.UserId = '';
+    vm.ESPLHR = false;
+    vm.GroupFound = false;
     vm.loaded = false;
     vm.status = 'OK';
     vm.userDetails = '';
@@ -12,9 +14,10 @@ function employeeDashboardCtl($scope, $http, $timeout, $window, $location) {
             self.location = "http://espld209/SitePages/Employee%20List.aspx";
             //$location.path('http://espld209/SitePages/Employee%20List.aspx');
             // $(window).location("http://espld209/SitePages/Employee%20List.aspx");
+        } else {
+
         }
     }
-    vm.processForm();
     $(window).unload(function() {
         localStorage.removeItem('UserID');
         localStorage.removeItem('UserName');
@@ -62,6 +65,27 @@ function employeeDashboardCtl($scope, $http, $timeout, $window, $location) {
     vm.gridItemsTimesheet = [];
     vm.gridItemsLeaves = [];
     vm.gridItemsCertificates = [];
+    vm.readPeopleList = function() {
+        spcrud.getCurrentUser($http).then(function(response) {
+            if (response.status === 200)
+                var myJSON = JSON.stringify(response.data.d.results);
+            vm.CurrentLoggedInUser = response.data.d.Title;
+            vm.LoggedInUserID = response.data.d.Id;
+            for (i = 0; i < response.data.d.Groups.results.length; i++) {
+                if (vm.GroupFound == false) {
+                    if (response.data.d.Groups.results[i].LoginName == 'ESPL HR') {
+                        vm.ESPLHR = true;
+                        vm.GroupFound = true;
+                        vm.processForm();
+                    }
+                    // break;
+                }
+            }
+        }, function(error) {
+            console.log('error', error);
+        });
+    };
+    vm.readPeopleList();
     vm.readTimesheet = function() {
         spcrud.read($http, vm.listEmployeeTimesheet, vm.timesheetOptions).then(function(resp) {
             if (resp.status === 200)

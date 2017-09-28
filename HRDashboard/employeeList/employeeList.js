@@ -1,6 +1,9 @@
 function employeeListCtl($scope, $http, $timeout) {
     var vm = $scope;
+    vm.ESPLHR = false;
+    vm.GroupFound = false;
     vm.loaded = false;
+    vm.loadedSpinner = false;
     vm.status = 'OK';
     vm.userDetails = '';
     vm.listEmployeePersonalDetailsMaster = 'Employee Personal Details Master';
@@ -16,6 +19,30 @@ function employeeListCtl($scope, $http, $timeout) {
     };
 
     vm.gridItemsResigned = [];
+    vm.readPeopleList = function() {
+        spcrud.getCurrentUser($http).then(function(response) {
+            if (response.status === 200)
+                var myJSON = JSON.stringify(response.data.d.results);
+            vm.CurrentLoggedInUser = response.data.d.Title;
+            vm.LoggedInUserID = response.data.d.Id;
+            for (i = 0; i < response.data.d.Groups.results.length; i++) {
+                if (vm.GroupFound == false) {
+                    if (response.data.d.Groups.results[i].LoginName == 'ESPL HR') {
+                        vm.ESPLHR = true;
+                        vm.GroupFound = true;
+                        vm.loadedSpinner = true;
+                        vm.readResigned();
+                    } else {
+                        vm.loadedSpinner = true;
+                    }
+                    // break;
+                }
+            }
+        }, function(error) {
+            console.log('error', error);
+        });
+    };
+    vm.readPeopleList();
     vm.readResigned = function() {
         spcrud.read($http, vm.listEmployeePersonalDetailsMaster, vm.resignedOptions).then(function(resp) {
             if (resp.status === 200)
@@ -27,7 +54,6 @@ function employeeListCtl($scope, $http, $timeout) {
         });
 
     };
-    vm.readResigned();
     vm.viewMoreButton = function(employeeId, employeeName, empResignDate) {
         localStorage.setItem("UserID", (employeeId));
         localStorage.setItem("UserName", (employeeName));
