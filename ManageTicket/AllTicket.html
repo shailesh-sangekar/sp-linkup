@@ -1,0 +1,63 @@
+<!--Third Party-->
+<script src="/SiteAssets/Files/angular.js"></script>
+
+<!--Application-->
+<script src="/SiteAssets/Files/spcrud.js"></script>
+<link rel="stylesheet" href="/SiteAssets/ManageTicket/AllTicket.css"></link>
+<script src="/SiteAssets/ManageTicket/AllTicket.js"></script>
+
+<div ng-app="AllTicketApp" class="appmodel">
+    <div ng-controller="AllTicketCtl">
+        <div class="spinner" ng-hide="spinnerloaded"></div>
+        <span ng-hide="spinnerloaded">
+				Loading.....
+			</span>
+        <div>
+            <div class="row">
+                <div class="col-md-12">
+                    <h4 class="masterHeading">Manage Ticket</h4>
+                    <div class="scrollTable" style="margin-top: 25px;">
+                        <table class="table table-striped table-bordered table-hover table-checkable order-column">
+                            <thead>
+                                <tr>
+                                    <th>Raised By</th>
+                                    <th>Department</th>
+                                    <th>Concern</th>
+                                    <th>Status</th>
+                                    <th>Priority</th>
+                                    <th>Created</th>
+                                    <th>Updated</th>
+                                    <th>Updated By</th>
+                                    <th>Resolved By</th>
+                                    <th>Age Days</th>
+                                    <th>Approvers Comment</th>
+                                    <th>View</th>
+                                    <th>Reply</th>
+                                    <th>Resolve</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>A</td>
+                                    <td>B</td>
+                                    <td>C</td>
+                                    <td>D</td>
+                                    <td>E</td>
+                                    <td>A</td>
+                                    <td>B</td>
+                                    <td>C</td>
+                                    <td>D</td>
+                                    <td>E</td>
+                                    <td>A</td>
+                                    <td>B</td>
+                                    <td>C</td>
+                                    <td>C</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

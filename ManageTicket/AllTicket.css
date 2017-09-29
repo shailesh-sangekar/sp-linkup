@@ -1,0 +1,61 @@
+.viewMoreBtn {
+    border-radius: 3px!important;
+    font-family: "Open Sans", sans-serif;
+    background: #fb5557;
+    border-color: #fb5557;
+    color: #fff!important;
+    font-size: 12px;
+    cursor: pointer;
+    border: 1px solid #ddd;
+    padding: 5px 12px;
+    font-weight: 600;
+    margin-top: -5px;
+    transition: 0.3s all ease-out;
+}
+
+.viewMoreBtn:hover {
+    background: #01b070;
+    border-color: #01b070;
+    color: #fff!important;
+}
+
+.viewMoreBtn i {
+    margin-right: 3px;
+}
+
+.scrollTable {
+    min-height: 467px !important;
+    max-height: 467px !important;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.spinner {
+    display: inline-block;
+    border-radius: 50px;
+    border-style: solid;
+    border-bottom-color: #3b5641;
+    border-top-color: #67b3a9;
+    border-left-color: #df7950;
+    border-right-color: #decb3f;
+    text-align: center;
+    vertical-align: middle;
+    position: relative;
+    animation: rotate360 1s linear infinite;
+    -webkit-animation: rotate360 1s linear infinite;
+    border-width: 4px;
+    width: 24px;
+    height: 24px;
+}
+
+.masterHeading {
+    margin-top: 0;
+    margin-bottom: 15px;
+    font-size: 40px;
+    font-weight: 500;
+    line-height: 0.6 !important;
+}
+
+.spantag {
+    color: #777;
+}
