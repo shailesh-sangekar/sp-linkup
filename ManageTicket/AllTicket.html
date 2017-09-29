@@ -12,7 +12,7 @@
         <span ng-hide="spinnerloaded">
 				Loading.....
 			</span>
-        <div>
+        <div ng-show="spinnerloaded">
             <div class="row">
                 <div class="col-md-12">
                     <h4 class="masterHeading">Manage Ticket</h4>
@@ -37,21 +37,21 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>A</td>
-                                    <td>B</td>
-                                    <td>C</td>
+                                <tr ng-repeat="item in listESPLServiceDesk">
+                                    <td>{{item.Employee.Title}}</td>
+                                    <td>{{item.Department.Department}}</td>
+                                    <td>{{item.Actual_x0020_Concern}}</td>
                                     <td>D</td>
-                                    <td>E</td>
-                                    <td>A</td>
-                                    <td>B</td>
-                                    <td>C</td>
+                                    <td>{{item.Priority}}</td>
+                                    <td>{{item.Created}}</td>
+                                    <td>{{item.Modified}}</td>
+                                    <td>{{item.Editor.Title}}</td>
                                     <td>D</td>
-                                    <td>E</td>
-                                    <td>A</td>
-                                    <td>B</td>
-                                    <td>C</td>
-                                    <td>C</td>
+                                    <td>{{item.ageDiff}}</td>
+                                    <td>{{item.Approver_x0020_comment}}</td>
+                                    <td>View</td>
+                                    <td>Reply</td>
+                                    <td>Resolve</td>
                                 </tr>
                             </tbody>
                         </table>
