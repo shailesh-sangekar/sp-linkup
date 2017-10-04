@@ -12,8 +12,8 @@
         <span ng-hide="spinnerloaded">
 				Loading.....
 			</span>
-        <div ng-show="spinnerloaded">
-            <div class="row">
+        <div ng-cloak="" ng-show="spinnerloaded">
+            <div class="row" ng-if="Authorised">
                 <div class="col-md-12">
                     <h4 class="masterHeading">Manage Ticket</h4>
                     <div class="scrollTable" style="margin-top: 25px;">
@@ -57,6 +57,9 @@
                         </table>
                     </div>
                 </div>
+            </div>
+            <div ng-if="NotAuthorised">
+                You are not authorised user.
             </div>
         </div>
     </div>

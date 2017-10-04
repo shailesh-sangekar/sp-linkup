@@ -31,7 +31,6 @@ function AllTicketCtl($scope, $http, $timeout) {
                 } else if (response.data.d.Groups.results[i].LoginName == 'ServiceDeskAdmins') {
                     DeptListFilter = DeptListFilter + 'or (Department/Department eq ' + '\'' + 'Admin' + '\') ';
                 }
-
             }
             vm.readlistESPLServiceDesk(DeptListFilter);
         }, function(error) {
@@ -42,6 +41,13 @@ function AllTicketCtl($scope, $http, $timeout) {
     vm.readPeopleList();
 
     vm.readlistESPLServiceDesk = function(DeptListFilter) {
+        if (DeptListFilter.length > 0) {
+            vm.Authorised = true;
+            vm.NotAuthorised = false;
+        } else {
+            vm.Authorised = false;
+            vm.NotAuthorised = true;
+        }
         var deptFilter = DeptListFilter.substring(3);
         empSelect = 'Employee/Title,Department/Department,Editor/Title,Author/Title,*';
         empExpand = 'Employee/Title,Department/Department,Editor/Title,Author/Title';
