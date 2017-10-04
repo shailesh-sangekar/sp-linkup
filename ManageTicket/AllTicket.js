@@ -211,6 +211,17 @@ function AllTicketCtl($scope, $http, $timeout) {
     vm.setPage = function() {
         vm.currentPage = this.n;
     };
+
+    vm.View = function(item) {
+    $scope.modal1 = item;
+    return modal1;
+};
+
+
+
+
+
+
 }
 
 //load

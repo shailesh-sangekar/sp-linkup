@@ -59,3 +59,11 @@
 .spantag {
     color: #777;
 }
+#buttons {
+    margin-top: 10px;
+}
+.modal-content {
+    height: 445px;
+    margin:auto;
+    border: 1px ;
+}
