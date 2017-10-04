@@ -7,6 +7,10 @@ function AllTicketCtl($scope, $http, $timeout) {
     vm.listServiceDeskComments = 'Service Desk Comments';
     vm.Authorised = false;
     vm.NotAuthorised = false;
+    vm.groupedItems = [];
+    vm.itemsPerPage = 5;
+    vm.pagedItems = [];
+    vm.currentPage = 0;
 
     Resigned = 'Resigned';
 
@@ -166,6 +170,46 @@ function AllTicketCtl($scope, $http, $timeout) {
 
         }, this);
         console.log(vm.DatalistESPLServiceDesk);
+        vm.groupToPages();
+    };
+    vm.groupToPages = function() {
+        vm.pagedItems = [];
+
+        for (var i = 0; i < vm.DatalistESPLServiceDesk.length; i++) {
+            if (i % vm.itemsPerPage === 0) {
+                vm.pagedItems[Math.floor(i / vm.itemsPerPage)] = [vm.DatalistESPLServiceDesk[i]];
+            } else {
+                vm.pagedItems[Math.floor(i / vm.itemsPerPage)].push(vm.DatalistESPLServiceDesk[i]);
+            }
+        }
+    };
+
+    vm.range = function(start, end) {
+        var ret = [];
+        if (!end) {
+            end = start;
+            start = 0;
+        }
+        for (var i = start; i < end; i++) {
+            ret.push(i);
+        }
+        return ret;
+    };
+
+    vm.prevPage = function() {
+        if (vm.currentPage > 0) {
+            vm.currentPage--;
+        }
+    };
+
+    vm.nextPage = function() {
+        if (vm.currentPage < vm.pagedItems.length - 1) {
+            vm.currentPage++;
+        }
+    };
+
+    vm.setPage = function() {
+        vm.currentPage = this.n;
     };
 }
 
