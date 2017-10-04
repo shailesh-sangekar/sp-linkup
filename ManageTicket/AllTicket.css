@@ -24,8 +24,8 @@
 }
 
 .scrollTable {
-    min-height: 467px !important;
-    max-height: 467px !important;
+    min-height: 375px !important;
+    max-height: 375px !important;
     overflow-y: auto;
     overflow-x: hidden;
 }
@@ -59,11 +59,17 @@
 .spantag {
     color: #777;
 }
+
 #buttons {
     margin-top: 10px;
 }
+
 .modal-content {
     height: 445px;
-    margin:auto;
-    border: 1px ;
+    margin: auto;
+    border: 1px;
+}
+
+.pageing {
+    margin-right: 20px !important;
 }

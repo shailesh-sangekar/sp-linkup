@@ -213,9 +213,9 @@ function AllTicketCtl($scope, $http, $timeout) {
     };
 
     vm.View = function(item) {
-    $scope.modal1 = item;
-    return modal1;
-};
+        $scope.modal1 = item;
+        return modal1;
+    };
 
 
 
