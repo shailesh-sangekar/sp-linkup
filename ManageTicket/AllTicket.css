@@ -73,3 +73,12 @@
 .pageing {
     margin-right: 20px !important;
 }
+
+.scrollpaging {
+    max-height: 90px;
+    min-width: 1130px !important;
+    max-width: 1130px !important;
+    overflow-y: hidden;
+    overflow-x: auto;
+    margin-top: -55px;
+}
