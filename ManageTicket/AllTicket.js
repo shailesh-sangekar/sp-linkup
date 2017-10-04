@@ -5,6 +5,8 @@ function AllTicketCtl($scope, $http, $timeout) {
     vm.listESPLServiceDesk = 'ESPL Service Desk';
     vm.listESPLServiceDepartments = 'ESPL Service Departments';
     vm.listServiceDeskComments = 'Service Desk Comments';
+    vm.Authorised = false;
+    vm.NotAuthorised = false;
 
     Resigned = 'Resigned';
 
