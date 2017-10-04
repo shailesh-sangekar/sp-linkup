@@ -93,7 +93,7 @@ function AllTicketCtl($scope, $http, $timeout) {
             };
             spcrud.read($http, vm.listServiceDeskComments, Options).then(function(response) {
                 if (response.status === 200)
-                    if (response.data.d.results !== null || response.data.d.results !== undefined) {
+                    if (response.data.d.results.length > 0) {
                         vm.DatalistServiceDeskComments1 = response.data.d.results;
                         vm.DatalistESPLServiceDesk.find(f => f.Service_x0020_Desk_x0020_ID == id).FinalStatus = response.data.d.results[0].Status;
                     } else {
