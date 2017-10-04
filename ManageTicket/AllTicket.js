@@ -73,8 +73,8 @@ function AllTicketCtl($scope, $http, $timeout) {
                 if (f.Created != null) {
                     var date2 = new Date();
                     var date1 = new Date(f.Created);
-                    var timeDiff = Math.abs(date2.getTime() - date1.getTime());
-                    f.ageDiff = Math.ceil(timeDiff / (1000 * 3600 * 24));
+                    // var timeDiff = Math.abs(date2.getTime() - date1.getTime());
+                    f.ageDiff = (workingDaysBetweenDates(date1, date2) - 1);
                 }
 
             });
@@ -86,6 +86,43 @@ function AllTicketCtl($scope, $http, $timeout) {
         });
 
     };
+    workingDaysBetweenDates = function(startDate, endDate) {
+
+        // Validate input
+        if (endDate < startDate)
+            return 0;
+
+        // Calculate days between dates
+        var millisecondsPerDay = 86400 * 1000; // Day in milliseconds
+        startDate.setHours(0, 0, 0, 1); // Start just after midnight
+        endDate.setHours(23, 59, 59, 999); // End just before midnight
+        var diff = endDate - startDate; // Milliseconds between datetime objects    
+        var days = Math.ceil(diff / millisecondsPerDay);
+
+        // Subtract two weekend days for every week in between
+        var weeks = Math.floor(days / 7);
+        days = days - (weeks * 2);
+
+        // Handle special cases
+        var startDay = startDate.getDay();
+        var endDay = endDate.getDay();
+
+        // Remove weekend not previously removed.   
+        if (startDay - endDay > 1)
+            days = days - 2;
+
+        // Remove start day if span starts on Sunday but ends before Saturday
+        if (startDay == 0 && endDay != 6) {
+            days = days - 1;
+        }
+
+        // Remove end day if span ends on Saturday but starts after Sunday
+        if (endDay == 6 && startDay != 0) {
+            days = days - 1;
+        }
+
+        return days;
+    }
     vm.readlistServiceDeskComments = function() {
         vm.DatalistESPLServiceDesk.forEach(function(product) {
             var id = product.Service_x0020_Desk_x0020_ID;
@@ -107,7 +144,7 @@ function AllTicketCtl($scope, $http, $timeout) {
                         vm.DatalistESPLServiceDesk.forEach(f => {
                             if (f.Service_x0020_Desk_x0020_ID === id) {
                                 f.FinalStatus = response.data.d.results[0].Status;
-
+                                f.Modified = response.data.d.results[0].Modified
                                 vm.DatalistServiceDeskComments1.forEach(fcomments => {
                                     if (fcomments.Status === 'Resolved') {
                                         f.ResolvedBy = fcomments.Editor.Title;
