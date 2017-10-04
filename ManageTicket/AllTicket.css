@@ -24,8 +24,8 @@
 }
 
 .scrollTable {
-    min-height: 375px !important;
-    max-height: 375px !important;
+    min-height: 325px !important;
+    max-height: 325px !important;
     overflow-y: auto;
     overflow-x: hidden;
 }
@@ -80,5 +80,5 @@
     max-width: 1130px !important;
     overflow-y: hidden;
     overflow-x: auto;
-    margin-top: -55px;
+    margin-top: -10px;
 }
