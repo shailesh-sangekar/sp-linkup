@@ -82,8 +82,8 @@ function AllTicketCtl($scope, $http, $timeout) {
         vm.DatalistESPLServiceDesk.forEach(function(product) {
             var id = product.Service_x0020_Desk_x0020_ID;
             statusFilter = 'Service_x0020_Desk_x0020_Id/Service_x0020_Desk_x0020_ID eq \'' + id + '\'';
-            commentSelect = 'Service_x0020_Desk_x0020_Id/Service_x0020_Desk_x0020_ID,*';
-            commentExpand = 'Service_x0020_Desk_x0020_Id/Service_x0020_Desk_x0020_ID';
+            commentSelect = 'Service_x0020_Desk_x0020_Id/Service_x0020_Desk_x0020_ID,Editor/Title,*';
+            commentExpand = 'Service_x0020_Desk_x0020_Id/Service_x0020_Desk_x0020_ID,Editor/Title';
             ModeifiedDate = 'Modified desc';
             var Options = {
                 select: commentSelect,
@@ -95,11 +95,24 @@ function AllTicketCtl($scope, $http, $timeout) {
                 if (response.status === 200)
                     if (response.data.d.results.length > 0) {
                         vm.DatalistServiceDeskComments1 = response.data.d.results;
-                        vm.DatalistESPLServiceDesk.find(f => f.Service_x0020_Desk_x0020_ID == id).FinalStatus = response.data.d.results[0].Status;
+                        //  vm.DatalistESPLServiceDesk.find(f =>{ f.Service_x0020_Desk_x0020_ID === id}).FinalStatus = response.data.d.results[0].Status;
+                        vm.DatalistESPLServiceDesk.forEach(f => {
+                            if (f.Service_x0020_Desk_x0020_ID === id) {
+                                f.FinalStatus = response.data.d.results[0].Status;
+                                vm.DatalistServiceDeskComments1.forEach(fcomments => {
+                                    if (fcomments.Status === 'Resolved') {
+                                        f.ResolvedBy = fcomments.Editor.Title;
+                                    } else {
+                                        f.ResolvedBy = '';
+                                    }
+                                })
+                            }
+                        })
                     } else {
-                        vm.DatalistESPLServiceDesk.find(f => f.Service_x0020_Desk_x0020_ID == id).FinalStatus = 'N/A';
+                        vm.DatalistESPLServiceDesk.find(f => f.Service_x0020_Desk_x0020_ID == id).FinalStatus = '';
                     }
 
+                console.log(vm.DatalistServiceDeskComments1);
             }, function(error) {
                 console.log('error', error);
             });
