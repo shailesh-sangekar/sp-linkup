@@ -4,6 +4,7 @@ function AllTicketCtl($scope, $http, $timeout) {
     vm.loaded = false;
     vm.listESPLServiceDesk = 'ESPL Service Desk';
     vm.listESPLServiceDepartments = 'ESPL Service Departments';
+    vm.listServiceDeskComments = 'Service Desk Comments';
 
     Resigned = 'Resigned';
 
@@ -44,21 +45,23 @@ function AllTicketCtl($scope, $http, $timeout) {
         var deptFilter = DeptListFilter.substring(3);
         empSelect = 'Employee/Title,Department/Department,Editor/Title,Author/Title,*';
         empExpand = 'Employee/Title,Department/Department,Editor/Title,Author/Title';
-        ModeifiedDate = 'Created desc';
+        CreatedDate = 'Created desc';
         count = '1000';
         // deptFilter = DeptListFilter;
         vm.resignedOptions = {
             select: empSelect,
             expand: empExpand,
             filter: deptFilter,
-            orderby: ModeifiedDate,
+            orderby: CreatedDate,
             top: count
         };
         spcrud.read($http, vm.listESPLServiceDesk, vm.resignedOptions).then(function(resp) {
             if (resp.status === 200)
                 var myJSON = JSON.stringify(resp.data.d.results);
-            vm.listESPLServiceDesk = resp.data.d.results;
-            vm.listESPLServiceDesk.forEach(f => {
+            vm.DatalistESPLServiceDesk = resp.data.d.results;
+            console.log('main data');
+            console.log(vm.DatalistESPLServiceDesk);
+            vm.DatalistESPLServiceDesk.forEach(f => {
                 if (f.Created != null) {
                     var date2 = new Date();
                     var date1 = new Date(f.Created);
@@ -67,11 +70,45 @@ function AllTicketCtl($scope, $http, $timeout) {
                 }
 
             });
+            vm.readlistServiceDeskComments();
+            // vm.readlistServiceDeskComments();
             vm.spinnerloaded = true;
         }, function(error) {
             console.log('error', error);
         });
 
+    };
+    vm.readlistServiceDeskComments = function() {
+        vm.DatalistESPLServiceDesk.forEach(function(product) {
+            var id = product.Service_x0020_Desk_x0020_ID;
+            statusFilter = 'Service_x0020_Desk_x0020_Id/Service_x0020_Desk_x0020_ID eq \'' + id + '\'';
+            commentSelect = 'Service_x0020_Desk_x0020_Id/Service_x0020_Desk_x0020_ID,*';
+            commentExpand = 'Service_x0020_Desk_x0020_Id/Service_x0020_Desk_x0020_ID';
+            ModeifiedDate = 'Modified desc';
+            var Options = {
+                select: commentSelect,
+                expand: commentExpand,
+                orderby: ModeifiedDate,
+                filter: statusFilter
+            };
+            spcrud.read($http, vm.listServiceDeskComments, Options).then(function(response) {
+                if (response.status === 200)
+                    if (response.data.d.results !== null || response.data.d.results !== undefined) {
+                        vm.DatalistServiceDeskComments1 = response.data.d.results;
+                        console.log('comments and status');
+                        console.log(vm.DatalistServiceDeskComments1);
+                        vm.DatalistESPLServiceDesk.find(f => f.Service_x0020_Desk_x0020_ID == id).FinalStatus = response.data.d.results[0].Status;
+                        console.log('staus');
+                        console.log(vm.DatalistESPLServiceDesk);
+                    } else {
+                        vm.DatalistESPLServiceDesk.find(f => f.Service_x0020_Desk_x0020_ID == id).FinalStatus = 'N/A';
+                    }
+
+            }, function(error) {
+                console.log('error', error);
+            });
+
+        }, this);
     };
 }
 

@@ -37,11 +37,11 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr ng-repeat="item in listESPLServiceDesk">
+                                <tr ng-repeat="item in DatalistESPLServiceDesk">
                                     <td>{{item.Employee.Title}}</td>
                                     <td>{{item.Department.Department}}</td>
                                     <td>{{item.Actual_x0020_Concern}}</td>
-                                    <td>D</td>
+                                    <td>{{item.FinalStatus}}</td>
                                     <td>{{item.Priority}}</td>
                                     <td>{{item.Created}}</td>
                                     <td>{{item.Modified}}</td>
