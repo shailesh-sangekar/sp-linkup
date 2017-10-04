@@ -30,7 +30,7 @@
                                     <th>Updated By</th>
                                     <th>Resolved By</th>
                                     <th>Age Days</th>
-                                    <th>Approvers Comment</th>
+                                    <!--<th>Approvers Comment</th>-->
                                     <th>View</th>
                                     <th>Reply</th>
                                     <th>Resolve</th>
@@ -43,12 +43,12 @@
                                     <td>{{item.Actual_x0020_Concern}}</td>
                                     <td>{{item.FinalStatus?item.FinalStatus:'N/A'}}</td>
                                     <td>{{item.Priority}}</td>
-                                    <td>{{item.Created}}</td>
-                                    <td>{{item.Modified}}</td>
+                                    <td><span ng-bind="item.Created | date:'dd/MM/yyyy'"></span></td>
+                                    <td><span ng-bind="item.Modified | date:'dd/MM/yyyy'"></span></td>
                                     <td>{{item.Editor.Title}}</td>
                                     <td>{{item.ResolvedBy?item.ResolvedBy:'N/A'}}</td>
                                     <td>{{item.ageDiff}}</td>
-                                    <td>{{item.Approver_x0020_comment}}</td>
+                                    <!--<td>{{item.Approver_x0020_comment}}</td>-->
                                     <td>View</td>
                                     <td>Reply</td>
                                     <td>Resolve</td>

@@ -107,25 +107,28 @@ function AllTicketCtl($scope, $http, $timeout) {
                         vm.DatalistESPLServiceDesk.forEach(f => {
                             if (f.Service_x0020_Desk_x0020_ID === id) {
                                 f.FinalStatus = response.data.d.results[0].Status;
+
                                 vm.DatalistServiceDeskComments1.forEach(fcomments => {
                                     if (fcomments.Status === 'Resolved') {
                                         f.ResolvedBy = fcomments.Editor.Title;
                                     } else {
+                                        console.log(vm.DatalistServiceDeskComments1);
                                         f.ResolvedBy = '';
                                     }
                                 })
                             }
                         })
                     } else {
+                        console.log('empty');
+                        console.log(response.data.d.results);
                         vm.DatalistESPLServiceDesk.find(f => f.Service_x0020_Desk_x0020_ID == id).FinalStatus = '';
                     }
-
-                console.log(vm.DatalistServiceDeskComments1);
             }, function(error) {
                 console.log('error', error);
             });
 
         }, this);
+        console.log(vm.DatalistESPLServiceDesk);
     };
 }
 
