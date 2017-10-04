@@ -11,6 +11,7 @@ function AllTicketCtl($scope, $http, $timeout) {
     vm.itemsPerPage = 5;
     vm.pagedItems = [];
     vm.currentPage = 0;
+    vm.mod='';
 
     Resigned = 'Resigned';
 
@@ -213,9 +214,31 @@ function AllTicketCtl($scope, $http, $timeout) {
     };
 
     vm.View = function(item) {
-        $scope.modal1 = item;
-        return modal1;
+        $scope.isCommentHide=true;
+        $scope.isReplyHide=true;
+        $scope.isResolveHide=true;
+        $scope.mod = item;
+        return $scope.mod;
     };
+
+    vm.Reply = function(item) {
+        $scope.isCommentHide=false;
+        $scope.isReplyHide=false;
+        $scope.isResolveHide=true;
+       
+        $scope.mod = item;
+       
+        return $scope.mod;
+    };
+    vm.Resolve = function(item) {
+        $scope.isCommentHide=false;
+        $scope.isReplyHide=true;
+        $scope.isResolveHide=false;
+        $scope.mod = item;
+        return $scope.mod;
+        
+    };
+
 
 
 

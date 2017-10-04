@@ -6,7 +6,7 @@
 <link rel="stylesheet" href="/SiteAssets/ManageTicket/AllTicket.css"></link>
 <script src="/SiteAssets/ManageTicket/AllTicket.js"></script>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-
+ <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
 <div ng-app="AllTicketApp" class="appmodel">
     <div ng-controller="AllTicketCtl">
@@ -52,8 +52,8 @@
                                     <td>{{item.ageDiff}}</td>
                                     <!--<td>{{item.Approver_x0020_comment}}</td>-->
                                     <td><a href="" data-toggle="modal" data-target="#myModal" ng-click="View(item)">View</a></td>
-                                    <td><a href="" data-toggle="modal" data-target="#myModal">Reply</a></td>
-                                    <td><a href="" data-toggle="modal" data-target="#myModal">Resolve</a></td>
+                                    <td><a href="" data-toggle="modal" data-target="#myModal" ng-click="Reply(item)">Reply</a></td>
+                                    <td><a href="" data-toggle="modal" data-target="#myModal" ng-click="Resolve(item)">Resolve</a></td>
                                 </tr>
                             </tbody>
                         </table>
@@ -92,32 +92,34 @@
                                     <div class="col-sm-6">
                                         <label for="sel1">Select Department</label>
                                         <select class="form-control" id="sel1" disabled> 
-                  <option ng-model="modal1">{{modal1.Department.Department}}</option>                   
-                    </select>
+                                     <option ng-model="mod">{{mod.Department.Department}}</option>                   
+                                    </select>
                                     </div>
                                     <div class="col-sm-6">
                                         <label for="sel1">Select Priority</label>
                                         <select class="form-control" id="sel1" disabled>                        
-                       <option ng-model="modal1" >{{modal1.Priority}}</option>   
+                       <option ng-model="mod" >{{mod.Priority}}</option>   
                     </select>
                                     </div>
                                     <div class="col-sm-12">
                                         <label for="sel1">Select Concern </label>
                                         <select class="form-control" id="sel1" disabled>                        
-                         <option ng-model="modal1">{{modal1.Actual_x0020_Concern}}</option>  
+                         <option ng-model="mod" >{{mod.Actual_x0020_Concern}}</option>  
                     </select>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label for="exampleTextarea">Description</label>
-                                    <textarea class="form-control" id="exampleTextarea" rows="3" ng-model="modal1"></textarea>
+                                    <textarea class="form-control" id="exampleTextarea" rows="3" ></textarea>
+                                    <div ng-hide="isCommentHide">
                                     <label for="exampleTextarea">Comment</label>
                                     <textarea class="form-control" id="exampleTextarea" rows="3"></textarea>
+                                    </div>
                                     <div class="col-sm-6" id="buttons">
-                                        <button type="button" class="btn btn-default">Reply</button>
+                                        <button type="button" class="btn btn-default" ng-hide="isReplyHide">Reply</button>
 
 
-                                        <button type="button" class="btn btn-default">Resolve</button>
+                                        <button type="button" class="btn btn-default" ng-hide="isResolveHide">Resolve</button>
                                     </div>
                                     <div class="col-sm-6" id="buttons">
 
