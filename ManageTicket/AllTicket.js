@@ -1,4 +1,4 @@
-function AllTicketCtl($scope, $http, $timeout) {
+function AllTicketCtl($scope, $http, $timeout, $filter) {
     var vm = $scope;
     vm.spinnerloaded = false;
     vm.loaded = false;
@@ -14,6 +14,7 @@ function AllTicketCtl($scope, $http, $timeout) {
     vm.mod = '';
     vm.ExportTable = false;
     Resigned = 'Resigned';
+    
 
 
     vm.readPeopleList = function() {
@@ -239,7 +240,10 @@ function AllTicketCtl($scope, $http, $timeout) {
     };
     vm.cancel = function(item) {
         vm.showModal = false;
-    }
+    };
+
+  
+
     vm.ReplyFunction =function(item){
         console.log(item.Comments);
         if (_spPageContextInfo) {
@@ -320,7 +324,46 @@ function AllTicketCtl($scope, $http, $timeout) {
             $('#test').attr('download', 'Report.xls');
         }
     };
+
+vm.search = {};
+vm.$watch('search', function (newVal) {
+		$scope.filtered = filter( vm.DatalistESPLServiceDesk, newVal);
+		$scope.totalItems = $scope.filtered.length;
+		$scope.noOfPages = Math.ceil($scope.totalItems / vm.itemsPerPage);
+		$scope.currentPage = 0;
+	}, true);
+
+vm.$watch('search', function (newVal) {
+		$scope.filtered = filter.Filter(vm.DatalistESPLServiceDesk, newVal);
+		$scope.totalItems = $scope.filtered.length;
+		$scope.noOfPages = Math.ceil($scope.totalItems / $scope.itemsPerPage);
+		$scope.currentPage = 1;
+	}, true);
+
+//     vm.search = function () {
+
+//         // $scope.filteredList = filteredListService.searched(vm.listESPLServiceDesk, vm.searchText);
+//             vm.filteredList = vm.searched(vm.listESPLServiceDesk, vm.searchText);     
+//         if ($scope.searchText == '') {
+//             $scope.filteredList =vm.listESPLServiceDesk;
+//         }
+//         // $scope.pagination();
+//     }
+// vm.searchUtil = function(item, toSearch) {
+//     return (item.Employee.Title.toLowerCase().indexOf(toSearch.toLowerCase()) > -1 || item.Department.Department.toLowerCase().indexOf(toSearch.toLowerCase()) > -1 == toSearch) ? true : false;
+// };
+// vm.searched = function (valLists, toSearch) {
+//                 return _.filter(valLists,function (i) 
+//                 {
+//                      return searchUtil(i, toSearch);
+//                 });
+//             };
+
+
+
+    
 }
+
 
 function modal() {
     return {
@@ -358,7 +401,42 @@ function modal() {
     };
 };
 
+AllTicketApp.filter('startFrom', function () {
+	return function (input, start) {
+		if (input) {
+			start = +start;
+			return input.slice(start);
+		}
+		return [];
+	};
+});
+
+
+
+
+// function filter( list, newVal) {
+
+// 	return function (input, start) {
+// 		if (input) {
+// 			start = +start;
+// 			return input.slice(start);
+// 		}
+// 		return [];
+// 	};
+// };
+
+
+// function filteredListService () {
+
+//    this.searched = function (valLists, toSearch) {
+//         return _.filter(valLists,function (i) 
+//         {
+//             return searchUtil(i, toSearch);
+//         });
+//     };
+// };
 
 
 //load
-angular.module('AllTicketApp', []).controller('AllTicketCtl', AllTicketCtl).directive('modal', modal);
+angular.module('AllTicketApp', []).controller('AllTicketCtl', AllTicketCtl ).directive('modal', modal).filter('filter',filter);
+//.service('filteredListService',filteredListService);
