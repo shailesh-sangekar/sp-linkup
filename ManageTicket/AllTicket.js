@@ -11,7 +11,7 @@ function AllTicketCtl($scope, $http, $timeout) {
     vm.itemsPerPage = 5;
     vm.pagedItems = [];
     vm.currentPage = 0;
-    vm.mod='';
+    vm.mod='';  
 
     Resigned = 'Resigned';
 
