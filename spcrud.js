@@ -320,6 +320,23 @@ spcrud.copyFile = function ($http, sourceUrl, destinationUrl) {
 };
 
 //----------SHAREPOINT LIST CORE----------
+spcrud.createtofolder = function ($http, listName,path, jsonBody) {
+    //append metadata
+    if (!jsonBody.__metadata) {
+        jsonBody.__metadata = {
+            'type': 'SP.Folder',
+            'Path':path
+        };
+    }
+    var data = angular.toJson(jsonBody),
+        config = {
+            method: 'POST',
+            url: spcrud.apiUrl.replace('{0}', listName),
+            data: data,
+            headers: spcrud.headers
+        };
+    return $http(config);
+};
 
 //CREATE item - SharePoint list name, and JS object to stringify for save
 spcrud.create = function ($http, listName, jsonBody) {

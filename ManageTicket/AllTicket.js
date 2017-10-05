@@ -12,7 +12,6 @@ function AllTicketCtl($scope, $http, $timeout) {
     vm.pagedItems = [];
     vm.currentPage = 0;
     vm.mod = '';
-
     Resigned = 'Resigned';
 
 
@@ -56,8 +55,8 @@ function AllTicketCtl($scope, $http, $timeout) {
             vm.NotAuthorised = true;
         }
         var deptFilter = DeptListFilter.substring(3);
-        empSelect = 'Employee/Title,Department/Department,Editor/Title,Author/Title,Predefined_x0020_Concern/Predefined_x0020_Concern,*';
-        empExpand = 'Employee/Title,Department/Department,Editor/Title,Author/Title,Predefined_x0020_Concern/Predefined_x0020_Concern';
+        empSelect = 'Employee/Title,Employee/ID,Department/Department,Editor/Title,Author/Title,Predefined_x0020_Concern/Predefined_x0020_Concern,*';
+        empExpand = 'Employee/Title,Employee/ID,Department/Department,Editor/Title,Author/Title,Predefined_x0020_Concern/Predefined_x0020_Concern';
         CreatedDate = 'Created desc';
         count = '1000';
         // deptFilter = DeptListFilter;
@@ -230,6 +229,7 @@ function AllTicketCtl($scope, $http, $timeout) {
         vm.isReplyHide = true;
         vm.isResolveHide = false;
         vm.isCommentHide = true;
+        vm.GetDataforReplyFunction(item);
         vm.toggleModalReject(item);
     };
     vm.toggleModalReject = function(itemToEdit) {
@@ -238,6 +238,52 @@ function AllTicketCtl($scope, $http, $timeout) {
     };
     vm.cancel = function(item) {
         vm.showModal = false;
+    }
+    vm.ReplyFunction =function(item){
+        console.log(item.Comments);
+        if (_spPageContextInfo) {
+            var baseUrl = _spPageContextInfo.webAbsoluteUrl;
+        }
+        var PathValue = '/'+'Lists/'+vm.listServiceDeskComments+'/'+item.Employee_x0020_ID
+        spcrud.createtofolder($http, vm.listServiceDeskComments,PathValue, {
+            'Title': 'No Title',
+        'Comments': item.Comments,
+        'Status': item.FinalStatus,
+        'Predefined_x0020_Concern': item.Predefined_x0020_Concern.Predefined_x0020_Concern,
+        'Department': item.Department.Department,
+        'Service_x0020_Desk_x0020_Id': item.Service_x0020_Desk_x0020_ID,
+        'Path': PathValue
+    }).then(function(resp) {
+       console.log('Data added successfully');
+    }, function(error) {
+        console.log('error', error);
+    });
+    }
+    vm.GetDataforReplyFunction = function(item){
+        var serviceId = item.Service_x0020_Desk_x0020_ID;
+        serviceIdFilter = 'Service_x0020_Desk_x0020_Id/Service_x0020_Desk_x0020_ID eq \'' + serviceId + '\'';
+        commentSelect = 'Service_x0020_Desk_x0020_Id/Service_x0020_Desk_x0020_ID,Editor/Title,*';
+        commentExpand = 'Service_x0020_Desk_x0020_Id/Service_x0020_Desk_x0020_ID,Editor/Title';
+        ModeifiedDate = 'Modified desc';
+        var serviceIdOptions = {
+            select: commentSelect,
+            expand: commentExpand,
+            orderby: ModeifiedDate,
+            filter: serviceIdFilter
+        };
+        spcrud.read($http, vm.listServiceDeskComments, serviceIdOptions).then(function(response) {
+            if (response.status === 200)
+                if (response.data.d.results.length > 0) {
+                    vm.DatalistServiceDeskComments1ById = response.data.d.results;
+                    console.log('by id');
+                    console.log(vm.DatalistServiceDeskComments1ById);
+                } else {
+                    console.log('empty');
+                    console.log(response.data.d.results);
+                }
+        }, function(error) {
+            console.log('error', error);
+        }); 
     }
     vm.Resolve = function(item) {
         vm.IsView=false;
@@ -249,15 +295,7 @@ function AllTicketCtl($scope, $http, $timeout) {
         vm.toggleModalReject(item);
 
     };
-    // spcrud.create($http, vm.listServiceDeskComments, {
-    //     'Comments': 'test',
-    //     'Status': 'redeem adding',
-    //     'Predefined_x0020_Concern': 'Pending',
-    //     'Department': redeemdate,
-    //     'Service_x0020_Desk_x0020_Id': itemId
-    // }).then(function(resp) {
-    //     vm.value = vm.product[0].Items_x0020_Redemend + quantity;
-    // });
+    
 }
 
 function modal() {

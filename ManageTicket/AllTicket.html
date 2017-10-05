@@ -194,7 +194,7 @@
                         </div>
                         <div class="col-sm-12" ng-show="isCommentHide" style="margin-left:10px;">
                             <label for="exampleTextarea">Comment</label>
-                            <textarea class="form-control" id="exampleTextarea" rows="3"></textarea>
+                            <textarea class="form-control" id="exampleTextarea" rows="3" ng-model="item.Comments"></textarea>
                         </div>
                         <div class="col-sm-6" id="buttons">
                             <button class="btn btn-default" type="button" ng-show="isReplyHide" ng-click="ReplyFunction(item)" style="float:right;">Reply</button>
