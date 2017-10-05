@@ -224,6 +224,7 @@ function AllTicketCtl($scope, $http, $timeout) {
     vm.Reply = function(item) {
         vm.isReplyHide = true;
         vm.isResolveHide = false;
+        vm.isCommentHide = true;
         vm.toggleModalReject(item);
     };
     vm.toggleModalReject = function(itemToEdit) {
