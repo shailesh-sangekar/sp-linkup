@@ -214,14 +214,19 @@ function AllTicketCtl($scope, $http, $timeout) {
     };
 
     vm.View = function(item) {
-        $scope.isCommentHide = true;
-        $scope.isReplyHide = true;
-        $scope.isResolveHide = true;
-        $scope.mod = item;
-        return $scope.mod;
+        vm.IsView=true;
+        vm.IsReply=false;
+        vm.IsResolve=false;
+        vm.isReplyHide = false;
+        vm.isResolveHide = false;
+        vm.isCommentHide = false;
+        vm.toggleModalReject(item);
     };
 
     vm.Reply = function(item) {
+         vm.IsView=false;
+        vm.IsReply=true;
+        vm.IsResolve=false;
         vm.isReplyHide = true;
         vm.isResolveHide = false;
         vm.isCommentHide = true;
@@ -235,11 +240,13 @@ function AllTicketCtl($scope, $http, $timeout) {
         vm.showModal = false;
     }
     vm.Resolve = function(item) {
-        $scope.isCommentHide = false;
-        $scope.isReplyHide = true;
-        $scope.isResolveHide = false;
-        $scope.mod = item;
-        return $scope.mod;
+        vm.IsView=false;
+        vm.IsReply=false;
+        vm.IsResolve=true;
+        $scope.isCommentHide = true;
+        $scope.isReplyHide = false;
+        $scope.isResolveHide = true;
+        vm.toggleModalReject(item);
 
     };
 
