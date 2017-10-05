@@ -325,20 +325,20 @@ function AllTicketCtl($scope, $http, $timeout, $filter) {
         }
     };
 
-vm.search = {};
-vm.$watch('search', function (newVal) {
-		$scope.filtered = filter( vm.DatalistESPLServiceDesk, newVal);
-		$scope.totalItems = $scope.filtered.length;
-		$scope.noOfPages = Math.ceil($scope.totalItems / vm.itemsPerPage);
-		$scope.currentPage = 0;
-	}, true);
+// vm.search = {};
+// vm.$watch('search', function (newVal) {
+// 		$scope.filtered = filter( vm.DatalistESPLServiceDesk, newVal);
+// 		$scope.totalItems = $scope.filtered.length;
+// 		$scope.noOfPages = Math.ceil($scope.totalItems / vm.itemsPerPage);
+// 		$scope.currentPage = 0;
+// 	}, true);
 
-vm.$watch('search', function (newVal) {
-		$scope.filtered = filter.Filter(vm.DatalistESPLServiceDesk, newVal);
-		$scope.totalItems = $scope.filtered.length;
-		$scope.noOfPages = Math.ceil($scope.totalItems / $scope.itemsPerPage);
-		$scope.currentPage = 1;
-	}, true);
+// vm.$watch('search', function (newVal) {
+// 		$scope.filtered = filter.Filter(vm.DatalistESPLServiceDesk, newVal);
+// 		$scope.totalItems = $scope.filtered.length;
+// 		$scope.noOfPages = Math.ceil($scope.totalItems / $scope.itemsPerPage);
+// 		$scope.currentPage = 1;
+// 	}, true);
 
 //     vm.search = function () {
 
@@ -401,15 +401,15 @@ function modal() {
     };
 };
 
-AllTicketApp.filter('startFrom', function () {
-	return function (input, start) {
-		if (input) {
-			start = +start;
-			return input.slice(start);
-		}
-		return [];
-	};
-});
+// AllTicketApp.filter('startFrom', function () {
+// 	return function (input, start) {
+// 		if (input) {
+// 			start = +start;
+// 			return input.slice(start);
+// 		}
+// 		return [];
+// 	};
+// });
 
 
 
@@ -438,5 +438,6 @@ AllTicketApp.filter('startFrom', function () {
 
 
 //load
-angular.module('AllTicketApp', []).controller('AllTicketCtl', AllTicketCtl ).directive('modal', modal).filter('filter',filter);
+angular.module('AllTicketApp', []).controller('AllTicketCtl', AllTicketCtl ).directive('modal', modal);
 //.service('filteredListService',filteredListService);
+//.filter('filter',filter)
