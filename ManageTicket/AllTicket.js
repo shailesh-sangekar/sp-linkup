@@ -249,9 +249,15 @@ function AllTicketCtl($scope, $http, $timeout) {
         vm.toggleModalReject(item);
 
     };
-
-
-
+    spcrud.create($http, vm.listServiceDeskComments, {
+        'Comments': 'test',
+        'Status': 'redeem adding',
+        'Predefined_x0020_Concern': 'Pending',
+        'Department': redeemdate,
+        'Service_x0020_Desk_x0020_Id': itemId
+    }).then(function(resp) {
+        vm.value = vm.product[0].Items_x0020_Redemend + quantity;
+    });
 }
 
 function modal() {
