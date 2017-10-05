@@ -196,6 +196,7 @@
                             <label for="exampleTextarea">Comment</label>
                             <textarea class="form-control" id="exampleTextarea" rows="3" ng-model="item.Comments"></textarea>
                         </div>
+                         <div  class="col-sm-12">
                         <div class="col-sm-6" id="buttons">
                             <button class="btn btn-default" type="button" ng-show="isReplyHide" ng-click="ReplyFunction(item)" style="float:right;">Reply</button>
                             <button class="btn btn-default" type="button" ng-show="isResolveHide" ng-click="ResolveFunction(item)" style="float:right;">Resolve</button>
@@ -203,8 +204,18 @@
                         <div class="col-sm-6" id="buttons">
                             <button class="btn btn-default" type="button" ng-click="cancel(item)">Cancel</button>
                         </div>
+                         </div>
                     </div>
-            
+                    <div  class="col-sm-12">
+                        <div class="col-sm-6">
+                        <h5 ng-modal="item">{{item.Department.Department}} </h5>
+                        <h5 ng-modal="item"  style="color: red;">{{item.Editor.Title}} </h5> 
+                        </div>     
+                        <div class="col-sm-6">
+                        <h5 ng-modal="item">{{item.Actual_x0020_Concern}} </h5> 
+                        <h5 ng-modal="item" style="color: red;"><span ng-bind="item.Modified "></span> </h5> 
+                        </div>    
+                    </div>            
 
                 </div>
                 <!--<button class="btn btn-primary" type="button" ng-click="RejectFunction(item)">OK</button>
