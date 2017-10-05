@@ -83,6 +83,7 @@
                             </thead>-->
                             <tbody>
                                 <tr class="pagination pull-right">
+                                    <td>Showing {{pagedItems[currentPage].length}}/{{DatalistESPLServiceDesk.length}}</td>
                                     <td ng-class="{disabled: currentPage == 0}">
                                         <a href ng-click="prevPage()">« Prev</a>
                                     </td>
@@ -244,13 +245,14 @@
                         </div>
                          </div>
                     </div>
-                    <div  class="col-sm-12">
-                        <div class="col-sm-6">
-                        <h5 ng-modal="item">{{item.Department.Department}} </h5>
+                    <div class="col-sm-12" ng-repeat="item in DatalistServiceDeskComments1ById">
+                        <div class="col-sm-6"><h5 ng-modal="item">{{item.Comments}} </h5></div>
+                        <div class="col-sm-3">
+                        <h5 ng-modal="item">{{item.Department}} </h5>
                         <h5 ng-modal="item"  style="color: red;">{{item.Editor.Title}} </h5> 
                         </div>     
-                        <div class="col-sm-6">
-                        <h5 ng-modal="item">{{item.Actual_x0020_Concern}} </h5> 
+                        <div class="col-sm-3">
+                        <h5 ng-modal="item">{{item.Predefined_x0020_Concern}} </h5> 
                         <h5 ng-modal="item" style="color: red;"><span ng-bind="item.Modified "></span> </h5> 
                         </div>    
                     </div>            

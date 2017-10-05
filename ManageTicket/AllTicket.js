@@ -369,7 +369,7 @@ function modal() {
     return {
         template: '<div class="modal fade" data-backdrop="static">' +
             '<div class="modal-dialog">' +
-            '<div class="modal-content" style="height:600px;">' +
+            '<div class="modal-content scrollModal" style="height:600px;">' +
             '<div class="modal-body" ng-transclude></div>' +
             '</div>' +
             '</div>' +

@@ -94,3 +94,9 @@
 .modalHead {
     color: rgba(42, 136, 214, 0.91) !important;
 }
+.scrollModal {
+    min-height: 600px !important;
+    max-height: 600px !important;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
