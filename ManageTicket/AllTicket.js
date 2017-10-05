@@ -11,7 +11,7 @@ function AllTicketCtl($scope, $http, $timeout) {
     vm.itemsPerPage = 5;
     vm.pagedItems = [];
     vm.currentPage = 0;
-    vm.mod='';  
+    vm.mod = '';
 
     Resigned = 'Resigned';
 
@@ -56,8 +56,8 @@ function AllTicketCtl($scope, $http, $timeout) {
             vm.NotAuthorised = true;
         }
         var deptFilter = DeptListFilter.substring(3);
-        empSelect = 'Employee/Title,Department/Department,Editor/Title,Author/Title,*';
-        empExpand = 'Employee/Title,Department/Department,Editor/Title,Author/Title';
+        empSelect = 'Employee/Title,Department/Department,Editor/Title,Author/Title,Predefined_x0020_Concern/Predefined_x0020_Concern,*';
+        empExpand = 'Employee/Title,Department/Department,Editor/Title,Author/Title,Predefined_x0020_Concern/Predefined_x0020_Concern';
         CreatedDate = 'Created desc';
         count = '1000';
         // deptFilter = DeptListFilter;
@@ -214,38 +214,75 @@ function AllTicketCtl($scope, $http, $timeout) {
     };
 
     vm.View = function(item) {
-        $scope.isCommentHide=true;
-        $scope.isReplyHide=true;
-        $scope.isResolveHide=true;
+        $scope.isCommentHide = true;
+        $scope.isReplyHide = true;
+        $scope.isResolveHide = true;
         $scope.mod = item;
         return $scope.mod;
     };
 
     vm.Reply = function(item) {
-        $scope.isCommentHide=false;
-        $scope.isReplyHide=false;
-        $scope.isResolveHide=true;
-       
-        $scope.mod = item;
-       
-        return $scope.mod;
+        vm.isReplyHide = true;
+        vm.isResolveHide = false;
+        vm.toggleModalReject(item);
     };
+    vm.toggleModalReject = function(itemToEdit) {
+        vm.item = itemToEdit;
+        vm.showModal = !vm.showModal;
+    };
+    vm.cancel = function(item) {
+        vm.showModal = false;
+    }
     vm.Resolve = function(item) {
-        $scope.isCommentHide=false;
-        $scope.isReplyHide=true;
-        $scope.isResolveHide=false;
+        $scope.isCommentHide = false;
+        $scope.isReplyHide = true;
+        $scope.isResolveHide = false;
         $scope.mod = item;
         return $scope.mod;
-        
+
     };
-
-
-
-
 
 
 
 }
 
+function modal() {
+    return {
+        template: '<div class="modal fade" data-backdrop="static">' +
+            '<div class="modal-dialog">' +
+            '<div class="modal-content" style="height:600px;">' +
+            '<div class="modal-body" ng-transclude></div>' +
+            '</div>' +
+            '</div>' +
+            '</div>',
+        restrict: 'E',
+        transclude: true,
+        replace: true,
+        scope: true,
+        link: function postLink(scope, element, attrs) {
+            scope.$watch(attrs.visible, function(value) {
+                if (value == true)
+                    $(element).modal('show');
+                else
+                    $(element).modal('hide');
+            });
+
+            $(element).on('shown.bs.modal', function() {
+                scope.$apply(function() {
+                    scope.$parent[attrs.visible] = true;
+                });
+            });
+
+            $(element).on('hidden.bs.modal', function() {
+                scope.$apply(function() {
+                    scope.$parent[attrs.visible] = false;
+                });
+            });
+        }
+    };
+};
+
+
+
 //load
-angular.module('AllTicketApp', []).controller('AllTicketCtl', AllTicketCtl);
+angular.module('AllTicketApp', []).controller('AllTicketCtl', AllTicketCtl).directive('modal', modal);

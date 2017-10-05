@@ -82,3 +82,12 @@
     overflow-x: auto;
     margin-top: -10px;
 }
+
+.modal-backdrop {
+    display: none;
+}
+
+.modal-open .modal {
+    width: 300px;
+    margin: 0 auto;
+}

@@ -6,7 +6,7 @@
 <link rel="stylesheet" href="/SiteAssets/ManageTicket/AllTicket.css"></link>
 <script src="/SiteAssets/ManageTicket/AllTicket.js"></script>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
 <div ng-app="AllTicketApp" class="appmodel">
     <div ng-controller="AllTicketCtl">
@@ -120,10 +120,10 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="exampleTextarea">Description</label>
-                                    <textarea class="form-control" id="exampleTextarea" rows="3" ></textarea>
-                                    <div ng-hide="isCommentHide">
-                                    <label for="exampleTextarea">Comment</label>
                                     <textarea class="form-control" id="exampleTextarea" rows="3"></textarea>
+                                    <div ng-hide="isCommentHide">
+                                        <label for="exampleTextarea">Comment</label>
+                                        <textarea class="form-control" id="exampleTextarea" rows="3"></textarea>
                                     </div>
                                     <div class="col-sm-6" id="buttons">
                                         <button type="button" class="btn btn-default" ng-hide="isReplyHide">Reply</button>
@@ -154,6 +154,56 @@
             <div ng-if="NotAuthorised">
                 <b>You are not authorised user for this page.</b>
             </div>
+            <modal visible="showModal">
+                <div class="modal-header">
+                    <h3 class="modal-title" id="modal-title">Rply For Ticket:</h3>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <div class="col-sm-6">
+                            <label for="sel1">Select Department</label>
+                            <select class="form-control" id="sel1" disabled> 
+                                     <option ng-model="item">{{item.Department.Department}}</option>                   
+                                    </select>
+                        </div>
+                        <div class="col-sm-6">
+                            <label for="sel1">Select Priority</label>
+                            <select class="form-control" id="sel1" disabled>                        
+                       <option ng-model="item" >{{item.Priority}}</option>   
+                    </select>
+                        </div>
+                        <div class="col-sm-6">
+                            <label for="sel1">Select Concern </label>
+                            <select class="form-control" id="sel1" disabled>                        
+                         <option ng-model="item" >{{item.Predefined_x0020_Concern.Predefined_x0020_Concern}}</option>  
+                    </select>
+                        </div>
+                        <div class="col-sm-6">
+                            <label for="sel1">   </label>
+                            <select class="form-control" id="sel1" style="margin-top: 17px;" disabled>                        
+                         <option ng-model="item" >{{item.Actual_x0020_Concern}}</option>  
+                    </select>
+                        </div>
+                        <div class="col-sm-12" style="margin-left:10px;">
+                            <label for="exampleTextarea">Description</label>
+                            <textarea class="form-control" id="exampleTextarea" rows="3" disabled>{{item.Actual_x0020_Concern}}</textarea>
+                        </div>
+                        <div class="col-sm-12" ng-hide="isCommentHide" style="margin-left:10px;">
+                            <label for="exampleTextarea">Comment</label>
+                            <textarea class="form-control" id="exampleTextarea" rows="3"></textarea>
+                        </div>
+                        <div class="col-sm-6" id="buttons">
+                            <button class="btn btn-primary" type="button" ng-show="isReplyHide" ng-click="ReplyFunction(item)" style="float:right;">Reply</button>
+                            <button class="btn btn-primary" type="button" ng-show="isResolveHide" ng-click="ResolveFunction(item)" style="float:right;">Resolve</button>
+                        </div>
+                        <div class="col-sm-6" id="buttons">
+                            <button class="btn btn-warning" type="button" ng-click="cancel(item)">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+                <!--<button class="btn btn-primary" type="button" ng-click="RejectFunction(item)">OK</button>
+                <button class="btn btn-warning" type="button" ng-click="cancel(item)">Cancel</button>-->
+            </modal>
         </div>
     </div>
 </div>
