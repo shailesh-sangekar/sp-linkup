@@ -91,3 +91,6 @@
     width: 300px;
     margin: 0 auto;
 }
+.modalHead {
+    color: rgba(42, 136, 214, 0.91) !important;
+}

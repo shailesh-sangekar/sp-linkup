@@ -68,19 +68,10 @@ function employeeDashboardCtl($scope, $http, $timeout, $window, $location) {
     empSelect = '*';
     empExpand = '';
     Pending = 'Approved';
-    TimesheetFilter = 'Title eq \'' + vm.UserId + '\'';
+    
     var status = "Active";
-    var projectTeamMembersListFilter = '(Team_x0020_Members/Title eq ' + '\'' + vm.UserName + '\') and (Status eq \'' + status + '\')';
-    vm.projectTeamMembersListOptions = {
-        select: "Project_x0020_Master_x0020_ID",
-        expand: empExpand,
-        filter: projectTeamMembersListFilter
-    };
-    vm.timesheetOptions = {
-        select: empSelect,
-        expand: empExpand,
-        filter: TimesheetFilter
-    };
+    
+    
     vm.gridItemsTimesheet = [];
     vm.gridItemsLeaves = [];
     vm.gridItemsCertificates = [];
@@ -117,6 +108,12 @@ function employeeDashboardCtl($scope, $http, $timeout, $window, $location) {
 
     }
     vm.readTimesheet = function() {
+        TimesheetFilter = 'Title eq \'' + vm.UserId + '\'';
+        vm.timesheetOptions = {
+            select: empSelect,
+            expand: empExpand,
+            filter: TimesheetFilter
+        };
         spcrud.read($http, vm.listEmployeeTimesheet, vm.timesheetOptions).then(function(resp) {
             if (resp.status === 200)
                 var myJSON = JSON.stringify(resp.data.d.results);
@@ -206,6 +203,13 @@ function employeeDashboardCtl($scope, $http, $timeout, $window, $location) {
     }
 
     vm.readProjectTeamMembersList = function() {
+        var status = "Active";
+        var projectTeamMembersListFilter = '(Team_x0020_Members/Title eq ' + '\'' + vm.UserName + '\') and (Status eq \'' + status + '\')';
+        vm.projectTeamMembersListOptions = {
+            select: "Project_x0020_Master_x0020_ID",
+            expand: empExpand,
+            filter: projectTeamMembersListFilter
+        };
         spcrud.read($http, vm.ProjectTeamMembersList, vm.projectTeamMembersListOptions).then(function(response) {
             if (response.status === 200)
                 vm.projectTeamMembersList = response.data.d.results;
