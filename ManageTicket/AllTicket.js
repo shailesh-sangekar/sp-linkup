@@ -325,43 +325,26 @@ function AllTicketCtl($scope, $http, $timeout, $filter) {
         }
     };
 
-// vm.search = {};
-// vm.$watch('search', function (newVal) {
-// 		$scope.filtered = filter( vm.DatalistESPLServiceDesk, newVal);
-// 		$scope.totalItems = $scope.filtered.length;
-// 		$scope.noOfPages = Math.ceil($scope.totalItems / vm.itemsPerPage);
-// 		$scope.currentPage = 0;
-// 	}, true);
+  
 
-// vm.$watch('search', function (newVal) {
-// 		$scope.filtered = filter.Filter(vm.DatalistESPLServiceDesk, newVal);
-// 		$scope.totalItems = $scope.filtered.length;
-// 		$scope.noOfPages = Math.ceil($scope.totalItems / $scope.itemsPerPage);
-// 		$scope.currentPage = 1;
-// 	}, true);
-
-//     vm.search = function () {
-
-//         // $scope.filteredList = filteredListService.searched(vm.listESPLServiceDesk, vm.searchText);
-//             vm.filteredList = vm.searched(vm.listESPLServiceDesk, vm.searchText);     
-//         if ($scope.searchText == '') {
-//             $scope.filteredList =vm.listESPLServiceDesk;
+//     vm.searchMatch = function (haystack, needle) {
+//         if (!needle) {
+//             return true;
 //         }
-//         // $scope.pagination();
-//     }
-// vm.searchUtil = function(item, toSearch) {
-//     return (item.Employee.Title.toLowerCase().indexOf(toSearch.toLowerCase()) > -1 || item.Department.Department.toLowerCase().indexOf(toSearch.toLowerCase()) > -1 == toSearch) ? true : false;
-// };
-// vm.searched = function (valLists, toSearch) {
-//                 return _.filter(valLists,function (i) 
+//         return haystack.toLowerCase().indexOf(needle.toLowerCase()) !== -1;
+//     };
+
+//     // init the filtered items
+//     vm.search = function () {
+//         $scope.filteredItems = $filter('filter')(vm.DatalistESPLServiceDesk, function (item) {
+//             for(var item in vm.DatalistESPLServiceDesk)
 //                 {
-//                      return searchUtil(i, toSearch);
-//                 });
-//             };
-
-
-
-    
+//                 if (vm.searchMatch(vm.DatalistESPLServiceDesk[item], vm.query))
+//                     return true;
+//             }
+//             return false;
+//     });   
+// }
 }
 
 
@@ -401,43 +384,15 @@ function modal() {
     };
 };
 
-// AllTicketApp.filter('startFrom', function () {
-// 	return function (input, start) {
-// 		if (input) {
-// 			start = +start;
-// 			return input.slice(start);
-// 		}
-// 		return [];
-// 	};
-// });
+
+
+
+ 
 
 
 
 
-// function filter( list, newVal) {
-
-// 	return function (input, start) {
-// 		if (input) {
-// 			start = +start;
-// 			return input.slice(start);
-// 		}
-// 		return [];
-// 	};
-// };
-
-
-// function filteredListService () {
-
-//    this.searched = function (valLists, toSearch) {
-//         return _.filter(valLists,function (i) 
-//         {
-//             return searchUtil(i, toSearch);
-//         });
-//     };
-// };
 
 
 //load
 angular.module('AllTicketApp', []).controller('AllTicketCtl', AllTicketCtl ).directive('modal', modal);
-//.service('filteredListService',filteredListService);
-//.filter('filter',filter)

@@ -19,15 +19,15 @@
             <div class="row" ng-if="Authorised">
                 <div class="col-md-12">
                     <h4 class="masterHeading">Manage Ticket</h4>
-
+                <div>
+                    <input type="text" ng-model="query" ng-change="search()"  placeholder="Search">
+                </div>
                  <a href="#" id="test" class="btn btn-icon-only blue" style="width: 90px;border-radius: 3px!important;height: 31px;float: right;margin-top: -44px;" ng-click="fnExcelReport();">
                         <i class="fa fa-download" style="margin-left:0px;margin-top: 5px;"></i>
                         <span style="margin-left:-5px;">To Excel</span>
                     </a>
 
-                <div>
-                   <label>Search:</label> <input type="text" ng-model="search.name" placeholder="Search" />
-                </div>
+                
 
                     <div class="scrollTable" style="margin-top: 25px;">
                         <table id="myTable" class="table table-striped table-bordered table-hover table-checkable order-column">
@@ -50,7 +50,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr ng-repeat="item in pagedItems[currentPage] | filter:search ">
+                                <tr ng-repeat="item in pagedItems[currentPage] ">
                                     <td>{{item.Employee.Title}}</td>
                                     <td>{{item.Department.Department}}</td>
                                     <td>{{item.Actual_x0020_Concern}}</td>
