@@ -100,3 +100,8 @@
     overflow-y: auto;
     overflow-x: hidden;
 }
+.frm {
+    display: block;
+    width: 23%;
+    height: 34px;
+}

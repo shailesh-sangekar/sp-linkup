@@ -8,13 +8,18 @@ function AllTicketCtl($scope, $http, $timeout, $filter) {
     vm.Authorised = false;
     vm.NotAuthorised = false;
     vm.groupedItems = [];
-    vm.itemsPerPage = 5;
+   vm.itemsPerPage = 5;
     vm.pagedItems = [];
     vm.currentPage = 0;
     vm.mod = '';
     vm.ExportTable = false;
     Resigned = 'Resigned';
+    vm.filteredItems = [];
     
+
+    $scope.page = 1;
+    $scope.itemsDisplay = 3
+ 
 
 
     vm.readPeopleList = function() {
@@ -173,7 +178,32 @@ function AllTicketCtl($scope, $http, $timeout, $filter) {
         }, this);
         console.log(vm.DatalistESPLServiceDesk);
         vm.groupToPages();
+        	
     };
+ 
+
+    vm.filterItems= function(filterText){
+    vm.filterText=filterText;
+    var data = $filter('filter')(vm.DatalistESPLServiceDesk,vm.filterText, false,'Title');
+    vm.groupToPagesFilter(data);
+    vm.page = 1;
+ 
+};
+ vm.groupToPagesFilter = function(data) {
+        vm.pagedItems = [];
+        vm.filt=data;
+        for (var i = 0; i < vm.filt.length; i++) {
+            if (i % vm.itemsPerPage === 0) {
+                vm.pagedItems[Math.floor(i / vm.itemsPerPage)] = [vm.filt[i]];
+            } else {
+                vm.pagedItems[Math.floor(i / vm.itemsPerPage)].push(vm.filt[i]);
+            }
+        }
+        //vm.statusClose(vm.filt);
+
+    };
+
+
     vm.groupToPages = function() {
         vm.pagedItems = [];
 
@@ -184,6 +214,7 @@ function AllTicketCtl($scope, $http, $timeout, $filter) {
                 vm.pagedItems[Math.floor(i / vm.itemsPerPage)].push(vm.DatalistESPLServiceDesk[i]);
             }
         }
+       // vm.statusClose(vm.DatalistServiceDeskComments1);
     };
 
     vm.range = function(start, end) {
@@ -214,6 +245,16 @@ function AllTicketCtl($scope, $http, $timeout, $filter) {
         vm.currentPage = this.n;
     };
 
+    // vm.statusClose = function(DatalistServiceDeskComments1){   
+    //     vm.statusdata=DatalistServiceDeskComments1;
+    //      vm.statusdata.forEach(f => {
+    //             if (f.Status == 'Closed') 
+    //                 {
+    //                     vm.isHidden=false;
+    //                 }
+    //         });
+    // };
+
     vm.View = function(item) {
         vm.IsView=true;
         vm.IsReply=false;
@@ -225,7 +266,7 @@ function AllTicketCtl($scope, $http, $timeout, $filter) {
     };
 
     vm.Reply = function(item) {
-         vm.IsView=false;
+        vm.IsView=false;
         vm.IsReply=true;
         vm.IsResolve=false;
         vm.isReplyHide = true;
@@ -331,15 +372,17 @@ function AllTicketCtl($scope, $http, $timeout, $filter) {
 //         if (!needle) {
 //             return true;
 //         }
-//         return haystack.toLowerCase().indexOf(needle.toLowerCase()) !== -1;
+//         return  haystack.toLowerCase().indexOf(needle.toLowerCase()) !== -1;
 //     };
 
 //     // init the filtered items
-//     vm.search = function () {
-//         $scope.filteredItems = $filter('filter')(vm.DatalistESPLServiceDesk, function (item) {
-//             for(var item in vm.DatalistESPLServiceDesk)
+//     vm.search = function (query) {
+//         vm.que=query;
+//         //console.log(vm.query);
+//         vm.filteredItems = $filter('filter')(vm.DatalistESPLServiceDesk, function (item) {
+//             for(var Title in item)
 //                 {
-//                 if (vm.searchMatch(vm.DatalistESPLServiceDesk[item], vm.query))
+//                 if (vm.searchMatch(item[Title], vm.que))
 //                     return true;
 //             }
 //             return false;
@@ -395,4 +438,4 @@ function modal() {
 
 
 //load
-angular.module('AllTicketApp', []).controller('AllTicketCtl', AllTicketCtl ).directive('modal', modal);
+angular.module('AllTicketApp',[]).controller('AllTicketCtl', AllTicketCtl ).directive('modal', modal);
