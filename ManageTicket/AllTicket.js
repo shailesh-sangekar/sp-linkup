@@ -15,6 +15,7 @@ function AllTicketCtl($scope, $http, $timeout, $filter) {
     vm.ExportTable = false;
     Resigned = 'Resigned';
     vm.filteredItems = [];
+    vm.commentData = [];
     
 
     $scope.page = 1;
@@ -45,6 +46,7 @@ function AllTicketCtl($scope, $http, $timeout, $filter) {
                     DeptListFilter = DeptListFilter + 'or (Department/Department eq ' + '\'' + 'Admin' + '\') ';
                 }
             }
+            vm.FinalFilter=DeptListFilter;
             vm.readlistESPLServiceDesk(DeptListFilter);
         }, function(error) {
             console.log('error', error);
@@ -65,7 +67,7 @@ function AllTicketCtl($scope, $http, $timeout, $filter) {
         empSelect = 'Employee/Title,Employee/ID,Department/Department,Editor/Title,Author/Title,Predefined_x0020_Concern/Predefined_x0020_Concern,*';
         empExpand = 'Employee/Title,Employee/ID,Department/Department,Editor/Title,Author/Title,Predefined_x0020_Concern/Predefined_x0020_Concern';
         CreatedDate = 'Created desc';
-        count = '1000';
+        count = '10000';
         // deptFilter = DeptListFilter;
         vm.resignedOptions = {
             select: empSelect,
@@ -78,8 +80,6 @@ function AllTicketCtl($scope, $http, $timeout, $filter) {
             if (resp.status === 200)
                 var myJSON = JSON.stringify(resp.data.d.results);
             vm.DatalistESPLServiceDesk = resp.data.d.results;
-            console.log('main data');
-            console.log(vm.DatalistESPLServiceDesk);
             vm.DatalistESPLServiceDesk.forEach(f => {
                 if (f.Created != null) {
                     var date2 = new Date();
@@ -91,7 +91,7 @@ function AllTicketCtl($scope, $http, $timeout, $filter) {
             });
             vm.readlistServiceDeskComments();
             // vm.readlistServiceDeskComments();
-            vm.spinnerloaded = true;
+            //vm.spinnerloaded = true;
         }, function(error) {
             console.log('error', error);
         });
@@ -135,51 +135,111 @@ function AllTicketCtl($scope, $http, $timeout, $filter) {
         return days;
     }
     vm.readlistServiceDeskComments = function() {
-        vm.DatalistESPLServiceDesk.forEach(function(product) {
-            var id = product.Service_x0020_Desk_x0020_ID;
-            statusFilter = 'Service_x0020_Desk_x0020_Id/Service_x0020_Desk_x0020_ID eq \'' + id + '\'';
+        // vm.DatalistESPLServiceDesk.forEach(function(product) {
+           // var id = product.Service_x0020_Desk_x0020_ID;
+          //  var deptt=product.Department.Department;
+        //    statusFilter = 'Service_x0020_Desk_x0020_Id/Service_x0020_Desk_x0020_ID eq \'' + id + '\'';
             commentSelect = 'Service_x0020_Desk_x0020_Id/Service_x0020_Desk_x0020_ID,Editor/Title,*';
             commentExpand = 'Service_x0020_Desk_x0020_Id/Service_x0020_Desk_x0020_ID,Editor/Title';
             ModeifiedDate = 'Modified desc';
+            count = '100000';
             var Options = {
                 select: commentSelect,
                 expand: commentExpand,
                 orderby: ModeifiedDate,
-                filter: statusFilter
+                top: count
+               // filter: statusFilter
             };
             spcrud.read($http, vm.listServiceDeskComments, Options).then(function(response) {
                 if (response.status === 200)
                     if (response.data.d.results.length > 0) {
                         vm.DatalistServiceDeskComments1 = response.data.d.results;
-                        //  vm.DatalistESPLServiceDesk.find(f =>{ f.Service_x0020_Desk_x0020_ID === id}).FinalStatus = response.data.d.results[0].Status;
-                        vm.DatalistESPLServiceDesk.forEach(f => {
-                            if (f.Service_x0020_Desk_x0020_ID === id) {
-                                f.FinalStatus = response.data.d.results[0].Status;
-                                f.Modified = response.data.d.results[0].Modified
-                                vm.DatalistServiceDeskComments1.forEach(fcomments => {
-                                    if (fcomments.Status === 'Resolved') {
-                                        f.ResolvedBy = fcomments.Editor.Title;
-                                    } else {
-                                        console.log(vm.DatalistServiceDeskComments1);
-                                        f.ResolvedBy = '';
-                                    }
-                                })
-                            }
-                        })
-                    } else {
-                        console.log('empty');
-                        console.log(response.data.d.results);
-                        vm.DatalistESPLServiceDesk.find(f => f.Service_x0020_Desk_x0020_ID == id).FinalStatus = '';
-                    }
+                        var groupBy = function(xs, key) {
+                            return xs.reduce(function(rv, x) {
+                                x.Modified=new Date(x.Modified);
+                              (rv[x[key]] = rv[x[key]] || []).push(x);
+                              return rv;
+                            }, {});
+                          };
+                          vm.commentData=groupBy(vm.DatalistServiceDeskComments1, 'Service_x0020_Desk_x0020_IdId');
+                    } 
+                    vm.DatalistESPLServiceDesk.forEach(f => {
+                            // vm.commentData.forEach(fcomments => {
+                             //   if (vm.commentData[f.Service_x0020_Desk_x0020_ID] === fcomments.Service_x0020_Desk_x0020_Id.Service_x0020_Desk_x0020_ID){
+                             if(vm.commentData[f.Id] != null){
+                                 if(vm.commentData[f.Id][0].Status != null){
+                                    f.FinalStatus = vm.commentData[f.Id][0].Status;
+                                 }
+                                else{
+                                    f.FinalStatus = 'Open';
+                                }
+                                f.Modified = vm.commentData[f.Id][0].Modified;
+                                if (vm.commentData[f.Id][0].Status === 'Resolved') {
+                                    f.ResolvedBy = vm.commentData[f.Id][0].Editor.Title;
+                                } else {
+                                    f.ResolvedBy = '';
+                                }
+                             }   
+                             
+                               // }
+                           // })
+                    })
+                    vm.spinnerloaded = true;
+                    
             }, function(error) {
                 console.log('error', error);
             });
-
-        }, this);
-        console.log(vm.DatalistESPLServiceDesk);
+            
+        // }, this);
         vm.groupToPages();
         	
     };
+ 
+    // vm.readlistServiceDeskComments = function() {
+    //     vm.DatalistESPLServiceDesk.forEach(function(product) {
+    //         var id = product.Service_x0020_Desk_x0020_ID;
+    //       //  var deptt=product.Department.Department;
+    //         statusFilter = 'Service_x0020_Desk_x0020_Id/Service_x0020_Desk_x0020_ID eq \'' + id + '\'';
+    //         commentSelect = 'Service_x0020_Desk_x0020_Id/Service_x0020_Desk_x0020_ID,Editor/Title,*';
+    //         commentExpand = 'Service_x0020_Desk_x0020_Id/Service_x0020_Desk_x0020_ID,Editor/Title';
+    //         ModeifiedDate = 'Modified desc';
+    //         var Options = {
+    //             select: commentSelect,
+    //             expand: commentExpand,
+    //             orderby: ModeifiedDate,
+    //             filter: statusFilter
+    //         };
+    //         spcrud.read($http, vm.listServiceDeskComments, Options).then(function(response) {
+    //             if (response.status === 200)
+    //                 if (response.data.d.results.length > 0) {
+    //                     vm.DatalistServiceDeskComments1 = response.data.d.results;
+    //                     //  vm.DatalistESPLServiceDesk.find(f =>{ f.Service_x0020_Desk_x0020_ID === id}).FinalStatus = response.data.d.results[0].Status;
+    //                     vm.DatalistESPLServiceDesk.forEach(f => {
+    //                         if (f.Service_x0020_Desk_x0020_ID === id) {
+    //                             f.FinalStatus = response.data.d.results[0].Status;
+    //                             f.Modified = response.data.d.results[0].Modified
+    //                             vm.DatalistServiceDeskComments1.forEach(fcomments => {
+    //                                 if (fcomments.Status === 'Resolved') {
+    //                                     f.ResolvedBy = fcomments.Editor.Title;
+    //                                 } else {
+    //                                     f.ResolvedBy = '';
+    //                                 }
+    //                             })
+    //                         }
+    //                     })
+                        
+    //                 } else {
+    //                     vm.DatalistESPLServiceDesk.find(f => f.Service_x0020_Desk_x0020_ID == id).FinalStatus = '';
+    //                 }
+                    
+    //         }, function(error) {
+    //             console.log('error', error);
+    //         });
+
+    //     }, this);
+    //     vm.groupToPages();
+        	
+    // };
  
 
     vm.filterItems= function(filterText){
@@ -244,17 +304,6 @@ function AllTicketCtl($scope, $http, $timeout, $filter) {
     vm.setPage = function() {
         vm.currentPage = this.n;
     };
-
-    // vm.statusClose = function(DatalistServiceDeskComments1){   
-    //     vm.statusdata=DatalistServiceDeskComments1;
-    //      vm.statusdata.forEach(f => {
-    //             if (f.Status == 'Closed') 
-    //                 {
-    //                     vm.isHidden=false;
-    //                 }
-    //         });
-    // };
-
     vm.View = function(item) {
         vm.IsView=true;
         vm.IsReply=false;
@@ -264,7 +313,6 @@ function AllTicketCtl($scope, $http, $timeout, $filter) {
         vm.isCommentHide = false;
         vm.toggleModalReject(item);
     };
-
     vm.Reply = function(item) {
         vm.IsView=false;
         vm.IsReply=true;
@@ -272,42 +320,49 @@ function AllTicketCtl($scope, $http, $timeout, $filter) {
         vm.isReplyHide = true;
         vm.isResolveHide = false;
         vm.isCommentHide = true;
-        vm.GetDataforReplyFunction(item);
+        vm.GetDataforReplyResolveFunction(item);
         vm.toggleModalReject(item);
     };
     vm.toggleModalReject = function(itemToEdit) {
         vm.item = itemToEdit;
+        vm.item.Comments = '' ;
         vm.showModal = !vm.showModal;
     };
     vm.cancel = function(item) {
         vm.showModal = false;
     };
-
-  
-
-    vm.ReplyFunction =function(item){
-        console.log(item.Comments);
-        if (_spPageContextInfo) {
-            var baseUrl = _spPageContextInfo.webAbsoluteUrl;
-        }
-        var PathValue = '/'+'Lists/'+vm.listServiceDeskComments+'/'+item.Employee_x0020_ID
-        spcrud.createtofolder($http, vm.listServiceDeskComments,PathValue, {
-            'Title': 'No Title',
-        'Comments': item.Comments,
-        'Status': item.FinalStatus,
-        'Predefined_x0020_Concern': item.Predefined_x0020_Concern.Predefined_x0020_Concern,
-        'Department': item.Department.Department,
-        'Service_x0020_Desk_x0020_Id': item.Service_x0020_Desk_x0020_ID,
-        'Path': PathValue
-    }).then(function(resp) {
-       console.log('Data added successfully');
-    }, function(error) {
-        console.log('error', error);
+    vm.ReplyFunction =function(item){  
+    var clientContext = SP.ClientContext.get_current();
+    var list = clientContext.get_web().get_lists().getByTitle(vm.listServiceDeskComments);
+    var itemCreateInfo = new SP.ListItemCreationInformation();
+    var folderUrl = item.Employee_x0020_ID;
+    itemCreateInfo.set_folderUrl('/Lists/Service Desk Comments/' + folderUrl);
+    var listItem = list.addItem(itemCreateInfo);
+    var comment = item.Comments;
+    var status = item.FinalStatus;
+    var concern = item.Actual_x0020_Concern;
+    var dept = item.Department.Department;
+    var serviceid= item.Id;
+    listItem.set_item('Title','No Title');
+    listItem.set_item('Comments',comment);
+    listItem.set_item('Status',status);
+   listItem.set_item('Predefined_x0020_Concern',concern);
+    listItem.set_item('Department',dept);
+    listItem.set_item('Service_x0020_Desk_x0020_Id',serviceid);
+    listItem.update();
+    
+    clientContext.load(listItem);
+    clientContext.executeQueryAsync(function (sender, arges) {
+        alert('Reply Saved Succcessfull');
+    }, function (sender, arges) {
+        alert(arges.get_message());
     });
+    vm.showModal = false;
     }
-    vm.GetDataforReplyFunction = function(item){
+    vm.GetDataforReplyResolveFunction = function(item){
         var serviceId = item.Service_x0020_Desk_x0020_ID;
-        serviceIdFilter = 'Service_x0020_Desk_x0020_Id/Service_x0020_Desk_x0020_ID eq \'' + serviceId + '\'';
+        var deptt=item.Department.Department;
+        serviceIdFilter = 'Service_x0020_Desk_x0020_Id/Service_x0020_Desk_x0020_ID eq \'' + serviceId + '\' and (Department eq \'' + deptt + '\')';
         commentSelect = 'Service_x0020_Desk_x0020_Id/Service_x0020_Desk_x0020_ID,Editor/Title,*';
         commentExpand = 'Service_x0020_Desk_x0020_Id/Service_x0020_Desk_x0020_ID,Editor/Title';
         ModeifiedDate = 'Modified desc';
@@ -319,18 +374,14 @@ function AllTicketCtl($scope, $http, $timeout, $filter) {
         };
         spcrud.read($http, vm.listServiceDeskComments, serviceIdOptions).then(function(response) {
             if (response.status === 200)
-                if (response.data.d.results.length > 0) {
+                if (response.data.d.results != undefined) {
                     vm.DatalistServiceDeskComments1ById = response.data.d.results;
-                    console.log('by id');
-                    console.log(vm.DatalistServiceDeskComments1ById);
                 } else {
-                    console.log('empty');
-                    console.log(response.data.d.results);
                 }
         }, function(error) {
             console.log('error', error);
         }); 
-    }
+    };
     vm.Resolve = function(item) {
         vm.IsView=false;
         vm.IsReply=false;
@@ -338,8 +389,39 @@ function AllTicketCtl($scope, $http, $timeout, $filter) {
         $scope.isCommentHide = true;
         $scope.isReplyHide = false;
         $scope.isResolveHide = true;
+        vm.GetDataforReplyResolveFunction(item);
         vm.toggleModalReject(item);
-
+    };
+    vm.ResolveFunction =function(item){  
+        var clientContext = SP.ClientContext.get_current();
+        var list = clientContext.get_web().get_lists().getByTitle(vm.listServiceDeskComments);
+        var itemCreateInfo = new SP.ListItemCreationInformation();
+        var folderUrl = item.Employee_x0020_ID;
+        itemCreateInfo.set_folderUrl('/Lists/Service Desk Comments/' + folderUrl);
+        var listItem = list.addItem(itemCreateInfo);
+        var comment = item.Comments;
+        //var status = item.FinalStatus;
+        var concern = item.Actual_x0020_Concern;
+        var dept = item.Department.Department;
+        var serviceid= item.Id;
+        listItem.set_item('Title','No Title');
+        listItem.set_item('Comments',comment);
+        listItem.set_item('Status','Resolved');
+        listItem.set_item('Predefined_x0020_Concern',concern);
+        listItem.set_item('Department',dept);
+        listItem.set_item('Service_x0020_Desk_x0020_Id',serviceid);
+        listItem.update();
+        
+        clientContext.load(listItem);
+        clientContext.executeQueryAsync(function (sender, arges) {
+            alert('Resolved Succcessfull');
+        }, function (sender, arges) {
+            alert(arges.get_message());
+        });
+        vm.showModal = false;
+        //vm.showl
+        var filter=vm.FinalFilter;
+        vm.readlistESPLServiceDesk(filter);
     };
     vm.fnExcelReport = function() {
         var tab_text = '<html xmlns:x="urn:schemas-microsoft-com:office:excel">';
@@ -361,33 +443,14 @@ function AllTicketCtl($scope, $http, $timeout, $filter) {
                 navigator.msSaveBlob(blob, 'Report.xls');
             }
         } else {
-            $('#test').attr('href', data_type + ', ' + encodeURIComponent(tab_text));
+            //$('#test').attr('href', data_type + ', ' + encodeURIComponent(tab_text));
+            xData = new Blob([tab_text], { type: 'text/csv' });
+            var xUrl = URL.createObjectURL(xData);
+            $('#test').attr('href', xUrl);
+            //a.href = xUrl;
             $('#test').attr('download', 'Report.xls');
         }
     };
-
-  
-
-//     vm.searchMatch = function (haystack, needle) {
-//         if (!needle) {
-//             return true;
-//         }
-//         return  haystack.toLowerCase().indexOf(needle.toLowerCase()) !== -1;
-//     };
-
-//     // init the filtered items
-//     vm.search = function (query) {
-//         vm.que=query;
-//         //console.log(vm.query);
-//         vm.filteredItems = $filter('filter')(vm.DatalistESPLServiceDesk, function (item) {
-//             for(var Title in item)
-//                 {
-//                 if (vm.searchMatch(item[Title], vm.que))
-//                     return true;
-//             }
-//             return false;
-//     });   
-// }
 }
 
 

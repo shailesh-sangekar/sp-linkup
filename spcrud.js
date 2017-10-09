@@ -320,18 +320,18 @@ spcrud.copyFile = function ($http, sourceUrl, destinationUrl) {
 };
 
 //----------SHAREPOINT LIST CORE----------
-spcrud.createtofolder = function ($http, listName,path, jsonBody) {
+spcrud.addDatatofolder = function ($http, folderUrl, jsonBody) {
     //append metadata
+  var Url = spcrud.baseUrl + '/_api/web/lists/GetFolderByServerRelativeUrl(\'' + folderUrl + '\')/items';
     if (!jsonBody.__metadata) {
         jsonBody.__metadata = {
-            'type': 'SP.Folder',
-            'Path':path
+            'type': 'SP.Folder'
         };
     }
     var data = angular.toJson(jsonBody),
         config = {
             method: 'POST',
-            url: spcrud.apiUrl.replace('{0}', listName),
+            url: Url,
             data: data,
             headers: spcrud.headers
         };

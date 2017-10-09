@@ -49,9 +49,9 @@
 }
 
 .masterHeading {
-    margin-top: 0;
+    margin-top: -20;
     margin-bottom: 15px;
-    font-size: 40px;
+    font-size: 30px;
     font-weight: 500;
     line-height: 0.6 !important;
 }
@@ -93,6 +93,8 @@
 }
 .modalHead {
     color: rgba(42, 136, 214, 0.91) !important;
+    margin-top:-20px !important;
+    margin-bottom: -10px !important;
 }
 .scrollModal {
     min-height: 600px !important;
@@ -104,4 +106,44 @@
     display: block;
     width: 23%;
     height: 34px;
+}
+.cancelBtn {
+    border-radius: 3px!important;
+    font-family: "Open Sans", sans-serif;
+    background: #fb5557;
+    border-color: #fb5557;
+    color: #fff!important;
+    font-size: 12px;
+    cursor: pointer;
+    border: 1px solid #ddd;
+    padding: 5px 12px;
+    font-weight: 600;
+    margin-top: 10px;
+    transition: 0.3s all ease-out;
+}
+
+.cancelBtn:hover {
+    background: #fb5557;
+    border-color: #fb5557;
+    color: #fff!important;
+}
+.saveBtn {
+    border-radius: 3px!important;
+    font-family: "Open Sans", sans-serif;
+    background: #01b070;
+    border-color: #01b070;
+    color: #fff!important;
+    font-size: 12px;
+    cursor: pointer;
+    border: 1px solid #ddd;
+    padding: 5px 12px;
+    font-weight: 600;
+    margin-top: 10px;
+    transition: 0.3s all ease-out;
+}
+
+.saveBtn:hover {
+    background: #01b070;
+    border-color: #01b070;
+    color: #fff!important;
 }
