@@ -24,8 +24,8 @@
 }
 
 .scrollTable {
-    min-height: 325px !important;
-    max-height: 325px !important;
+    min-height: 340px !important;
+    max-height: 340px !important;
     overflow-y: auto;
     overflow-x: hidden;
 }
@@ -107,6 +107,49 @@
     width: 23%;
     height: 34px;
 }
+
+.commentBtn {
+    border-radius: 3px!important;
+    font-family: "Open Sans", sans-serif;
+    background: rgba(42, 136, 214, 0.91) !important;
+    border-color: rgba(42, 136, 214, 0.91) !important;
+    color: #fff!important;
+    font-size: 12px;
+    cursor: pointer;
+    border: 1px solid #ddd;
+    padding: 5px 12px;
+    font-weight: 600;
+    margin-top: -165px;
+    margin-left: -162px;
+    transition: 0.3s all ease-out;
+}
+
+.commentBtn:hover {
+    background: rgba(42, 136, 214, 0.91) !important;
+    border-color: rgba(42, 136, 214, 0.91) !important;
+    color: #fff!important;
+}
+.commentBtnHide {
+    border-radius: 3px!important;
+    font-family: "Open Sans", sans-serif;
+    background: rgba(42, 136, 214, 0.91) !important;
+    border-color: rgba(42, 136, 214, 0.91) !important;
+    color: #fff!important;
+    font-size: 12px;
+    cursor: pointer;
+    border: 1px solid #ddd;
+    padding: 5px 12px;
+    font-weight: 600;
+    margin-top: -165px;
+    margin-left: -158px;
+    transition: 0.3s all ease-out;
+}
+
+.commentBtnHide:hover {
+    background: rgba(42, 136, 214, 0.91) !important;
+    border-color: rgba(42, 136, 214, 0.91) !important;
+    color: #fff!important;
+}
 .cancelBtn {
     border-radius: 3px!important;
     font-family: "Open Sans", sans-serif;
@@ -146,4 +189,24 @@
     background: #01b070;
     border-color: #01b070;
     color: #fff!important;
+}
+.table{
+    font-size: 12px !important;
+    padding: 4px !important;
+    padding-bottom: 3px !important;
+}
+.ms-WPBody td{
+    padding-bottom: 3px !important;
+}
+.table>thead>tr>th {
+    padding: 4px !important;
+}
+
+.showFilter{
+    margin-top: -35px !important;
+    margin-left: 310px !important;
+}
+.alignShowFilter{
+    width: 70px !important;
+    height: 33px !important;
 }

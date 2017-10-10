@@ -8,7 +8,7 @@ function AllTicketCtl($scope, $http, $timeout, $filter) {
     vm.Authorised = false;
     vm.NotAuthorised = false;
     vm.groupedItems = [];
-   vm.itemsPerPage = 5;
+   vm.itemsPerPage = 10;
     vm.pagedItems = [];
     vm.currentPage = 0;
     vm.mod = '';
@@ -16,13 +16,20 @@ function AllTicketCtl($scope, $http, $timeout, $filter) {
     Resigned = 'Resigned';
     vm.filteredItems = [];
     vm.commentData = [];
-    
-
+    vm.CommentHistory=false;
+  vm.CommentHistoryhide=false;
     $scope.page = 1;
     $scope.itemsDisplay = 3
  
 
-
+vm.commentHistoy=function(){
+    vm.CommentHistoryhide=true;
+   vm.CommentHistory=true;
+}
+vm.commentHistoyHide = function(){
+    vm.CommentHistory=false;
+    vm.CommentHistoryhide=false;
+}
     vm.readPeopleList = function() {
         spcrud.getCurrentUser($http).then(function(response) {
             if (response.status === 200)
@@ -249,6 +256,30 @@ function AllTicketCtl($scope, $http, $timeout, $filter) {
     vm.page = 1;
  
 };
+vm.showFIlter=function(count){
+    vm.itemsPerPage=count;
+    vm.groupToPagesFilter(vm.DatalistESPLServiceDesk);
+    vm.page = 1;
+}
+// $scope.sort = {
+//     column: '',
+//     descending: false
+// };  
+// $scope.changeSorting = function(column) {
+    
+//             var sort = $scope.sort;
+    
+//             if (sort.column == column) {
+//                 sort.descending = !sort.descending;
+//             } else {
+//                 sort.column = column;
+//                 sort.descending = false;
+//             }
+//         };
+            
+//         $scope.selectedCls = function(column) {
+//             return column == scope.sort.column && 'sort-' + scope.sort.descending;
+//         };
  vm.groupToPagesFilter = function(data) {
         vm.pagedItems = [];
         vm.filt=data;
@@ -327,37 +358,72 @@ function AllTicketCtl($scope, $http, $timeout, $filter) {
         vm.item = itemToEdit;
         vm.item.Comments = '' ;
         vm.showModal = !vm.showModal;
+        vm.CommentHistory=false;
+        vm.CommentHistoryhide=false;
+    
     };
     vm.cancel = function(item) {
         vm.showModal = false;
     };
     vm.ReplyFunction =function(item){  
-    var clientContext = SP.ClientContext.get_current();
-    var list = clientContext.get_web().get_lists().getByTitle(vm.listServiceDeskComments);
-    var itemCreateInfo = new SP.ListItemCreationInformation();
-    var folderUrl = item.Employee_x0020_ID;
-    itemCreateInfo.set_folderUrl('/Lists/Service Desk Comments/' + folderUrl);
-    var listItem = list.addItem(itemCreateInfo);
-    var comment = item.Comments;
-    var status = item.FinalStatus;
-    var concern = item.Actual_x0020_Concern;
-    var dept = item.Department.Department;
-    var serviceid= item.Id;
-    listItem.set_item('Title','No Title');
-    listItem.set_item('Comments',comment);
-    listItem.set_item('Status',status);
-   listItem.set_item('Predefined_x0020_Concern',concern);
-    listItem.set_item('Department',dept);
-    listItem.set_item('Service_x0020_Desk_x0020_Id',serviceid);
-    listItem.update();
+        if(vm.item.Comments != ''){
+            var clientContext = SP.ClientContext.get_current();
+            var list = clientContext.get_web().get_lists().getByTitle(vm.listServiceDeskComments);
+            var itemCreateInfo = new SP.ListItemCreationInformation();
+            var folderUrl = item.Employee_x0020_ID;
+            itemCreateInfo.set_folderUrl('/Lists/Service Desk Comments/' + folderUrl);
+            var listItem = list.addItem(itemCreateInfo);
+            var comment = item.Comments;
+            var status = item.FinalStatus;
+            var concern = item.Actual_x0020_Concern;
+            var dept = item.Department.Department;
+            var serviceid= item.Id;
+            listItem.set_item('Title','No Title');
+            listItem.set_item('Comments',comment);
+            listItem.set_item('Status',status);
+           listItem.set_item('Predefined_x0020_Concern',concern);
+            listItem.set_item('Department',dept);
+            listItem.set_item('Service_x0020_Desk_x0020_Id',serviceid);
+            listItem.update();
+            
+            clientContext.load(listItem);
+            clientContext.executeQueryAsync(function (sender, arges) {
+                alert('Reply Saved Succcessfull');
+            }, function (sender, arges) {
+                alert(arges.get_message());
+            });
+            vm.showModal = false;
+        }
+        else{
+            alert('Please Fill Data');
+            //vm.showModal = false;
+        }
+//     var clientContext = SP.ClientContext.get_current();
+//     var list = clientContext.get_web().get_lists().getByTitle(vm.listServiceDeskComments);
+//     var itemCreateInfo = new SP.ListItemCreationInformation();
+//     var folderUrl = item.Employee_x0020_ID;
+//     itemCreateInfo.set_folderUrl('/Lists/Service Desk Comments/' + folderUrl);
+//     var listItem = list.addItem(itemCreateInfo);
+//     var comment = item.Comments;
+//     var status = item.FinalStatus;
+//     var concern = item.Actual_x0020_Concern;
+//     var dept = item.Department.Department;
+//     var serviceid= item.Id;
+//     listItem.set_item('Title','No Title');
+//     listItem.set_item('Comments',comment);
+//     listItem.set_item('Status',status);
+//    listItem.set_item('Predefined_x0020_Concern',concern);
+//     listItem.set_item('Department',dept);
+//     listItem.set_item('Service_x0020_Desk_x0020_Id',serviceid);
+//     listItem.update();
     
-    clientContext.load(listItem);
-    clientContext.executeQueryAsync(function (sender, arges) {
-        alert('Reply Saved Succcessfull');
-    }, function (sender, arges) {
-        alert(arges.get_message());
-    });
-    vm.showModal = false;
+//     clientContext.load(listItem);
+//     clientContext.executeQueryAsync(function (sender, arges) {
+//         alert('Reply Saved Succcessfull');
+//     }, function (sender, arges) {
+//         alert(arges.get_message());
+//     });
+//     vm.showModal = false;
     }
     vm.GetDataforReplyResolveFunction = function(item){
         var serviceId = item.Service_x0020_Desk_x0020_ID;
@@ -393,6 +459,7 @@ function AllTicketCtl($scope, $http, $timeout, $filter) {
         vm.toggleModalReject(item);
     };
     vm.ResolveFunction =function(item){  
+        if(vm.item.Comments != ''){
         var clientContext = SP.ClientContext.get_current();
         var list = clientContext.get_web().get_lists().getByTitle(vm.listServiceDeskComments);
         var itemCreateInfo = new SP.ListItemCreationInformation();
@@ -422,6 +489,11 @@ function AllTicketCtl($scope, $http, $timeout, $filter) {
         //vm.showl
         var filter=vm.FinalFilter;
         vm.readlistESPLServiceDesk(filter);
+    }
+    else{
+        alert('Please Fill Data');
+        //vm.showModal = false;
+    }
     };
     vm.fnExcelReport = function() {
         var tab_text = '<html xmlns:x="urn:schemas-microsoft-com:office:excel">';
