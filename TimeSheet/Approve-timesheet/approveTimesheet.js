@@ -24,13 +24,13 @@ function ApproveTimesheetCtl($scope,$http, myService)
     };
     vm.getLoggedInUser();
     vm.readData=function(CurrentLoggedInUser){
-        ApproveFilter = 'Approver_x0020_User/Title eq \'' + CurrentLoggedInUser + '\'';
+       // ApproveFilter = 'Approver_x0020_User/Title eq \'' + CurrentLoggedInUser + '\'';
         commentSelect = 'Approver_x0020_User/Title,Pending_x0020_Approver/Title,*';
         commentExpand = 'Approver_x0020_User/Title,Pending_x0020_Approver/Title';
         var Options = {
             select: commentSelect,
-            expand: commentExpand,
-            filter: ApproveFilter
+            expand: commentExpand
+            //filter: ApproveFilter
         };           
 spcrud.read($http, vm.EmployeeTimeSheetList,Options).then(function(EmpResponse) {
     if (EmpResponse.status === 200)  
