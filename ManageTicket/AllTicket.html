@@ -28,11 +28,12 @@
                  
                         Show : 
                     
-                    <select class="alignShowFilter" ng-model="itemsPerPage" ng-change="showFIlter(itemsPerPage)">
-                            <option value="10" >10</option> 
-                            <option value="20">20</option>
-                            <option value="40">40</option>  
-                            <option value="100">100</option>
+                    <select class="alignShowFilter" ng-model="itemsPerPage" ng-change="showFIlter(itemsPerPage)" ng-selected="10" >
+                        <!-- <option ng-option ng-selected="10" value="10">Select</option> -->
+                            <option ng-option value="10"  >10</option> 
+                            <option ng-option value="20">20</option>
+                            <option ng-option value="40">40</option>  
+                            <option ng-option value="100">100</option>
                     </select>
                     <!-- <input type="text" ng-model="query" ng-change="search(query)"  placeholder="Search"> -->
                 </div>
