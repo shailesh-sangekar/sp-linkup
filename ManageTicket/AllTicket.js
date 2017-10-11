@@ -28,7 +28,7 @@ function AllTicketCtl($scope, $http, $timeout, $filter) {
 vm.commentHistoy=function(){
 vm.HideComment=true;
 vm.CommentHistory=true;
-    // vm.CommentHistoryhide=true;
+vm.CommentHistoryhide=true;
     // vm.CommentHistory=true;
 }
 vm.commentHistoyHide = function(){
@@ -197,7 +197,7 @@ vm.commentHistoyHide = function(){
                                     f.FinalStatus = 'Open';
                                 }
                                 f.Modified = vm.commentData[f.Id][0].Modified;
-                                if (vm.commentData[f.Id][0].Status === 'Resolved') {
+                                if (vm.commentData[f.Id][0].Status === 'Resolved' || vm.commentData[f.Id][0].Status === 'Closed') {
                                     f.ResolvedBy = vm.commentData[f.Id][0].Editor.Title;
                                 } else {
                                     f.ResolvedBy = '';
