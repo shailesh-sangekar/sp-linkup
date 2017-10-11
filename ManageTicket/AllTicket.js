@@ -374,7 +374,13 @@ vm.showFIlter=function(count){
             itemCreateInfo.set_folderUrl('/Lists/Service Desk Comments/' + folderUrl);
             var listItem = list.addItem(itemCreateInfo);
             var comment = item.Comments;
-            var status = item.FinalStatus;
+            if(item.FinalStatus != ''){
+                var status = item.FinalStatus;
+            }
+            else{
+                var status = 'Open';
+            }
+            
             var concern = item.Actual_x0020_Concern;
             var dept = item.Department.Department;
             var serviceid= item.Id;
