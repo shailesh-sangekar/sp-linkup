@@ -374,7 +374,7 @@ vm.showFIlter=function(count){
             itemCreateInfo.set_folderUrl('/Lists/Service Desk Comments/' + folderUrl);
             var listItem = list.addItem(itemCreateInfo);
             var comment = item.Comments;
-            if(item.FinalStatus != ''){
+            if(item.FinalStatus != undefined){
                 var status = item.FinalStatus;
             }
             else{
