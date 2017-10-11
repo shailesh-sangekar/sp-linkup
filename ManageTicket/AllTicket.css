@@ -119,7 +119,7 @@
     border: 1px solid #ddd;
     padding: 5px 12px;
     font-weight: 600;
-    margin-top: -165px;
+    margin-top: -185px;
     margin-left: -162px;
     transition: 0.3s all ease-out;
 }
@@ -140,7 +140,7 @@
     border: 1px solid #ddd;
     padding: 5px 12px;
     font-weight: 600;
-    margin-top: -165px;
+    margin-top: -185px;
     margin-left: -158px;
     transition: 0.3s all ease-out;
 }
@@ -262,4 +262,10 @@ label {
     margin-bottom: 10px;
     font-weight: 700;
     margin-top: 10px;
+}
+.badge {
+    background: #f3565d !important;
+}
+.badge.badge-success {
+background-color: #45b6af !important;
 }
