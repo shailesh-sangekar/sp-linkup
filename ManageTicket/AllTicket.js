@@ -93,6 +93,9 @@ vm.commentHistoyHide = function(){
                     var date1 = new Date(f.Created);
                     // var timeDiff = Math.abs(date2.getTime() - date1.getTime());
                     f.ageDiff = (workingDaysBetweenDates(date1, date2) - 1);
+                    if(f.ageDiff < 0){
+                        f.ageDiff = 0;
+                    }
                 }
 
             });
