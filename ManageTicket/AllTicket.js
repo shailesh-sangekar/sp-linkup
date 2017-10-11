@@ -16,19 +16,25 @@ function AllTicketCtl($scope, $http, $timeout, $filter) {
     Resigned = 'Resigned';
     vm.filteredItems = [];
     vm.commentData = [];
-    vm.CommentHistory=false;
-  vm.CommentHistoryhide=false;
+   vm.CommentHistory=true;
+    //vm.CommentHistory=true;
+  //  vm.CommentHistoryhide=false;
     $scope.page = 1;
     $scope.itemsDisplay = 3
+    vm.ShowComment=true;
+    vm.HideComment=false;
  
 
 vm.commentHistoy=function(){
-    vm.CommentHistoryhide=true;
-   vm.CommentHistory=true;
+vm.HideComment=true;
+vm.CommentHistory=true;
+    // vm.CommentHistoryhide=true;
+    // vm.CommentHistory=true;
 }
 vm.commentHistoyHide = function(){
     vm.CommentHistory=false;
-    vm.CommentHistoryhide=false;
+    vm.HideComment=false;
+    vm.ShowComment=true;
 }
     vm.readPeopleList = function() {
         spcrud.getCurrentUser($http).then(function(response) {
@@ -259,6 +265,7 @@ vm.commentHistoyHide = function(){
     vm.page = 1;
  
 };
+var count=10;
 vm.showFIlter=function(count){
     vm.itemsPerPage=count;
     vm.groupToPagesFilter(vm.DatalistESPLServiceDesk);
@@ -345,6 +352,9 @@ vm.showFIlter=function(count){
         vm.isReplyHide = false;
         vm.isResolveHide = false;
         vm.isCommentHide = false;
+        vm.CommentHistory=true;
+        vm.ShowComment=false;
+        vm.HideComment=false;
         vm.toggleModalReject(item);
     };
     vm.Reply = function(item) {
@@ -354,6 +364,8 @@ vm.showFIlter=function(count){
         vm.isReplyHide = true;
         vm.isResolveHide = false;
         vm.isCommentHide = true;
+        vm.ShowComment=true;
+        vm.CommentHistory=false;
         vm.GetDataforReplyResolveFunction(item);
         vm.toggleModalReject(item);
     };
@@ -361,8 +373,8 @@ vm.showFIlter=function(count){
         vm.item = itemToEdit;
         vm.item.Comments = '' ;
         vm.showModal = !vm.showModal;
-        vm.CommentHistory=false;
-        vm.CommentHistoryhide=false;
+       // vm.CommentHistory=false;
+        //vm.CommentHistoryhide=false;
     
     };
     vm.cancel = function(item) {
@@ -464,6 +476,8 @@ vm.showFIlter=function(count){
         $scope.isCommentHide = true;
         $scope.isReplyHide = false;
         $scope.isResolveHide = true;
+         vm.ShowComment=true;
+         vm.CommentHistory=false;
         vm.GetDataforReplyResolveFunction(item);
         vm.toggleModalReject(item);
     };

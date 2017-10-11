@@ -29,7 +29,7 @@
                         Show : 
                     
                     <select class="alignShowFilter" ng-model="itemsPerPage" ng-change="showFIlter(itemsPerPage)">
-                            <option value="10" ng-selected="itemsPerPage">10</option>  
+                            <option value="10" >10</option> 
                             <option value="20">20</option>
                             <option value="40">40</option>  
                             <option value="100">100</option>
@@ -78,7 +78,7 @@
                                     <td>{{item.ResolvedBy?item.ResolvedBy:''}}</td>
                                     <td>{{item.ageDiff}}</td>
                                     <!--<td>{{item.Approver_x0020_comment}}</td>-->
-                                    <td><a href="" data-toggle="modal" data-target="#myModal" ng-click="View(item)"><i class="fa fa-search"  style="color: #2474f6;"> </i></a>
+                                    <td> <a href="" data-toggle="modal" data-target="#myModal" ng-click="View(item)" ><i class="fa fa-search"  style="color: #2474f6;"></i></a>
                                     <a ng-show="item.FinalStatus != 'Closed'" href="" data-toggle="modal" data-target="#myModal" ng-click="Reply(item)"  style="color: #2474f6;"><i class="fa fa-comments "></i></a>
                                     <a ng-show="item.FinalStatus != 'Resolved' && item.FinalStatus != 'Closed'" href="" data-toggle="modal" data-target="#myModal" ng-click="Resolve(item)" style="color: #2474f6;"><i class="fa fa-check"></i></a></td>
                                 </tr>
@@ -264,11 +264,17 @@
                         </div>
                          </div>
                     </div>
-                    <div ng-if="!CommentHistory">
+                    <!-- <div ng-if="!CommentHistory">
                             <button class="commentBtn" type="button" ng-click="commentHistoy()">Show Comment History</button>
                     </div>
                     <div ng-if="CommentHistoryhide">
                             <button class="commentBtnHide" type="button" ng-click="commentHistoyHide()">Hide Comment History</button>
+                    </div> -->
+                         <div>
+                            <button class="commentBtn" type="button" ng-click="commentHistoy()" ng-show="ShowComment">Show Comment History</button>
+                    </div>
+                    <div>
+                            <button class="commentBtnHide" type="button" ng-click="commentHistoyHide()" ng-show="HideComment">Hide Comment History</button>
                     </div>
                     <div ng-show="CommentHistory" >
                         <div ng-if="DatalistServiceDeskComments1ById.length > 0" class="col-sm-12" ng-repeat="item in DatalistServiceDeskComments1ById">
