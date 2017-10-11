@@ -217,6 +217,12 @@
             </div>
             <modal visible="showModal">
                 <div class="modal-header">
+                    
+                    <!-- <button type="button" class="close" data-dismiss="modal">&times;</button> -->
+                 <button type="button" class="abc"  ng-click="cancel(item)">&#10005;</button>
+
+
+
                     <h3 class="modal-title modalHead" id="modal-title" ng-show="IsView">View Ticket:</h3>
                     <h3 class="modal-title modalHead" id="modal-title" ng-show="IsReply">Reply for Ticket:</h3>
                     <h3 class="modal-title modalHead" id="modal-title" ng-show="IsResolve">Resolve for Ticket:</h3>   
@@ -261,7 +267,7 @@
                             <button class="saveBtn" type="button" ng-show="isResolveHide" ng-click="ResolveFunction(item)" style="float:right;">Resolve</button>
                         </div>
                         <div class="col-sm-6" id="buttons">
-                            <button class="cancelBtn" type="button" ng-click="cancel(item)">Cancel</button>
+                            <!-- <button class="cancelBtn" type="button" ng-click="cancel(item)">Cancel</button> -->
                         </div>
                          </div>
                     </div>
