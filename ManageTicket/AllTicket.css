@@ -141,7 +141,7 @@
     font-weight: 600;
     margin-top: -16px;
     transition: 0.3s all ease-out;
-}
+} 
 
 .commentBtnHide:hover {
     background: rgba(42, 136, 214, 0.91) !important;

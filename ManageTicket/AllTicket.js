@@ -34,7 +34,7 @@ vm.CommentHistoryhide=true;
 vm.commentHistoyHide = function(){
     vm.CommentHistory=false;
     vm.HideComment=false;
-    vm.ShowComment=true;
+    vm.ShowComment=true; 
 }
 // vm.viewcomment=function(){
 //     vm.CommentHistory=true;
