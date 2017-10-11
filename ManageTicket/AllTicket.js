@@ -373,6 +373,7 @@ vm.showFIlter=function(count){
         vm.isCommentHide = true;
         vm.ShowComment=true;
         vm.CommentHistory=false;
+        vm.HideComment=false;
         vm.GetDataforReplyResolveFunction(item);
         vm.toggleModalReject(item);
     };
