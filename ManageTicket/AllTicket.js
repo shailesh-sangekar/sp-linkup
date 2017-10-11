@@ -8,7 +8,7 @@ function AllTicketCtl($scope, $http, $timeout, $filter) {
     vm.Authorised = false;
     vm.NotAuthorised = false;
     vm.groupedItems = [];
-   vm.itemsPerPage = 10;
+    vm.itemsPerPage = 10;
     vm.pagedItems = [];
     vm.currentPage = 0;
     vm.mod = '';
@@ -16,13 +16,13 @@ function AllTicketCtl($scope, $http, $timeout, $filter) {
     Resigned = 'Resigned';
     vm.filteredItems = [];
     vm.commentData = [];
-   vm.CommentHistory=true;
+    vm.CommentHistory = false;
     //vm.CommentHistory=true;
-  //  vm.CommentHistoryhide=false;
+    //vm.CommentHistoryhide=false;
     $scope.page = 1;
     $scope.itemsDisplay = 3
-    vm.ShowComment=true;
-    vm.HideComment=false;
+    vm.ShowComment = true;
+    vm.HideComment = false;
  
 
 vm.commentHistoy=function(){
@@ -36,6 +36,11 @@ vm.commentHistoyHide = function(){
     vm.HideComment=false;
     vm.ShowComment=true;
 }
+// vm.viewcomment=function(){
+//     vm.CommentHistory=true;
+//     vm.HideComment=false;
+//     vm.ShowComment=false;
+// }
     vm.readPeopleList = function() {
         spcrud.getCurrentUser($http).then(function(response) {
             if (response.status === 200)
@@ -346,13 +351,14 @@ vm.showFIlter=function(count){
         vm.currentPage = this.n;
     };
     vm.View = function(item) {
+        vm.CommentHistory=true;
         vm.IsView=true;
         vm.IsReply=false;
         vm.IsResolve=false;
         vm.isReplyHide = false;
         vm.isResolveHide = false;
         vm.isCommentHide = false;
-        vm.CommentHistory=true;
+       //vm.viewcomment();
         vm.ShowComment=false;
         vm.HideComment=false;
         vm.toggleModalReject(item);

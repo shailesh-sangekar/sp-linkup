@@ -256,3 +256,10 @@
     background-color: #45b6af;
     background-image: none;
 }
+label {
+    display: inline-block;
+    max-width: 100%;
+    margin-bottom: 10px;
+    font-weight: 700;
+    margin-top: 10px;
+}
