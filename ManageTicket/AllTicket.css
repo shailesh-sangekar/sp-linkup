@@ -120,6 +120,7 @@
     padding: 5px 12px;
     font-weight: 600;
     margin-top: -16px;
+    float: right;
     transition: 0.3s all ease-out;
 }
 
@@ -140,6 +141,7 @@
     padding: 5px 12px;
     font-weight: 600;
     margin-top: -16px;
+    float: right;
     transition: 0.3s all ease-out;
 } 
 
