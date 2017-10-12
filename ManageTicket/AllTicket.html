@@ -79,9 +79,9 @@
                                     <td>{{item.ResolvedBy?item.ResolvedBy:''}}</td>
                                     <td>{{item.ageDiff}}</td>
                                     <!--<td>{{item.Approver_x0020_comment}}</td>-->
-                                    <td> <a href="" data-toggle="modal" data-target="#myModal" ng-click="View(item)" ><i class="fa fa-search"  style="color: #2474f6;"></i></a>
-                                    <a ng-show="item.FinalStatus != 'Closed'" href="" data-toggle="modal" data-target="#myModal" ng-click="Reply(item)"  style="color: #2474f6;"><i class="fa fa-comments "></i></a>
-                                    <a ng-show="item.FinalStatus != 'Resolved' && item.FinalStatus != 'Closed'" href="" data-toggle="modal" data-target="#myModal" ng-click="Resolve(item)" style="color: #2474f6;"><i class="fa fa-check"></i></a></td>
+                                    <td> <a href="" data-toggle="modal" data-target="#myModal" ng-click="View(item)" ><i class="fa fa-search" title="View"  style="color: #2474f6;"></i></a>
+                                    <a ng-show="item.FinalStatus != 'Closed'" href="" data-toggle="modal" data-target="#myModal" ng-click="Reply(item)"  title="Reply"  style="color: #2474f6;"><i class="fa fa-comments "></i></a>
+                                    <a ng-show="item.FinalStatus != 'Resolved' && item.FinalStatus != 'Closed'" href="" data-toggle="modal" data-target="#myModal" title="Resolve" ng-click="Resolve(item)" style="color: #2474f6;"><i class="fa fa-check"></i></a></td>
                                 </tr>
                             </tbody>
                         </table>
