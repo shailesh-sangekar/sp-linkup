@@ -386,7 +386,7 @@ vm.showFIlter=function(count){
        // vm.CommentHistory=false;
         //vm.CommentHistoryhide=false;
     
-    };
+    }; 
     vm.cancel = function(item) {
         vm.showModal = false;
     };
