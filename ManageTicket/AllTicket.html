@@ -137,6 +137,8 @@
                                     <th>Updated By</th>
                                     <th>Resolved By</th>
                                     <th>Age Days</th>
+                                    <th ng-if="LinkupGroup">Linkup Priority</th>
+                                    <th ng-if="LinkupGroup">Approver's Comment</th>
                                     <!--<th>Approvers Comment</th>-->
                                 </tr>
                             </thead>
@@ -152,6 +154,9 @@
                                     <td>{{item.Editor.Title}}</td>
                                     <td>{{item.ResolvedBy?item.ResolvedBy:'N/A'}}</td>
                                     <td>{{item.ageDiff}}</td>
+                                    <td ng-if="LinkupGroup">{{item.Approver_x0020_Priority?item.Approver_x0020_Priority:''}}</td>
+                                    <td ng-if="LinkupGroup">{{item.Approver_x0020_comment?item.Approver_x0020_comment:''}}</td>
+                                    
                                     <!--<td>{{item.Approver_x0020_comment}}</td>-->
                                 </tr>
                             </tbody>
