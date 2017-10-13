@@ -17,6 +17,7 @@ function AllTicketCtl($scope, $http, $timeout, $filter) {
     vm.filteredItems = [];
     vm.commentData = [];
     vm.CommentHistory = false;
+    vm.LinkupGroup=false;
     //vm.CommentHistory=true;
     //vm.CommentHistoryhide=false;
     $scope.page = 1;
@@ -52,7 +53,8 @@ vm.commentHistoyHide = function(){
             for (i = 0; i < response.data.d.Groups.results.length; i++) {
                 // if (vm.GroupFound == false) {
                 if (response.data.d.Groups.results[i].LoginName == 'ServiceDeskLinkupSupport') {
-                    DeptListFilter = DeptListFilter + 'or (Department/Department eq ' + '\'' + 'Linkup Support' + '\') ';
+                    DeptListFilter = DeptListFilter + 'or (Department/Department eq ' + '\'' + 'Linkup Support' + '\') and (Approver_x0020_Status eq ' + '\'' + 'Approved' + '\')';
+                    vm.LinkupGroup=true;
                 } else if (response.data.d.Groups.results[i].LoginName == 'ServiceDeskRMSSupport') {
                     DeptListFilter = DeptListFilter + 'or (Department/Department eq ' + '\'' + 'RMS Support' + '\') ';
                 } else if (response.data.d.Groups.results[i].LoginName == 'ServiceDeskIT') {
@@ -99,7 +101,8 @@ vm.commentHistoyHide = function(){
             if (resp.status === 200)
                 var myJSON = JSON.stringify(resp.data.d.results);
             vm.DatalistESPLServiceDesk = resp.data.d.results;
-            console.log('data list',vm.DatalistESPLServiceDesk);
+            console.log(' first data list');
+            console.log(vm.DatalistESPLServiceDesk);
             vm.DatalistESPLServiceDesk.forEach(f => {
                 if (f.Created != null) {
                     var date2 = new Date();
@@ -177,7 +180,8 @@ vm.commentHistoyHide = function(){
                 if (response.status === 200)
                     if (response.data.d.results.length > 0) {
                         vm.DatalistServiceDeskComments1 = response.data.d.results;
-                        console.log('abc', vm.DatalistServiceDeskComments1);
+                        console.log('commentlist');
+                        console.log(vm.DatalistServiceDeskComments1);
                         var groupBy = function(xs, key) {
                             return xs.reduce(function(rv, x) {
                                 x.Modified=new Date(x.Modified);
@@ -209,7 +213,8 @@ vm.commentHistoyHide = function(){
                            // })
                     })
                     vm.spinnerloaded = true;
-                    
+                    console.log('datalist');
+                    console.log(vm.DatalistESPLServiceDesk);
             }, function(error) {
                 console.log('error', error);
             });

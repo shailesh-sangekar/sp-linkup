@@ -58,6 +58,8 @@
                                     <th>Updated By</th>
                                     <th>Resolved By</th>
                                     <th>Age Days</th>
+                                    <th ng-if="LinkupGroup">Linkup Priority</th>
+                                    <th ng-if="LinkupGroup">Approver's Comment</th>
                                     <!--<th>Approvers Comment</th>-->
                                     <th>Action</th>
                                     <!-- <th>Reply</th>
@@ -76,6 +78,8 @@
                                     <td>{{item.Editor.Title}}</td>
                                     <td>{{item.ResolvedBy?item.ResolvedBy:''}}</td>
                                     <td>{{item.ageDiff}}</td>
+                                    <td ng-if="LinkupGroup">{{item.Approver_x0020_Priority?item.Approver_x0020_Priority:''}}</td>
+                                    <td ng-if="LinkupGroup">{{item.Approver_x0020_comment?item.Approver_x0020_comment:''}}</td>
                                     <!--<td>{{item.Approver_x0020_comment}}</td>-->
                                     <td> <a href="" data-toggle="modal" data-target="#myModal" ng-click="View(item)" ><i class="fa fa-search" title="View"  style="color: #2474f6;"></i></a>
                                     <a ng-show="item.FinalStatus != 'Closed'" href="" data-toggle="modal" data-target="#myModal" ng-click="Reply(item)"  title="Reply"  style="color: #2474f6;"><i class="fa fa-comments "></i></a>
