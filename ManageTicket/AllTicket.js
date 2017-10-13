@@ -23,6 +23,7 @@ function AllTicketCtl($scope, $http, $timeout, $filter) {
     $scope.itemsDisplay = 3
     vm.ShowComment = true;
     vm.HideComment = false;
+    vm.CancelButton=false;
  
 
 vm.commentHistoy=function(){
@@ -360,7 +361,7 @@ vm.showFIlter=function(count){
         vm.isReplyHide = false;
         vm.isResolveHide = false;
         vm.isCommentHide = false;
-       //vm.viewcomment();
+       vm.CancelButton=false;
         vm.ShowComment=false;
         vm.HideComment=false;
         vm.GetDataforReplyResolveFunction(item);
@@ -376,6 +377,7 @@ vm.showFIlter=function(count){
         vm.ShowComment=true;
         vm.CommentHistory=false;
         vm.HideComment=false;
+        vm.CancelButton=true;
         vm.GetDataforReplyResolveFunction(item);
         vm.toggleModalReject(item);
     };
@@ -489,6 +491,7 @@ vm.showFIlter=function(count){
         vm.ShowComment=true;
         vm.CommentHistory=false;
         vm.HideComment=false;
+         vm.CancelButton=true;
         vm.GetDataforReplyResolveFunction(item);
         vm.toggleModalReject(item);
     };

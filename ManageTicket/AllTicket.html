@@ -18,19 +18,17 @@
         <div ng-cloak="" ng-show="spinnerloaded">
             <div class="row" ng-if="Authorised">
                 <div class="col-md-12">
-                    <h4 class="masterHeading">Manage Ticket</h4>
+                    <!-- <h4 class="masterHeading">Manage Ticket</h4> -->
                     <div class="row">
                 <div class="col-md-4 frm">
-                    <input type="text" class="form-control" placeholder="Type to Search..." ng-model="filterText" ng-change='filterItems(filterText)' style="margin-left:0px;width: 100%;">
+                    <input type="text" class="form-control" placeholder="Type to Search..."  style="margin-left: 16px;width: 100%;" ng-model="filterText" ng-change='filterItems(filterText)' style="margin-left:0px;width: 100%;">
                     <!-- <input type="text" ng-model="query" ng-change="search(query)"  placeholder="Search"> -->
                 </div>
                 <div class="col-md-4">
-    
                         Show : 
-                    
                     <select class="alignShowFilter" ng-model="itemsPerPage" ng-change="showFIlter(itemsPerPage)" ng-selected="10" >
                         <!-- <option ng-option ng-selected="10" value="10">Select</option> -->
-                            <option ng-option value="10"  >10</option> 
+                            <option ng-option value="10">10</option> 
                             <option ng-option value="20">20</option>
                             <option ng-option value="40">40</option>  
                             <option ng-option value="100">100</option>
@@ -188,10 +186,10 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="exampleTextarea">Description</label>
-                                    <textarea class="form-control" id="exampleTextarea" rows="3"></textarea>
+                                    <textarea class="form-control" id="exampleTextarea" rows="3" style="color: black;width: 508px;"></textarea>
                                     <div ng-hide="isCommentHide">
                                         <label for="exampleTextarea">Comment</label>
-                                        <textarea class="form-control" id="exampleTextarea" rows="3" required=""></textarea>
+                                        <textarea class="form-control" id="exampleTextarea" style="color: black;width: 508px;" rows="3" required=""></textarea>
                                     </div>
                                     <div class="col-sm-6" id="buttons">
                                         <button type="button" class="btn btn-default" ng-hide="isReplyHide">Reply</button>
@@ -221,9 +219,9 @@
                 
                     <div class="row">
                         <div class="col-sm-6">
-                    <h3 class="modal-title modalHead" id="modal-title" ng-show="IsView">View Ticket:</h3>
-                    <h3 class="modal-title modalHead" id="modal-title" ng-show="IsReply">Reply for Ticket:</h3>
-                    <h3 class="modal-title modalHead" id="modal-title" ng-show="IsResolve">Resolve for Ticket:</h3>   
+                    <h3 class="modal-title modalHead" id="modal-title" ng-show="IsView">View Ticket</h3>
+                    <h3 class="modal-title modalHead" id="modal-title" ng-show="IsReply">Reply to Ticket</h3>
+                    <h3 class="modal-title modalHead" id="modal-title" ng-show="IsResolve">Resolve  Ticket</h3>   
                 </div>
                 <div class="col-sm-5">
                         <div ng-if="!CommentHistory">
@@ -264,13 +262,13 @@
                          <option ng-model="item" >{{item.Actual_x0020_Concern}}</option>  
                     </select>
                         </div>
-                        <div class="col-sm-12" style="margin-left:10px;">
+                        <div class="col-sm-12" style="margin-left:10px; width:504px;">
                             <label for="exampleTextarea">Description</label>
-                            <textarea class="form-control" id="exampleTextarea" rows="3" disabled style="color: black;">{{item.Description}}</textarea>
+                            <textarea class="form-control" id="exampleTextarea" rows="3" disabled style="color: black;width: 508px;">{{item.Description}}</textarea>
                         </div>
                         <div class="col-sm-12" ng-show="isCommentHide" style="margin-left:10px;">
                             <label for="exampleTextarea">Comment</label>
-                            <textarea class="form-control" id="exampleTextarea" rows="3" ng-model="item.Comments" style="color: black;"></textarea>
+                            <textarea class="form-control" id="exampleTextarea" rows="3" ng-model="item.Comments" style="color: black;width: 508px;"></textarea>
                         </div>
                          <div  class="col-sm-12">
                         <div class="col-sm-6" id="buttons">
@@ -278,7 +276,7 @@
                             <button class="saveBtn" type="button" ng-show="isResolveHide" ng-click="ResolveFunction(item)" style="float:right;">Resolve</button>
                         </div>
                         <div class="col-sm-6" id="buttons">
-                            <!-- <button class="cancelBtn" type="button" ng-click="cancel(item)">Cancel</button> -->
+                             <button class="cancelBtn" type="button" ng-click="cancel(item)" ng-show="CancelButton">Cancel</button> 
                         </div>
                          </div>
                     </div>
@@ -294,9 +292,9 @@
                         <div class="mytab" >
                         <table   ng-if="DatalistServiceDeskComments1ById.length > 0"  id="myTable" class="table table-striped table-bordered table-hover table-checkable order-column">
                             <tr>
-                                <th>Comments</th>
-                                <th>By</th>
-                                <th>Date</th>
+                                <th class="col-sm-6">Comments</th>
+                                <th class="col-sm-3">By</th>
+                                <th class="col-sm-3">Date</th>
                               
                             </tr>
                             <tr   ng-repeat="item in DatalistServiceDeskComments1ById">
@@ -310,7 +308,7 @@
                         <div ng-if="DatalistServiceDeskComments1ById.length == 0">
                                     <br>
                                     <div class="col-sm-12">
-                                    <b style="font-size: 13px;">No Comment History Found.</b>
+                                    <b style="font-size: 13px;margin-left: 10px;">No Comment History Found.</b>
                                     </div>
                                 </div>
                          <!-- <div ng-if="DatalistServiceDeskComments1ById.length > 0" class="col-sm-12" ng-repeat="item in DatalistServiceDeskComments1ById">

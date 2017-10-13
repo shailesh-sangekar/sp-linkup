@@ -192,7 +192,8 @@
     color: #fff!important;
 }
 .table{
-    font-size: 12px !important;
+    font-size: 13px !important;
+    font-weight: 400;
     padding: 4px !important;
     padding-bottom: 3px !important;
 }
@@ -273,4 +274,18 @@ background-color: #45b6af !important;
 mytab
 {
     margin-top: 5px;
+}
+.table {
+    width: 95%; 
+    /* max-width: 100%; */
+    margin-bottom: 20px;
+    margin-left: 15px;
+    margin-top: 5px;
+}
+#myTable
+{
+    width: 95%;
+}
+.ms-wpContentDivSpace textarea {
+    margin-top: 2px !important;
 }
