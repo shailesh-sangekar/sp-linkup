@@ -101,8 +101,6 @@ vm.commentHistoyHide = function(){
             if (resp.status === 200)
                 var myJSON = JSON.stringify(resp.data.d.results);
             vm.DatalistESPLServiceDesk = resp.data.d.results;
-            console.log(' first data list');
-            console.log(vm.DatalistESPLServiceDesk);
             vm.DatalistESPLServiceDesk.forEach(f => {
                 if (f.Created != null) {
                     var date2 = new Date();
@@ -180,8 +178,6 @@ vm.commentHistoyHide = function(){
                 if (response.status === 200)
                     if (response.data.d.results.length > 0) {
                         vm.DatalistServiceDeskComments1 = response.data.d.results;
-                        console.log('commentlist');
-                        console.log(vm.DatalistServiceDeskComments1);
                         var groupBy = function(xs, key) {
                             return xs.reduce(function(rv, x) {
                                 x.Modified=new Date(x.Modified);
@@ -213,8 +209,6 @@ vm.commentHistoyHide = function(){
                            // })
                     })
                     vm.spinnerloaded = true;
-                    console.log('datalist');
-                    console.log(vm.DatalistESPLServiceDesk);
             }, function(error) {
                 console.log('error', error);
             });
