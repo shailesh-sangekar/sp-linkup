@@ -24,6 +24,7 @@
 }
 
 .scrollTable {
+    margin-top: -10px;
     min-height: 467px !important;
     max-height: 467px !important;
     overflow-y: auto;
@@ -51,11 +52,14 @@
 .masterHeading {
     margin-top: 0;
     margin-bottom: 15px;
-    font-size: 40px;
+    font-size: 25px;
     font-weight: 500;
     line-height: 0.6 !important;
 }
 
 .spantag {
     color: #777;
+}
+.table > thead > tr > th, .table > tbody > tr > th, .table > tfoot > tr > th, .table > thead > tr > td, .table > tbody > tr > td, .table > tfoot > tr > td {
+    padding: 4px;
 }

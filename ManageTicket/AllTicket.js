@@ -8,7 +8,7 @@ function AllTicketCtl($scope, $http, $timeout, $filter) {
     vm.Authorised = false;
     vm.NotAuthorised = false;
     vm.groupedItems = [];
-    vm.itemsPerPage = 10;
+    vm.itemsPerPage = 20;
     vm.pagedItems = [];
     vm.currentPage = 0;
     vm.mod = '';

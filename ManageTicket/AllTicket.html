@@ -17,34 +17,34 @@
 			</span>
         <div ng-cloak="" ng-show="spinnerloaded">
             <div class="row" ng-if="Authorised">
-                <div class="col-md-12">
+                <div class="col-md-12 topMarginn">
                     <!-- <h4 class="masterHeading">Manage Ticket</h4> -->
                     <div class="row">
                 <div class="col-md-4 frm">
-                    <input type="text" class="form-control" placeholder="Type to Search..."  style="margin-left: 16px;width: 100%;" ng-model="filterText" ng-change='filterItems(filterText)' style="margin-left:0px;width: 100%;">
+                    <input type="text" class="form-control" placeholder="Type to Search..."  style="margin-left: 16px;width: 100%;height:25px;" ng-model="filterText" ng-change='filterItems(filterText)' style="margin-left:0px;width: 100%;">
                     <!-- <input type="text" ng-model="query" ng-change="search(query)"  placeholder="Search"> -->
                 </div>
                 <div class="col-md-4">
                         Show : 
                     <select class="alignShowFilter" ng-model="itemsPerPage" ng-change="showFIlter(itemsPerPage)" ng-selected="10" >
                         <!-- <option ng-option ng-selected="10" value="10">Select</option> -->
-                            <option ng-option value="10">10</option> 
-                            <option ng-option value="20">20</option>
-                            <option ng-option value="40">40</option>  
+                            <option ng-option value="20">20</option> 
+                            <option ng-option value="40">40</option>
+                            <option ng-option value="60">60</option>  
                             <option ng-option value="100">100</option>
                     </select>
                     <!-- <input type="text" ng-model="query" ng-change="search(query)"  placeholder="Search"> -->
                 </div>
                 <div class="col-md-4">
-                 <a href="#" id="test" class="btn btn-icon-only blue" style="width: 90px;border-radius: 3px!important;height: 31px;float: right;margin-top:0px;" ng-click="fnExcelReport();">
-                        <i class="fa fa-download" style="margin-left:0px;margin-top: 3px;"></i>
-                        <span style="margin-left:-5px;">To Excel</span>
+                 <a href="#" id="test" class="btn btn-icon-only blue" style="width: 90px;border-radius: 3px!important;height: 31px;float: right;margin-top:0px;margin-right: 55px;" ng-click="fnExcelReport();">
+                        <i class="fa fa-download" style="margin-left:-6px;margin-top: 3px;height: 25px;"></i>
+                        <span style="margin-left:-4px;">To Excel</span>
                     </a>
                 </div>
                 </div>
                 
 
-                    <div class="scrollTable" style="margin-top: 25px;">
+                    <div class="scrollTable">
                         <table id="myTable" class="table table-striped table-bordered table-hover table-checkable order-column">
                             <thead>
                                 <tr>

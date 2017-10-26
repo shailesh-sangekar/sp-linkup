@@ -7,7 +7,7 @@
     font-size: 12px;
     cursor: pointer;
     border: 1px solid #ddd;
-    padding: 5px 12px;
+    padding: 2px 12px;
     font-weight: 600;
     margin-top: -5px;
     transition: 0.3s all ease-out;
@@ -24,8 +24,9 @@
 }
 
 .scrollTable {
-    min-height: 340px !important;
-    max-height: 340px !important;
+    margin-top: 0px !important;
+    min-height: 465px !important;
+    max-height: 465px !important;
     overflow-y: auto;
     overflow-x: hidden;
 }
@@ -192,7 +193,7 @@
     color: #fff!important;
 }
 .table{
-    font-size: 13px !important;
+    font-size: 12px !important;
     font-weight: 400;
     padding: 4px !important;
     padding-bottom: 3px !important;
@@ -200,17 +201,22 @@
 .ms-WPBody td{
     padding-bottom: 3px !important;
 }
-.table>thead>tr>th {
-    padding: 4px !important;
+.topMarginn{
+    margin-top: -30px !important;
 }
-
+.table > thead > tr > th, .table > tbody > tr > th, .table > tfoot > tr > th, .table > thead > tr > td, .table > tbody > tr > td, .table > tfoot > tr > td {
+    padding: 2px !important;
+}
+/* .table thead tr th {
+    font-size: 12px;
+} */
 .showFilter{
     margin-top: -35px !important;
     margin-left: 310px !important;
 }
-.alignShowFilter{
-    width: 70px !important;
-    height: 33px !important;
+.alignShowFilter {
+    width: 50px !important;
+    height: 25px !important;
 }
 .tooltip {
     position: relative;
