@@ -18,6 +18,7 @@ function AllTicketCtl($scope, $http, $timeout, $filter) {
     vm.commentData = [];
     vm.CommentHistory = false;
     vm.LinkupGroup=false;
+    vm.deptHead = false;
     //vm.CommentHistory=true;
     //vm.CommentHistoryhide=false;
     $scope.page = 1;
@@ -51,6 +52,11 @@ vm.commentHistoyHide = function(){
             vm.LoggedInUserID = response.data.d.Id;
             var DeptListFilter = '';
             for (i = 0; i < response.data.d.Groups.results.length; i++) {
+                if (response.data.d.Groups.results[i].LoginName == 'ServiceDeptHead') {
+                    vm.deptHead = true;
+                    DeptListFilter = '';
+                    break;
+                } else {
                 // if (vm.GroupFound == false) {
                 if (response.data.d.Groups.results[i].LoginName == 'ServiceDeskLinkupSupport') {
                     DeptListFilter = DeptListFilter + 'or (Department/Department eq ' + '\'' + 'Linkup Support' + '\') and (Approver_x0020_Status eq ' + '\'' + 'Approved' + '\')';
@@ -65,7 +71,8 @@ vm.commentHistoyHide = function(){
                     DeptListFilter = DeptListFilter + 'or (Department/Department eq ' + '\'' + 'Finance' + '\') ';
                 } else if (response.data.d.Groups.results[i].LoginName == 'ServiceDeskAdmins') {
                     DeptListFilter = DeptListFilter + 'or (Department/Department eq ' + '\'' + 'Admin' + '\') ';
-                }
+                } 
+            }
             }
             vm.FinalFilter=DeptListFilter;
             vm.readlistESPLServiceDesk(DeptListFilter);
@@ -77,12 +84,12 @@ vm.commentHistoyHide = function(){
     vm.readPeopleList();
 
     vm.readlistESPLServiceDesk = function(DeptListFilter) {
-        if (DeptListFilter.length > 0) {
+        if (DeptListFilter.length > 0 || vm.deptHead == true) {
             vm.Authorised = true;
             vm.NotAuthorised = false;
         } else {
-            vm.Authorised = false;
-            vm.NotAuthorised = true;
+                vm.Authorised = false;
+                vm.NotAuthorised = true;
         }
         var deptFilter = DeptListFilter.substring(3);
         empSelect = 'Employee/Title,Employee/ID,Department/Department,Editor/Title,Author/Title,Predefined_x0020_Concern/Predefined_x0020_Concern,*';
@@ -101,6 +108,7 @@ vm.commentHistoyHide = function(){
             if (resp.status === 200)
                 var myJSON = JSON.stringify(resp.data.d.results);
             vm.DatalistESPLServiceDesk = resp.data.d.results;
+            console.log('vm.DatalistESPLServiceDesk',vm.DatalistESPLServiceDesk);
             vm.DatalistESPLServiceDesk.forEach(f => {
                 if (f.Created != null) {
                     var date2 = new Date();
