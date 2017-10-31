@@ -67,8 +67,10 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr ng-repeat="item in pagedItems[currentPage] |limitTo: itemsPerPage:page-1  as filteredItems">
-                                    <td>{{item.Employee.Title}}</td>
+                                <tr ng-repeat="item in pagedItems[currentPage] |limitTo: itemsPerPage:page-1  as filteredItems ">
+                                    <!-- <tr ng-repeat="item in totalitems|orderBy:[groupComparator, 'FinalStatus']"> -->
+                                    
+                                      <td>{{item.Employee.Title}}</td>
                                     <td>{{item.Department.Department}}</td>
                                     <td>{{item.Actual_x0020_Concern}}</td>
                                     <td>{{item.FinalStatus?item.FinalStatus:'Open'}}</td>
@@ -85,8 +87,12 @@
                                     <a ng-show="item.FinalStatus != 'Closed'" href="" data-toggle="modal" data-target="#myModal" ng-click="Reply(item)"  title="Reply"  style="color: #2474f6;"><i class="fa fa-comments "></i></a>
                                     <a ng-show="item.FinalStatus != 'Resolved' && item.FinalStatus != 'Closed'" href="" data-toggle="modal" data-target="#myModal" title="Resolve" ng-click="Resolve(item)" style="color: #2474f6;"><i class="fa fa-check"></i></a></td>
                                 </tr>
+                                
+                                <!-- end new table -->
                             </tbody>
                         </table>
+                        <uib-pagination total-items="totalitems" ng-model="currentPage" items-per-page="itemsPerPage"></uib-pagination>
+                    </div>
                     </div>
                     <!--<div class="row">-->
                     <div class="scrollpaging">
@@ -143,7 +149,6 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr ng-repeat="item in DatalistESPLServiceDesk">
                                     <td>{{item.Employee.Title}}</td>
                                     <td>{{item.Department.Department}}</td>
                                     <td>{{item.Actual_x0020_Concern}}</td>
@@ -161,6 +166,9 @@
                                 </tr>
                             </tbody>
                         </table>
+                        <!-- $scope.redsFirst = function(record){
+                            return record.color !== 'Open';
+                        } -->
                     </div>
                 </div>
 

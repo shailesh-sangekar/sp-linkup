@@ -26,6 +26,7 @@ function AllTicketCtl($scope, $http, $timeout, $filter) {
     vm.ShowComment = true;
     vm.HideComment = false;
     vm.CancelButton=false;
+    vm.totalitems=0;
  
 
 vm.commentHistoy=function(){
@@ -82,6 +83,7 @@ vm.commentHistoyHide = function(){
     };
 
     vm.readPeopleList();
+   
 
     vm.readlistESPLServiceDesk = function(DeptListFilter) {
         if (DeptListFilter.length > 0 || vm.deptHead == true) {
@@ -108,6 +110,7 @@ vm.commentHistoyHide = function(){
             if (resp.status === 200)
                 var myJSON = JSON.stringify(resp.data.d.results);
             vm.DatalistESPLServiceDesk = resp.data.d.results;
+            vm.totalitems=vm.DatalistESPLServiceDesk;
          //   console.log('vm.DatalistESPLServiceDesk',vm.DatalistESPLServiceDesk);
             vm.DatalistESPLServiceDesk.forEach(f => {
                 if (f.Created != null) {
@@ -181,11 +184,14 @@ vm.commentHistoyHide = function(){
                 orderby: ModeifiedDate,
                 top: count
                // filter: statusFilter
+              
             };
             spcrud.read($http, vm.listServiceDeskComments, Options).then(function(response) {
                 if (response.status === 200)
                     if (response.data.d.results.length > 0) {
                         vm.DatalistServiceDeskComments1 = response.data.d.results;
+                        
+                       
                         var groupBy = function(xs, key) {
                             return xs.reduce(function(rv, x) {
                                 x.Modified=new Date(x.Modified);
@@ -194,14 +200,20 @@ vm.commentHistoyHide = function(){
                             }, {});
                           };
                           vm.commentData=groupBy(vm.DatalistServiceDeskComments1, 'Service_x0020_Desk_x0020_IdId');
-                    } 
+                         
+                          //vm.groupComparator(vm.DatalistESPLServiceDesk);
+                    }
+                   // vm.redFirst(vm.DatalistESPLServiceDesk) ;
                     vm.DatalistESPLServiceDesk.forEach(f => {
                             // vm.commentData.forEach(fcomments => {
                              //   if (vm.commentData[f.Service_x0020_Desk_x0020_ID] === fcomments.Service_x0020_Desk_x0020_Id.Service_x0020_Desk_x0020_ID){
-                             if(vm.commentData[f.Id] != null){
+                             if(vm.commentData[f.Id] != null || vm.commentData[f.Id] != undefined){
                                  if(vm.commentData[f.Id][0].Status != null){
                                     f.FinalStatus = vm.commentData[f.Id][0].Status;
                                  }
+                                 else if(vm.commentData[f.Id][0].Status != undefined){
+                                    f.FinalStatus = 'Open';
+                                }
                                 else{
                                     f.FinalStatus = 'Open';
                                 }
@@ -212,17 +224,57 @@ vm.commentHistoyHide = function(){
                                     f.ResolvedBy = '';
                                 }
                              }   
+                             else{
+                                f.FinalStatus = 'Open';
+                             }
                              
                                // }
                            // })
                     })
+                    console.log('vm.DatalistESPLServiceDesk',vm.DatalistESPLServiceDesk);
+                    vm.FinalOpenData=[];
+                    vm.FinalResolvedData=[];
+                    vm.FinalClosedData=[];
+                    vm.DatalistESPLServiceDesk.forEach(item => {
+                        // vm.commentData.forEach(fcomments => {
+                         //   if (vm.commentData[f.Service_x0020_Desk_x0020_ID] === fcomments.Service_x0020_Desk_x0020_Id.Service_x0020_Desk_x0020_ID){
+                         if(item.FinalStatus == 'Open'){
+                            vm.FinalOpenData.push(item);
+                         } else if(item.FinalStatus == 'Resolved'){
+                            vm.FinalResolvedData.push(item);
+                         } else if(item.FinalStatus == 'Closed'){
+                            vm.FinalClosedData.push(item);
+                         }
+                         console.log(item.FinalStatus);
+                           // }
+                       // })
+                })
+                vm.DatalistESPLServiceDesk=[];
+                vm.FinalOpenData.forEach(openItem =>{
+                    vm.DatalistESPLServiceDesk.push(openItem);
+                })
+                vm.FinalResolvedData.forEach(openItem =>{
+                    vm.DatalistESPLServiceDesk.push(openItem);
+                })
+                vm.FinalClosedData.forEach(openItem =>{
+                    vm.DatalistESPLServiceDesk.push(openItem);
+                })
+                
+               // vm.FinalData.push(vm.FinalResolvedData);
+               // vm.FinalData.push(vm.FinalClosedData);
+                // console.log('vm.FinalOpenData',vm.FinalOpenData);
+                 //console.log('vm.FinalResolvedData',vm.FinalOpenData);
+                // console.log('vm.FinalClosedData',vm.FinalOpenData);
+                 vm.groupToPages();
                     vm.spinnerloaded = true;
             }, function(error) {
                 console.log('error', error);
             });
-            
+          
         // }, this);
-        vm.groupToPages();
+       //vm.groupComparator(vm.DatalistESPLServiceDesk);
+       
+ 
         	
     };
  
@@ -318,16 +370,38 @@ vm.showFIlter=function(count){
         //vm.statusClose(vm.filt);
 
     };
+    ////////////////////////
+    // vm.redFirst=function(data){
+      
+    //             if(data.FinalStatus == 'Open'){
+    //                 return 0;
+    //             } else {
+    //                 return 1;
+    //             }
+        
+    //     };
+        var orderedGroups = ['Open', 'Resolved', 'Closed'];
+    vm.groupComparator = function(data) {
+            return orderedGroups.indexOf(data.FinalStatus);
+           };
+   
+// vm.grouptoItem=function(){
+// vm.totalitems=[];
+// vm.totalitems.push(vm.DatalistESPLServiceDesk);
+// };
 
 
     vm.groupToPages = function() {
         vm.pagedItems = [];
+        //vm.totalitems=[];
 
         for (var i = 0; i < vm.DatalistESPLServiceDesk.length; i++) {
             if (i % vm.itemsPerPage === 0) {
                 vm.pagedItems[Math.floor(i / vm.itemsPerPage)] = [vm.DatalistESPLServiceDesk[i]];
+                 //vm.totalitems[Math.floor(i / vm.itemsPerPage)] = [vm.DatalistESPLServiceDesk[i]];
             } else {
-                vm.pagedItems[Math.floor(i / vm.itemsPerPage)].push(vm.DatalistESPLServiceDesk[i]);
+                 vm.pagedItems[Math.floor(i / vm.itemsPerPage)].push(vm.DatalistESPLServiceDesk[i]);
+                //vm.totalitems[Math.floor(i / vm.itemsPerPage)].push(vm.DatalistESPLServiceDesk[i]);
             }
         }
        // vm.statusClose(vm.DatalistServiceDeskComments1);
