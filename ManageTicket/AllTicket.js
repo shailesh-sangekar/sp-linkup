@@ -8,7 +8,8 @@ function AllTicketCtl($scope, $http, $timeout, $filter) {
     vm.Authorised = false;
     vm.NotAuthorised = false;
     vm.groupedItems = [];
-    vm.itemsPerPage = 20;
+    // vm.itemsPerPage =20 ;
+    //var count=20;
     vm.pagedItems = [];
     vm.currentPage = 0;
     vm.mod = '';
@@ -26,25 +27,36 @@ function AllTicketCtl($scope, $http, $timeout, $filter) {
     vm.ShowComment = true;
     vm.HideComment = false;
     vm.CancelButton=false;
-    vm.totalitems=0;
- 
+    
+    vm.Dept=[];
+    var Dept1='';
+    vm.Dept2=[];
+    vm.data=[];
+    vm.FinalOpenData=[];
+    vm.FinalResolvedData=[];
+    vm.FinalClosedData=[];
+    vm.Status='';
+    vm.Priority='';
 
-vm.commentHistoy=function(){
-vm.HideComment=true;
-vm.CommentHistory=true;
-vm.CommentHistoryhide=true;
-    // vm.CommentHistory=true;
-}
-vm.commentHistoyHide = function(){
-    vm.CommentHistory=false;
-    vm.HideComment=false;
-    vm.ShowComment=true; 
-}
-// vm.viewcomment=function(){
-//     vm.CommentHistory=true;
-//     vm.HideComment=false;
-//     vm.ShowComment=false;
-// }
+    vm.RecordsPerPage=['20','40','60','100'];
+    vm.StatusDropdown=['Open','Resolved','Closed'];
+    vm.PriorityDropdown=['High','Medium','Low'];
+    vm.commentHistoy=function(){
+    vm.HideComment=true;
+    vm.CommentHistory=true;
+    vm.CommentHistoryhide=true;
+        // vm.CommentHistory=true;
+    }
+    vm.commentHistoyHide = function(){
+        vm.CommentHistory=false;
+        vm.HideComment=false;
+        vm.ShowComment=true; 
+    }
+    // vm.viewcomment=function(){
+    //     vm.CommentHistory=true;
+    //     vm.HideComment=false;
+    //     vm.ShowComment=false;
+    // }
     vm.readPeopleList = function() {
         spcrud.getCurrentUser($http).then(function(response) {
             if (response.status === 200)
@@ -56,24 +68,39 @@ vm.commentHistoyHide = function(){
                 if (response.data.d.Groups.results[i].LoginName == 'ServiceDeptHead') {
                     vm.deptHead = true;
                     DeptListFilter = '';
+                    vm.DepartmentDropdown=['Linkup Support','RMS Support','IT','HR','Finance','Admin'];
                     break;
                 } else {
                 // if (vm.GroupFound == false) {
                 if (response.data.d.Groups.results[i].LoginName == 'ServiceDeskLinkupSupport') {
                     DeptListFilter = DeptListFilter + 'or (Department/Department eq ' + '\'' + 'Linkup Support' + '\') and (Approver_x0020_Status eq ' + '\'' + 'Approved' + '\')';
+                    var Dept1='Linkup Support';
+                    vm.Dept.push(Dept1);
                     vm.LinkupGroup=true;
                 } else if (response.data.d.Groups.results[i].LoginName == 'ServiceDeskRMSSupport') {
                     DeptListFilter = DeptListFilter + 'or (Department/Department eq ' + '\'' + 'RMS Support' + '\') ';
+                    var Dept1='RMS Support';
+                    vm.Dept.push(Dept1);
                 } else if (response.data.d.Groups.results[i].LoginName == 'ServiceDeskIT') {
                     DeptListFilter = DeptListFilter + 'or (Department/Department eq ' + '\'' + 'IT' + '\') ';
+                    var Dept1='IT';
+                    vm.Dept.push(Dept1) ;
                 } else if (response.data.d.Groups.results[i].LoginName == 'ServiceDeskHR') {
                     DeptListFilter = DeptListFilter + 'or (Department/Department eq ' + '\'' + 'HR' + '\') ';
+                    var Dept1='HR';
+                    vm.Dept.push(Dept1) ;
                 } else if (response.data.d.Groups.results[i].LoginName == 'ServiceDeskFinance') {
                     DeptListFilter = DeptListFilter + 'or (Department/Department eq ' + '\'' + 'Finance' + '\') ';
+                    var Dept1='Finance';
+                    vm.Dept.push(Dept1) ;
                 } else if (response.data.d.Groups.results[i].LoginName == 'ServiceDeskAdmins') {
                     DeptListFilter = DeptListFilter + 'or (Department/Department eq ' + '\'' + 'Admin' + '\') ';
+                    var Dept1='Admin';
+                    vm.Dept.push(Dept1) ;
                 } 
             }
+            vm.Dept2=vm.Dept;
+            vm.DepartmentDropdown=vm.Dept2;
             }
             vm.FinalFilter=DeptListFilter;
             vm.readlistESPLServiceDesk(DeptListFilter);
@@ -83,7 +110,6 @@ vm.commentHistoyHide = function(){
     };
 
     vm.readPeopleList();
-   
 
     vm.readlistESPLServiceDesk = function(DeptListFilter) {
         if (DeptListFilter.length > 0 || vm.deptHead == true) {
@@ -110,7 +136,6 @@ vm.commentHistoyHide = function(){
             if (resp.status === 200)
                 var myJSON = JSON.stringify(resp.data.d.results);
             vm.DatalistESPLServiceDesk = resp.data.d.results;
-            vm.totalitems=vm.DatalistESPLServiceDesk;
          //   console.log('vm.DatalistESPLServiceDesk',vm.DatalistESPLServiceDesk);
             vm.DatalistESPLServiceDesk.forEach(f => {
                 if (f.Created != null) {
@@ -184,14 +209,11 @@ vm.commentHistoyHide = function(){
                 orderby: ModeifiedDate,
                 top: count
                // filter: statusFilter
-              
             };
             spcrud.read($http, vm.listServiceDeskComments, Options).then(function(response) {
                 if (response.status === 200)
                     if (response.data.d.results.length > 0) {
                         vm.DatalistServiceDeskComments1 = response.data.d.results;
-                        
-                       
                         var groupBy = function(xs, key) {
                             return xs.reduce(function(rv, x) {
                                 x.Modified=new Date(x.Modified);
@@ -200,20 +222,14 @@ vm.commentHistoyHide = function(){
                             }, {});
                           };
                           vm.commentData=groupBy(vm.DatalistServiceDeskComments1, 'Service_x0020_Desk_x0020_IdId');
-                         
-                          //vm.groupComparator(vm.DatalistESPLServiceDesk);
-                    }
-                   // vm.redFirst(vm.DatalistESPLServiceDesk) ;
+                    } 
                     vm.DatalistESPLServiceDesk.forEach(f => {
                             // vm.commentData.forEach(fcomments => {
                              //   if (vm.commentData[f.Service_x0020_Desk_x0020_ID] === fcomments.Service_x0020_Desk_x0020_Id.Service_x0020_Desk_x0020_ID){
-                             if(vm.commentData[f.Id] != null || vm.commentData[f.Id] != undefined){
+                             if(vm.commentData[f.Id] != null){
                                  if(vm.commentData[f.Id][0].Status != null){
                                     f.FinalStatus = vm.commentData[f.Id][0].Status;
                                  }
-                                 else if(vm.commentData[f.Id][0].Status != undefined){
-                                    f.FinalStatus = 'Open';
-                                }
                                 else{
                                     f.FinalStatus = 'Open';
                                 }
@@ -224,15 +240,11 @@ vm.commentHistoyHide = function(){
                                     f.ResolvedBy = '';
                                 }
                              }   
-                             else{
-                                f.FinalStatus = 'Open';
-                             }
                              
                                // }
                            // })
                     })
-                    console.log('vm.DatalistESPLServiceDesk',vm.DatalistESPLServiceDesk);
-                    vm.FinalOpenData=[];
+                      vm.FinalOpenData=[];
                     vm.FinalResolvedData=[];
                     vm.FinalClosedData=[];
                     vm.DatalistESPLServiceDesk.forEach(item => {
@@ -245,7 +257,7 @@ vm.commentHistoyHide = function(){
                          } else if(item.FinalStatus == 'Closed'){
                             vm.FinalClosedData.push(item);
                          }
-                         console.log(item.FinalStatus);
+                        // console.log(item.FinalStatus);
                            // }
                        // })
                 })
@@ -259,22 +271,15 @@ vm.commentHistoyHide = function(){
                 vm.FinalClosedData.forEach(openItem =>{
                     vm.DatalistESPLServiceDesk.push(openItem);
                 })
-                
-               // vm.FinalData.push(vm.FinalResolvedData);
-               // vm.FinalData.push(vm.FinalClosedData);
-                // console.log('vm.FinalOpenData',vm.FinalOpenData);
-                 //console.log('vm.FinalResolvedData',vm.FinalOpenData);
-                // console.log('vm.FinalClosedData',vm.FinalOpenData);
                  vm.groupToPages();
-                    vm.spinnerloaded = true;
+         vm.spinnerloaded = true;
             }, function(error) {
                 console.log('error', error);
             });
           
         // }, this);
-       //vm.groupComparator(vm.DatalistESPLServiceDesk);
        
- 
+       
         	
     };
  
@@ -323,7 +328,243 @@ vm.commentHistoyHide = function(){
     //     vm.groupToPages();
         	
     // };
- 
+ vm.filterDepartment= function(Dept,Priority,Status){
+     vm.Dept=Dept;
+     vm.Priority=Priority;
+     vm.Status=Status;
+     var casestr=''
+    if(vm.Dept == '')
+        {
+            vm.Dept=undefined;
+        }
+    if(vm.Priority == '')
+    {
+       vm.Priority=undefined;
+    }
+    if(vm.Status == '')
+    {
+       vm.Status=undefined;
+    }
+    if(vm.Dept != undefined && vm.Priority != undefined && vm.Status!= undefined )
+    {
+         casestr=1 ;
+    }
+    else if(vm.Dept != undefined && vm.Priority != undefined && vm.Status == undefined )
+    {
+        casestr=2;
+    }
+    else if(vm.Dept != undefined && vm.Priority == undefined && vm.Status != undefined )
+        {
+            casestr=3;
+        }
+    else if(vm.Dept != undefined && vm.Priority == undefined && vm.Status == undefined )
+        {
+            casestr=4;
+        }
+    else if(vm.Dept == undefined && vm.Priority != undefined && vm.Status != undefined )
+        {
+            casestr=5;
+        }
+    else if(vm.Dept == undefined && vm.Priority != undefined && vm.Status == undefined )
+        {
+            casestr=6;
+        }
+    else if(vm.Dept == undefined && vm.Priority == undefined && vm.Status != undefined )
+        {
+            casestr=7;
+        }    
+    else
+        {
+            casestr=8;
+        }
+        
+        switch(casestr){
+            case 1:
+                {
+                     for(i=0; i<vm.DatalistESPLServiceDesk.length; i++)
+                    {
+                        if(vm.DatalistESPLServiceDesk[i].Department.Department == vm.Dept && vm.DatalistESPLServiceDesk[i].Priority == vm.Priority && vm.DatalistESPLServiceDesk[i].FinalStatus == vm.Status )
+                        {
+                            vm.data.push(vm.DatalistESPLServiceDesk[i]);
+                        }
+                    }
+                    vm.groupToPagesFilter(vm.data);
+                   // console.log(vm.data);
+                    vm.page=1;
+                    vm.data=[];
+                    //console.log("hi 1",vm.Dept,vm.Status,vm.Priority);
+                }
+                break;
+            case 2:
+                {
+                    for(i=0; i<vm.DatalistESPLServiceDesk.length; i++)
+                    {
+                        if(vm.DatalistESPLServiceDesk[i].Department.Department == vm.Dept && vm.DatalistESPLServiceDesk[i].Priority == vm.Priority )
+                        {
+                            vm.data.push(vm.DatalistESPLServiceDesk[i]);
+                        }
+                    }
+                    vm.groupToPagesFilter(vm.data);
+                    //console.log(vm.data);
+                    vm.page=1;
+                    vm.data=[];
+                    //console.log("hi 2",vm.Dept,vm.Status,vm.Priority);
+                }
+                break;
+            case 3:
+                {
+                      for(i=0; i<vm.DatalistESPLServiceDesk.length; i++)
+                    {
+                        if(vm.DatalistESPLServiceDesk[i].Department.Department == vm.Dept && vm.DatalistESPLServiceDesk[i].FinalStatus == vm.Status )
+                        {
+                            vm.data.push(vm.DatalistESPLServiceDesk[i]);
+                        }
+                    }
+                    vm.groupToPagesFilter(vm.data);
+                    //console.log(vm.data);
+                    vm.page=1;
+                    vm.data=[];
+                    //console.log("hi 3",vm.Dept,vm.Status,vm.Priority);
+                }
+                break;
+            case 4:
+                {
+                      for(i=0; i<vm.DatalistESPLServiceDesk.length; i++)
+                    {
+                        if(vm.DatalistESPLServiceDesk[i].Department.Department == vm.Dept )
+                        {
+                            vm.data.push(vm.DatalistESPLServiceDesk[i]);
+                        }
+                    }
+                    vm.groupToPagesFilter(vm.data);
+                    //console.log(vm.data);
+                    vm.page=1;
+                    vm.data=[];
+                    //console.log("hi 4",vm.Dept,vm.Status,vm.Priority);
+                }
+                break;
+            case 5:
+                {
+                      for(i=0; i<vm.DatalistESPLServiceDesk.length; i++)
+                    {
+                        if(vm.DatalistESPLServiceDesk[i].Priority == vm.Priority && vm.DatalistESPLServiceDesk[i].FinalStatus == vm.Status )
+                        {
+                            vm.data.push(vm.DatalistESPLServiceDesk[i]);
+                        }
+                    }
+                    vm.groupToPagesFilter(vm.data);
+                   // console.log(vm.data);
+                    vm.page=1;
+                    vm.data=[];
+                //console.log("hi 5",vm.Dept,vm.Status,vm.Priority);
+                }
+                break;
+            case 6:
+                {
+                      for(i=0; i<vm.DatalistESPLServiceDesk.length; i++)
+                    {
+                        if( vm.DatalistESPLServiceDesk[i].Priority == vm.Priority  )
+                        {
+                            vm.data.push(vm.DatalistESPLServiceDesk[i]);
+                        }
+                    }
+                    vm.groupToPagesFilter(vm.data);
+                    //console.log(vm.data);
+                    vm.page=1;
+                    vm.data=[];
+                //console.log("hi 6",vm.Dept,vm.Status,vm.Priority);
+                }
+                break;
+            case 7:
+                {
+                      for(i=0; i<vm.DatalistESPLServiceDesk.length; i++)
+                    {
+                        if( vm.DatalistESPLServiceDesk[i].FinalStatus == vm.Status )
+                        {
+                            vm.data.push(vm.DatalistESPLServiceDesk[i]);
+                        }
+                    }
+                    vm.groupToPagesFilter(vm.data);
+                    //console.log(vm.data);
+                    vm.page=1;
+                    vm.data=[];
+                //console.log("hi 7",vm.Dept,vm.Status,vm.Priority);
+                }
+                break;
+            case 8:
+                {
+                     vm.groupToPages();
+                }
+                break;    
+            
+        };
+
+ };
+
+
+// vm.filterDepartment= function(Dept,Priority,Status){
+//     vm.Dept=Dept;
+//     if(vm.Dept=='')
+//     {
+//         vm.groupToPages();
+//     }
+//     else{
+//         console.log(vm.DatalistESPLServiceDesk);
+//             for(i=0; i<vm.DatalistESPLServiceDesk.length; i++){
+//                 if(vm.DatalistESPLServiceDesk[i].Department.Department == vm.Dept)
+//                 {
+//                     vm.data.push(vm.DatalistESPLServiceDesk[i]);
+//                 }
+//             }
+//         vm.groupToPagesFilter(vm.data);
+//         console.log(vm.data);
+//     }  
+//     vm.page = 1;
+//     vm.data=[]; 
+// };
+
+// vm.filterStatus=function(Status){
+//     vm.Status=Status;
+//     if(vm.Status =='Open')
+//     {
+//         vm.groupToPagesFilter(vm.FinalOpenData);
+//     }
+//     else if(vm.Status =='Resolved')
+//     {
+//         vm.groupToPagesFilter(vm.FinalResolvedData);
+//     }
+//     else if(vm.Status =='Closed')
+//     {          
+//         vm.groupToPagesFilter(vm.FinalClosedData);
+//     }
+//     else
+//     {
+//         vm.groupToPages();
+//     }
+// }
+
+// vm.filterPriority= function(Priority){
+//     vm.Priority=Priority;
+//     if(vm.Priority=='')
+//     {
+//         vm.groupToPages();
+//     }
+//     else{
+//         console.log(vm.DatalistESPLServiceDesk);
+//             for(i=0; i<vm.DatalistESPLServiceDesk.length; i++){
+//                 if(vm.DatalistESPLServiceDesk[i].Priority == vm.Priority)
+//                 {
+//                     vm.data.push(vm.DatalistESPLServiceDesk[i]);
+//                 }
+//             }
+//         vm.groupToPagesFilter(vm.data);
+//         console.log(vm.data);
+//     }  
+//     vm.page = 1;
+//     vm.data=[]; 
+// };
+
+
 
     vm.filterItems= function(filterText){
     vm.filterText=filterText;
@@ -332,12 +573,20 @@ vm.commentHistoyHide = function(){
     vm.page = 1;
  
 };
-var count=10;
+
 vm.showFIlter=function(count){
     vm.itemsPerPage=count;
-    vm.groupToPagesFilter(vm.DatalistESPLServiceDesk);
-    vm.page = 1;
-}
+    if(vm.Dept!= undefined || vm.Dept!= '' || vm.Priority != undefined || vm.Priority!='' || vm.Status!= undefined || vm.Status!='' )
+        {
+          vm.itemsPerPage=count;
+          vm.filterDepartment(vm.Dept,vm.Priority,vm.Status);
+        }
+    else{
+            vm.groupToPagesFilter(vm.DatalistESPLServiceDesk);
+            vm.page = 1;
+    }    
+   
+};
 // $scope.sort = {
 //     column: '',
 //     descending: false
@@ -358,6 +607,9 @@ vm.showFIlter=function(count){
 //             return column == scope.sort.column && 'sort-' + scope.sort.descending;
 //         };
  vm.groupToPagesFilter = function(data) {
+        if(vm.itemsPerPage == null || vm.itemsPerPage == undefined){
+            vm.itemsPerPage=vm.RecordsPerPage[0];
+        }
         vm.pagedItems = [];
         vm.filt=data;
         for (var i = 0; i < vm.filt.length; i++) {
@@ -370,38 +622,18 @@ vm.showFIlter=function(count){
         //vm.statusClose(vm.filt);
 
     };
-    ////////////////////////
-    // vm.redFirst=function(data){
-      
-    //             if(data.FinalStatus == 'Open'){
-    //                 return 0;
-    //             } else {
-    //                 return 1;
-    //             }
-        
-    //     };
-        var orderedGroups = ['Open', 'Resolved', 'Closed'];
-    vm.groupComparator = function(data) {
-            return orderedGroups.indexOf(data.FinalStatus);
-           };
-   
-// vm.grouptoItem=function(){
-// vm.totalitems=[];
-// vm.totalitems.push(vm.DatalistESPLServiceDesk);
-// };
 
 
     vm.groupToPages = function() {
         vm.pagedItems = [];
-        //vm.totalitems=[];
-
+if(vm.itemsPerPage == null || vm.itemsPerPage == undefined){
+            vm.itemsPerPage=vm.RecordsPerPage[0];
+        }
         for (var i = 0; i < vm.DatalistESPLServiceDesk.length; i++) {
             if (i % vm.itemsPerPage === 0) {
                 vm.pagedItems[Math.floor(i / vm.itemsPerPage)] = [vm.DatalistESPLServiceDesk[i]];
-                 //vm.totalitems[Math.floor(i / vm.itemsPerPage)] = [vm.DatalistESPLServiceDesk[i]];
             } else {
-                 vm.pagedItems[Math.floor(i / vm.itemsPerPage)].push(vm.DatalistESPLServiceDesk[i]);
-                //vm.totalitems[Math.floor(i / vm.itemsPerPage)].push(vm.DatalistESPLServiceDesk[i]);
+                vm.pagedItems[Math.floor(i / vm.itemsPerPage)].push(vm.DatalistESPLServiceDesk[i]);
             }
         }
        // vm.statusClose(vm.DatalistServiceDeskComments1);

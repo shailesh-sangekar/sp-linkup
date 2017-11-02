@@ -214,10 +214,12 @@
     margin-top: -35px !important;
     margin-left: 310px !important;
 }
-.alignShowFilter {
-    width: 50px !important;
-    height: 25px !important;
-}
+/* #alignShowFilter {
+    width: 144px !important;
+    height: 30px !important;
+    margin-left: 398px;
+    margin-top: -34px;
+} */
 .tooltip {
     position: relative;
     display: inline-block;
@@ -268,8 +270,10 @@ label {
     display: inline-block;
     max-width: 100%;
     margin-bottom: 10px;
-    font-weight: 700;
+    font-weight: 200 !important;
     margin-top: 10px;
+    font-size: small;
+    
 }
 .badge {
     background: #f3565d !important;
@@ -294,4 +298,13 @@ mytab
 }
 .ms-wpContentDivSpace textarea {
     margin-top: 2px !important;
+}
+.form-control{
+    width: 50%;
+    height: 27px !important;
+    padding: 3px  !important;
+    font-size: 12px;
+}
+.row{
+    margin-left: 1px !important;
 }
