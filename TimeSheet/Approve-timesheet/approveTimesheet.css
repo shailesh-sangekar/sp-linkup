@@ -61,4 +61,106 @@
     padding: 4px !important;
 }
 
+.tooltip {
+    position: relative;
+    display: inline-block;
+    border-bottom: 1px dotted black;
+}
+
+.tooltip .tooltiptext {
+    visibility: hidden;
+    width: 120px;
+    background-color: #555;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
+    position: absolute;
+    z-index: 1;
+    bottom: 125%;
+    left: 50%;
+    margin-left: -60px;
+    opacity: 0;
+    transition: opacity 1s;
+}
+
+.tooltip .tooltiptext::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: #555 transparent transparent transparent;
+}
+
+.tooltip:hover .tooltiptext {
+    visibility: visible;
+    opacity: 1;
+}
+.cancelBtn {
+    border-radius: 3px!important;
+    font-family: "Open Sans", sans-serif;
+    background: #fb5557;
+    border-color: #fb5557;
+    color: #fff!important;
+    font-size: 12px;
+    cursor: pointer;
+    border: 1px solid #ddd;
+    padding: 5px 12px;
+    font-weight: 600;
+    margin-top: 10px;
+    transition: 0.3s all ease-out;
+    float:left;
+}
+
+.cancelBtn:hover {
+    background: #fb5557;
+    border-color: #fb5557;
+    color: #fff!important;
+}
+.saveBtn {
+    border-radius: 3px!important;
+    font-family: "Open Sans", sans-serif;
+    background: #01b070;
+    border-color: #01b070;
+    float:right;
+    color: #fff!important;
+    font-size: 12px;
+    cursor: pointer;
+    border: 1px solid #ddd;
+    padding: 5px 12px;
+    font-weight: 600;
+    margin-top: 10px;
+    margin-bottom:5px; 
+    transition: 0.3s all ease-out;
+}
+
+.saveBtn:hover {
+    background: #01b070;
+    border-color: #01b070;
+    color: #fff!important;
+}
+.thclass {
+    padding: 4px !important;
+    font-size: 12px !important;
+    color: white !important;
+    background-color: rgba(42, 136, 214, 0.91) !important;
+}
+
+.badge {
+    background: #f3565d !important;
+}
+.badge.badge-success {
+background-color: #45b6af !important;
+}
+.cancelModal{
+    min-width: 1em !important;
+    margin-top: -16px !important;
+    padding-top: 3px !important;
+    height: 30px !important;
+    float: right !important;
+}
+
 
