@@ -567,7 +567,7 @@ function AllTicketCtl($scope, $http, $timeout, $filter ,$window) {
  };
     vm.filterItems= function(filterText){
     vm.filterText=filterText;
-    var data = $filter('filter')(vm.DatalistESPLServiceDesk,vm.filterText, false,'Title');
+    var data = $filter('filter')(vm.DatalistESPLServiceDesk,vm.filterText, false,'Employee.Title');
     vm.groupToPagesFilter(data);
     vm.page = 1;
  

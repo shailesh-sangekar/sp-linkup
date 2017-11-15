@@ -52,6 +52,7 @@ function redeemCtl($scope, $http,$timeout) {
                 filter: nameFilter
             };
             vm.orderFilter = { select: '*', orderby: orderbyPoints, filter: approvedFilter };
+            vm.asc=true;
 
             vm.read();
             vm.reademplist();
