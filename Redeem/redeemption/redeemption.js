@@ -12,15 +12,20 @@ function redeemCtl($scope, $http,$timeout) {
     empExpand = 'Redemption_x0020_Approved_x0020_/Title,Emp_x0020_ID/First_x0020_Name,Emp_x0020_ID/Last_x0020_Name,Item_x0020_Code/Item_x0020_Code,Item_x0020_Code/Item_x0020_Name,Item_x0020_Code/Points,Item_x0020_Code/Quantity';
     vm.quantity = 0;
     vm.max = 2;
+     vm.showModal = false;
     vm.EmpCodeID = '';
     vm.productDetails = [];
     vm.orderByvalue = 'Latest';
-    var orderbyPoints = 'Created asc';
+    var orderbyPoints = 'Created desc';
     var Approved = 'Approved';
     var activeStatus ='Active';
+     itemSelect = 'Item_x0020_Code/Item_x0020_Code,*';
+    itemExpand = 'Item_x0020_Code/Item_x0020_Name';
     //var nameFilter = '(First_x0020_Name eq \'' + FirstName + '\') and (Last_x0020_Name eq \'' + LastName + '\')';
     var approvedFilter = '(Status eq \'' + Approved + '\' ) and (Item_x0020_Status eq \'' + activeStatus + '\')';
     vm.orderFilter = { select: '*', orderby: orderbyPoints, filter: approvedFilter };
+             //vm.orderFilter = { select: '*', orderby: orderbyPoints, filter: approvedFilter };
+
     vm.asc = false;
     vm.Sort = {};
     vm.Sort.valueId = "Created desc";
@@ -31,7 +36,10 @@ function redeemCtl($scope, $http,$timeout) {
         id: "Points desc",
         name: "Points"
     }];
-
+     vm.pendingOptions = {
+        select: itemSelect,
+        expand: itemExpand
+    };
     vm.getUserName = function () {
         spcrud.getCurrentUser($http).then(function (response) {
             if (response.status === 200)
@@ -43,6 +51,8 @@ function redeemCtl($scope, $http,$timeout) {
                 select: empSelect,
                 filter: nameFilter
             };
+            vm.orderFilter = { select: '*', orderby: orderbyPoints, filter: approvedFilter };
+
             vm.read();
             vm.reademplist();
         }, function (error) {
@@ -138,6 +148,7 @@ function redeemCtl($scope, $http,$timeout) {
         spcrud.read($http, vm.EmployeeMasterList, vm.nameFilterOptions).then(function (response) {
             if (response.status === 200)
                 vm.empMasterDetails = response.data.d.results;
+           vm.TotalEarnedPoints = response.data.d.results[0].Total_x0020_Reward_x0020_Points;
             vm.empMasterDetails[0].Balance = parseFloat(vm.empMasterDetails[0].Balance);
           vm.totalpts = vm.empMasterDetails[0].Balance + vm.totalUsedPts;
         }, function (error) {
@@ -219,6 +230,7 @@ function redeemCtl($scope, $http,$timeout) {
                                     'Redemend': vm.newupdateRedem
                                 }).then(function (resp) {
                                     alert("Thank you, Your redeem is successful.");
+                                    resp.defaultQuantity = "";
                                     var vm = $scope;
                                     vm.getUserName();
                                 }, function (error) {
@@ -237,6 +249,7 @@ function redeemCtl($scope, $http,$timeout) {
                 }
                 else {
                     alert("Sorry, Your balance is insufficient.");
+                    resp.defaultQuantity = "";
                 }
             }
         });
@@ -267,7 +280,122 @@ function redeemCtl($scope, $http,$timeout) {
         }
 
     };
+ vm.orderFilter = { select: '*',  filter: approvedFilter };
+vm.ReadImageList = function (response){
+     spcrud.read($http, vm.ImageList , vm.pendingOptions).then(function (resp) {
+            if (resp.status === 200)
+            {
+                for(i = 0 ; i < resp.data.d.results.length ; i++)
+                {
+                            if(vm.productDetails[i].Item_x0020_Code === vm.ItemCode)
+                           {
+                                 vm.Imagedetails = vm.productDetails[i];
+                                 if(vm.Imagedetails.Url[0].EncodedAbsThumbnailUrl.includes("_jpg"))
+                                    {
+                                        vm.ImageDetaildUrl =vm.Imagedetails.Url[0].EncodedAbsThumbnailUrl.replace('_jpg.' , '.');
+                                    }
+                                else if (vm.Imagedetails.Url[0].EncodedAbsThumbnailUrl.includes("_png"))
+                                    {
+                                            vm.ImageDetails =vm.Imagedetails.Url[0].EncodedAbsThumbnailUrl.replace('_png.' , '.');
+                                            if(vm.ImageDetails.split('.')[3] === 'jpg')
+                                                {
+                                                  vm.ImageDetaildUrl =vm.ImageDetails.replace('.jpg' , '.png');  
+                                                }
+                                    }
+                                 else if (vm.Imagedetails.Url[0].EncodedAbsThumbnailUrl.includes("_JPG"))
+                                    {
+                                            vm.ImageDetaildUrl =vm.Imagedetails.Url[0].EncodedAbsThumbnailUrl.replace('_JPG.' , '.');
+                                            
+                                    }
+                                else if (vm.Imagedetails.Url[0].EncodedAbsThumbnailUrl.includes("_jpeg"))
+                                    {
+                                            vm.ImageDetails =vm.Imagedetails.Url[0].EncodedAbsThumbnailUrl.replace('_jpeg.' , '.');
+                                             if(vm.ImageDetails.split('.')[3] === 'jpg')
+                                                {
+                                                  vm.ImageDetaildUrl =vm.ImageDetails.replace('.jpg' , '.jpeg');  
+                                                }
+                                    }
+                                 vm.ImageUrl = vm.ImageDetaildUrl.replace('/_t/' ,'/');
+                                 break;
+                           }
+                         
+                }
+          
+            }   
+            
+            
+        }
+            , function (error) {
+            console.log('error', error);
+        });
+}
+     
+vm.toggleModalDetails = function (response)
+{
+    vm.ImageID = response.Id;
+    vm.showModal = true;
+    vm.Description =response.Item_x0020_Description;
+    vm.ItemCode = response.Item_x0020_Code;
+    if (response.Available_x0020_Quantity == null)
+        {
+            vm.Quantity = 0;        
+        }
+        else
+        {
+            vm.Quantity = response.Available_x0020_Quantity;
+        }
+    vm.ProductName = response.Item_x0020_Name;
+    // to get image details 
+   
+      vm.ReadImageList();
+    
+    
+}
+vm.cancel = function ()
+{
+   vm.showModal = false;
+}
 
 }
+
+function modal() {
+    return {
+        template: '<div class="modal fade">' +
+            '<div class="modal-dialog">' +
+            '<div class="modal-content">' +
+            '<div class="modal-header">' +
+            '<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>' +
+            // '<h4 class="modal-title">{{ buttonClicked }} clicked!!</h4>' + 
+            '</div>' +
+            '<div class="modal-body" ng-transclude></div>' +
+            '</div>' +
+            '</div>' +
+            '</div>',
+        restrict: 'E',
+        transclude: true,
+        replace: true,
+        scope: true,
+        link: function postLink(scope, element, attrs) {
+            scope.$watch(attrs.visible, function (value) {
+                if (value == true)
+                    $(element).modal('show');
+                else
+                    $(element).modal('hide');
+            });
+
+            $(element).on('shown.bs.modal', function () {
+                scope.$apply(function () {
+                    scope.$parent[attrs.visible] = true;
+                });
+            });
+
+            $(element).on('hidden.bs.modal', function () {
+                scope.$apply(function () {
+                    scope.$parent[attrs.visible] = false;
+                });
+            });
+        }
+    };
+};
 //load
-angular.module('redeemApp', []).controller('redeemCtl', redeemCtl);
+angular.module('redeemApp', []).controller('redeemCtl', redeemCtl).directive('modal', modal);

@@ -1,4 +1,4 @@
-function AllTicketCtl($scope, $http, $timeout, $filter) {
+function AllTicketCtl($scope, $http, $timeout, $filter ,$window) {
     var vm = $scope;
     vm.spinnerloaded = false;
     vm.loaded = false;
@@ -37,9 +37,13 @@ function AllTicketCtl($scope, $http, $timeout, $filter) {
     vm.FinalClosedData=[];
     vm.Status='';
     vm.Priority='';
+    vm.LOG=[];
+
+     vm.TicketEditedTime='';
+     vm.abc='';
 
     vm.RecordsPerPage=['20','40','60','100'];
-    vm.StatusDropdown=['Open','Resolved','Closed'];
+    vm.StatusDropdown=['Open','Reopen','Resolved','Closed'];
     vm.PriorityDropdown=['High','Medium','Low'];
     vm.commentHistoy=function(){
     vm.HideComment=true;
@@ -136,7 +140,8 @@ function AllTicketCtl($scope, $http, $timeout, $filter) {
             if (resp.status === 200)
                 var myJSON = JSON.stringify(resp.data.d.results);
             vm.DatalistESPLServiceDesk = resp.data.d.results;
-         //   console.log('vm.DatalistESPLServiceDesk',vm.DatalistESPLServiceDesk);
+        
+          ///  console.log('vm.DatalistESPLServiceDesk',vm.DatalistESPLServiceDesk);
             vm.DatalistESPLServiceDesk.forEach(f => {
                 if (f.Created != null) {
                     var date2 = new Date();
@@ -147,6 +152,7 @@ function AllTicketCtl($scope, $http, $timeout, $filter) {
                         f.ageDiff = 0;
                     }
                 }
+                f.Modified=new Date(f.Modified);
 
             });
             vm.readlistServiceDeskComments();
@@ -194,6 +200,7 @@ function AllTicketCtl($scope, $http, $timeout, $filter) {
 
         return days;
     }
+
     vm.readlistServiceDeskComments = function() {
         // vm.DatalistESPLServiceDesk.forEach(function(product) {
            // var id = product.Service_x0020_Desk_x0020_ID;
@@ -214,6 +221,7 @@ function AllTicketCtl($scope, $http, $timeout, $filter) {
                 if (response.status === 200)
                     if (response.data.d.results.length > 0) {
                         vm.DatalistServiceDeskComments1 = response.data.d.results;
+                       /// console.log('cmmm',vm.DatalistServiceDeskComments1);
                         var groupBy = function(xs, key) {
                             return xs.reduce(function(rv, x) {
                                 x.Modified=new Date(x.Modified);
@@ -222,47 +230,103 @@ function AllTicketCtl($scope, $http, $timeout, $filter) {
                             }, {});
                           };
                           vm.commentData=groupBy(vm.DatalistServiceDeskComments1, 'Service_x0020_Desk_x0020_IdId');
+                         // console.log('comment',vm.commentData);
                     } 
+
+
+                    
                     vm.DatalistESPLServiceDesk.forEach(f => {
                             // vm.commentData.forEach(fcomments => {
-                             //   if (vm.commentData[f.Service_x0020_Desk_x0020_ID] === fcomments.Service_x0020_Desk_x0020_Id.Service_x0020_Desk_x0020_ID){
+                            //   if (vm.commentData[f.Service_x0020_Desk_x0020_ID] === fcomments.Service_x0020_Desk_x0020_Id.Service_x0020_Desk_x0020_ID){
                              if(vm.commentData[f.Id] != null){
-                                 if(vm.commentData[f.Id][0].Status != null){
+                                if(vm.commentData[f.Id][0].Status != null){
                                     f.FinalStatus = vm.commentData[f.Id][0].Status;
-                                 }
+                                    var LatestCommentTime=vm.commentData[f.Id][0].Modified.format('yyyy-MM-ddTHH:mm:ssZ');
+                                    var TicketEditedTime= f.Modified.format('yyyy-MM-ddTHH:mm:ssZ');
+                                    var ID=f.Id;
+                                    if( TicketEditedTime > LatestCommentTime )
+                                    {
+                                        f.UpdatedBy=f.Author.Title;
+                                        f.ModifiedTime=f.Modified;
+                                
+                                    }
+                                    else
+                                    {
+                                       f.UpdatedBy=vm.commentData[f.Id][0].Editor.Title;
+                                       f.ModifiedTime=vm.commentData[f.Id][0].Modified;
+                                    }
+                                }
                                 else{
-                                    f.FinalStatus = 'Open';
+                                    f.FinalStatus = 'Open';      
                                 }
-                                f.Modified = vm.commentData[f.Id][0].Modified;
-                                if (vm.commentData[f.Id][0].Status === 'Resolved' || vm.commentData[f.Id][0].Status === 'Closed') {
-                                    f.ResolvedBy = vm.commentData[f.Id][0].Editor.Title;
-                                } else {
-                                    f.ResolvedBy = '';
+                                // if (vm.commentData[f.Id][0].Status === 'Resolved' || vm.commentData[f.Id][0].Status === 'Closed') {
+                                //     f.ResolvedBy = vm.commentData[f.Id][0].Editor.Title;
+                                // } 
+                                // //else if(vm.commentData[f.Id][0].Status === 'Reopen')
+                                // else {
+                                //     f.ResolvedBy = '';
+                                // }
+                                if(vm.commentData[f.Id][0].Status === 'Reopen'){
+                                    for(i=0; i<vm.commentData[f.Id].length; i++){
+                                        if(vm.commentData[f.Id][i].Status ==='Resolved' ){
+                                            f.ResolvedBy = vm.commentData[f.Id][i].Editor.Title;
+                                        }
+                                    }
                                 }
-                             }   
+                                else if(vm.commentData[f.Id][0].Status === 'Resolved' ){
+
+                                   f.ResolvedBy = vm.commentData[f.Id][0].Editor.Title;
+                                }
+                                else if( vm.commentData[f.Id][0].Status === 'Closed')
+                                    for(i=0; i<vm.commentData[f.Id].length; i++){
+                                        if(vm.commentData[f.Id][i].Status ==='Resolved' ){
+                                            f.ResolvedBy = vm.commentData[f.Id][i].Editor.Title;
+                                        }
+                                    }
+                                    // else{
+                                    //     f.ResolvedBy = vm.commentData[f.Id][0].Editor.Title;
+                                    // }
+                             }
+                            else{
+                                f.FinalStatus='Open';
+                                f.UpdatedBy=f.Editor.Title;
+                                f.ModifiedTime=f.Modified;
+                            }     
                              
                                // }
                            // })
                     })
-                      vm.FinalOpenData=[];
+
+                    vm.FinalOpenData=[];
                     vm.FinalResolvedData=[];
                     vm.FinalClosedData=[];
+                    vm.FinalReopenData=[];
                     vm.DatalistESPLServiceDesk.forEach(item => {
                         // vm.commentData.forEach(fcomments => {
                          //   if (vm.commentData[f.Service_x0020_Desk_x0020_ID] === fcomments.Service_x0020_Desk_x0020_Id.Service_x0020_Desk_x0020_ID){
-                         if(item.FinalStatus == 'Open'){
+                        
+                          if(item.FinalStatus == 'Open'){
                             vm.FinalOpenData.push(item);
-                         } else if(item.FinalStatus == 'Resolved'){
+                         }else if(item.FinalStatus == 'Reopen'){
+                            vm.FinalReopenData.push(item);
+                        }else if(item.FinalStatus == 'Resolved'){
                             vm.FinalResolvedData.push(item);
                          } else if(item.FinalStatus == 'Closed'){
                             vm.FinalClosedData.push(item);
                          }
-                        // console.log(item.FinalStatus);
-                           // }
-                       // })
+                        // else{
+                        //     vm.FinalOtherData.push(item);
+                        // }
+                    
                 })
+                                         //console.log('Open',vm.FinalOpenData);
+
                 vm.DatalistESPLServiceDesk=[];
+               
                 vm.FinalOpenData.forEach(openItem =>{
+                    vm.DatalistESPLServiceDesk.push(openItem);
+                })
+                vm.FinalReopenData.forEach(openItem =>{
                     vm.DatalistESPLServiceDesk.push(openItem);
                 })
                 vm.FinalResolvedData.forEach(openItem =>{
@@ -271,6 +335,7 @@ function AllTicketCtl($scope, $http, $timeout, $filter) {
                 vm.FinalClosedData.forEach(openItem =>{
                     vm.DatalistESPLServiceDesk.push(openItem);
                 })
+               //console.log('FinalArray',vm.DatalistESPLServiceDesk);
                  vm.groupToPages();
          vm.spinnerloaded = true;
             }, function(error) {
@@ -500,72 +565,6 @@ function AllTicketCtl($scope, $http, $timeout, $filter) {
         };
 
  };
-
-
-// vm.filterDepartment= function(Dept,Priority,Status){
-//     vm.Dept=Dept;
-//     if(vm.Dept=='')
-//     {
-//         vm.groupToPages();
-//     }
-//     else{
-//         console.log(vm.DatalistESPLServiceDesk);
-//             for(i=0; i<vm.DatalistESPLServiceDesk.length; i++){
-//                 if(vm.DatalistESPLServiceDesk[i].Department.Department == vm.Dept)
-//                 {
-//                     vm.data.push(vm.DatalistESPLServiceDesk[i]);
-//                 }
-//             }
-//         vm.groupToPagesFilter(vm.data);
-//         console.log(vm.data);
-//     }  
-//     vm.page = 1;
-//     vm.data=[]; 
-// };
-
-// vm.filterStatus=function(Status){
-//     vm.Status=Status;
-//     if(vm.Status =='Open')
-//     {
-//         vm.groupToPagesFilter(vm.FinalOpenData);
-//     }
-//     else if(vm.Status =='Resolved')
-//     {
-//         vm.groupToPagesFilter(vm.FinalResolvedData);
-//     }
-//     else if(vm.Status =='Closed')
-//     {          
-//         vm.groupToPagesFilter(vm.FinalClosedData);
-//     }
-//     else
-//     {
-//         vm.groupToPages();
-//     }
-// }
-
-// vm.filterPriority= function(Priority){
-//     vm.Priority=Priority;
-//     if(vm.Priority=='')
-//     {
-//         vm.groupToPages();
-//     }
-//     else{
-//         console.log(vm.DatalistESPLServiceDesk);
-//             for(i=0; i<vm.DatalistESPLServiceDesk.length; i++){
-//                 if(vm.DatalistESPLServiceDesk[i].Priority == vm.Priority)
-//                 {
-//                     vm.data.push(vm.DatalistESPLServiceDesk[i]);
-//                 }
-//             }
-//         vm.groupToPagesFilter(vm.data);
-//         console.log(vm.data);
-//     }  
-//     vm.page = 1;
-//     vm.data=[]; 
-// };
-
-
-
     vm.filterItems= function(filterText){
     vm.filterText=filterText;
     var data = $filter('filter')(vm.DatalistESPLServiceDesk,vm.filterText, false,'Title');
@@ -587,25 +586,6 @@ vm.showFIlter=function(count){
     }    
    
 };
-// $scope.sort = {
-//     column: '',
-//     descending: false
-// };  
-// $scope.changeSorting = function(column) {
-    
-//             var sort = $scope.sort;
-    
-//             if (sort.column == column) {
-//                 sort.descending = !sort.descending;
-//             } else {
-//                 sort.column = column;
-//                 sort.descending = false;
-//             }
-//         };
-            
-//         $scope.selectedCls = function(column) {
-//             return column == scope.sort.column && 'sort-' + scope.sort.descending;
-//         };
  vm.groupToPagesFilter = function(data) {
         if(vm.itemsPerPage == null || vm.itemsPerPage == undefined){
             vm.itemsPerPage=vm.RecordsPerPage[0];
@@ -727,7 +707,7 @@ if(vm.itemsPerPage == null || vm.itemsPerPage == undefined){
             listItem.set_item('Title','No Title');
             listItem.set_item('Comments',comment);
             listItem.set_item('Status',status);
-           listItem.set_item('Predefined_x0020_Concern',concern);
+            listItem.set_item('Predefined_x0020_Concern',concern);
             listItem.set_item('Department',dept);
             listItem.set_item('Service_x0020_Desk_x0020_Id',serviceid);
             listItem.update();
@@ -735,13 +715,14 @@ if(vm.itemsPerPage == null || vm.itemsPerPage == undefined){
             clientContext.load(listItem);
             clientContext.executeQueryAsync(function (sender, arges) {
                 alert('Reply Saved Succcessfull');
+                $window.location.reload();
             }, function (sender, arges) {
                 alert(arges.get_message());
             });
             vm.showModal = false;
         }
         else{
-            alert('Please Fill Data');
+            alert('Please Enter Comment');
             //vm.showModal = false;
         }
 //     var clientContext = SP.ClientContext.get_current();
@@ -832,6 +813,7 @@ if(vm.itemsPerPage == null || vm.itemsPerPage == undefined){
         clientContext.load(listItem);
         clientContext.executeQueryAsync(function (sender, arges) {
             alert('Resolved Succcessfull');
+             $window.location.reload();
         }, function (sender, arges) {
             alert(arges.get_message());
         });
@@ -841,7 +823,7 @@ if(vm.itemsPerPage == null || vm.itemsPerPage == undefined){
         vm.readlistESPLServiceDesk(filter);
     }
     else{
-        alert('Please Fill Data');
+        alert('Please Enter Comment');
         //vm.showModal = false;
     }
     };
