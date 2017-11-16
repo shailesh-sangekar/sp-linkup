@@ -27,7 +27,7 @@ function AllTicketCtl($scope, $http, $timeout, $filter ,$window) {
     vm.ShowComment = true;
     vm.HideComment = false;
     vm.CancelButton=false;
-    
+
     vm.Dept=[];
     var Dept1='';
     vm.Dept2=[];
@@ -54,7 +54,7 @@ function AllTicketCtl($scope, $http, $timeout, $filter ,$window) {
     vm.commentHistoyHide = function(){
         vm.CommentHistory=false;
         vm.HideComment=false;
-        vm.ShowComment=true; 
+        vm.ShowComment=true;
     }
     // vm.viewcomment=function(){
     //     vm.CommentHistory=true;
@@ -101,7 +101,7 @@ function AllTicketCtl($scope, $http, $timeout, $filter ,$window) {
                     DeptListFilter = DeptListFilter + 'or (Department/Department eq ' + '\'' + 'Admin' + '\') ';
                     var Dept1='Admin';
                     vm.Dept.push(Dept1) ;
-                } 
+                }
             }
             vm.Dept2=vm.Dept;
             vm.DepartmentDropdown=vm.Dept2;
@@ -140,7 +140,7 @@ function AllTicketCtl($scope, $http, $timeout, $filter ,$window) {
             if (resp.status === 200)
                 var myJSON = JSON.stringify(resp.data.d.results);
             vm.DatalistESPLServiceDesk = resp.data.d.results;
-        
+
           ///  console.log('vm.DatalistESPLServiceDesk',vm.DatalistESPLServiceDesk);
             vm.DatalistESPLServiceDesk.forEach(f => {
                 if (f.Created != null) {
@@ -173,7 +173,7 @@ function AllTicketCtl($scope, $http, $timeout, $filter ,$window) {
         var millisecondsPerDay = 86400 * 1000; // Day in milliseconds
         startDate.setHours(0, 0, 0, 1); // Start just after midnight
         endDate.setHours(23, 59, 59, 999); // End just before midnight
-        var diff = endDate - startDate; // Milliseconds between datetime objects    
+        var diff = endDate - startDate; // Milliseconds between datetime objects
         var days = Math.ceil(diff / millisecondsPerDay);
 
         // Subtract two weekend days for every week in between
@@ -184,7 +184,7 @@ function AllTicketCtl($scope, $http, $timeout, $filter ,$window) {
         var startDay = startDate.getDay();
         var endDay = endDate.getDay();
 
-        // Remove weekend not previously removed.   
+        // Remove weekend not previously removed.
         if (startDay - endDay > 1)
             days = days - 2;
 
@@ -231,10 +231,10 @@ function AllTicketCtl($scope, $http, $timeout, $filter ,$window) {
                           };
                           vm.commentData=groupBy(vm.DatalistServiceDeskComments1, 'Service_x0020_Desk_x0020_IdId');
                          // console.log('comment',vm.commentData);
-                    } 
+                    }
 
 
-                    
+
                     vm.DatalistESPLServiceDesk.forEach(f => {
                             // vm.commentData.forEach(fcomments => {
                             //   if (vm.commentData[f.Service_x0020_Desk_x0020_ID] === fcomments.Service_x0020_Desk_x0020_Id.Service_x0020_Desk_x0020_ID){
@@ -248,51 +248,65 @@ function AllTicketCtl($scope, $http, $timeout, $filter ,$window) {
                                     {
                                         f.UpdatedBy=f.Author.Title;
                                         f.ModifiedTime=f.Modified;
-                                
+
                                     }
                                     else
                                     {
                                        f.UpdatedBy=vm.commentData[f.Id][0].Editor.Title;
                                        f.ModifiedTime=vm.commentData[f.Id][0].Modified;
                                     }
-                                }
-                                else{
-                                    f.FinalStatus = 'Open';      
-                                }
-                                // if (vm.commentData[f.Id][0].Status === 'Resolved' || vm.commentData[f.Id][0].Status === 'Closed') {
-                                //     f.ResolvedBy = vm.commentData[f.Id][0].Editor.Title;
-                                // } 
-                                // //else if(vm.commentData[f.Id][0].Status === 'Reopen')
-                                // else {
-                                //     f.ResolvedBy = '';
+                               // }
+                                // else{
+                                //     f.FinalStatus = 'Open';
                                 // }
+                                if (vm.commentData[f.Id][0].Status === 'Resolved' || vm.commentData[f.Id][0].Status === 'Closed') {
+                                     f.ResolvedBy = vm.commentData[f.Id][0].Editor.Title;
+                                     f.ModifiedTime=vm.commentData[f.Id][0].Modified;
+                                }
+                                 else {
+                                    for(i=1; i<vm.commentData[f.Id].length; i++){
+                                            if(vm.commentData[f.Id][i].Status ==='Reopen' ){
+                                                f.FinalStatus = 'Open';
+                                                //vm.commentData[f.Id][0].Status='Open';
+                                            }
+                                        }
+                                 }
+                                 
                                 if(vm.commentData[f.Id][0].Status === 'Reopen'){
                                     for(i=0; i<vm.commentData[f.Id].length; i++){
                                         if(vm.commentData[f.Id][i].Status ==='Resolved' ){
                                             f.ResolvedBy = vm.commentData[f.Id][i].Editor.Title;
+                                          
                                         }
                                     }
+                                    //   f.FinalStatus='Open';
                                 }
                                 else if(vm.commentData[f.Id][0].Status === 'Resolved' ){
 
                                    f.ResolvedBy = vm.commentData[f.Id][0].Editor.Title;
+                                    f.ModifiedTime=vm.commentData[f.Id][0].Modified;
                                 }
-                                else if( vm.commentData[f.Id][0].Status === 'Closed')
-                                    for(i=0; i<vm.commentData[f.Id].length; i++){
+                                else if( vm.commentData[f.Id][0].Status === 'Closed'){
+                                     for(i=0; i<vm.commentData[f.Id].length; i++){
                                         if(vm.commentData[f.Id][i].Status ==='Resolved' ){
                                             f.ResolvedBy = vm.commentData[f.Id][i].Editor.Title;
                                         }
                                     }
+                                    f.ModifiedTime=vm.commentData[f.Id][0].Modified;
+                                }
+                                   
                                     // else{
                                     //     f.ResolvedBy = vm.commentData[f.Id][0].Editor.Title;
                                     // }
                              }
+
+                        }
                             else{
                                 f.FinalStatus='Open';
                                 f.UpdatedBy=f.Editor.Title;
                                 f.ModifiedTime=f.Modified;
-                            }     
-                             
+                            }
+
                                // }
                            // })
                     })
@@ -304,7 +318,7 @@ function AllTicketCtl($scope, $http, $timeout, $filter ,$window) {
                     vm.DatalistESPLServiceDesk.forEach(item => {
                         // vm.commentData.forEach(fcomments => {
                          //   if (vm.commentData[f.Service_x0020_Desk_x0020_ID] === fcomments.Service_x0020_Desk_x0020_Id.Service_x0020_Desk_x0020_ID){
-                        
+
                           if(item.FinalStatus == 'Open'){
                             vm.FinalOpenData.push(item);
                          }else if(item.FinalStatus == 'Reopen'){
@@ -317,12 +331,12 @@ function AllTicketCtl($scope, $http, $timeout, $filter ,$window) {
                         // else{
                         //     vm.FinalOtherData.push(item);
                         // }
-                    
+
                 })
                                          //console.log('Open',vm.FinalOpenData);
 
                 vm.DatalistESPLServiceDesk=[];
-               
+
                 vm.FinalOpenData.forEach(openItem =>{
                     vm.DatalistESPLServiceDesk.push(openItem);
                 })
@@ -341,13 +355,13 @@ function AllTicketCtl($scope, $http, $timeout, $filter ,$window) {
             }, function(error) {
                 console.log('error', error);
             });
-          
+
         // }, this);
-       
-       
-        	
+
+
+
     };
- 
+
     // vm.readlistServiceDeskComments = function() {
     //     vm.DatalistESPLServiceDesk.forEach(function(product) {
     //         var id = product.Service_x0020_Desk_x0020_ID;
@@ -380,18 +394,18 @@ function AllTicketCtl($scope, $http, $timeout, $filter ,$window) {
     //                             })
     //                         }
     //                     })
-                        
+
     //                 } else {
     //                     vm.DatalistESPLServiceDesk.find(f => f.Service_x0020_Desk_x0020_ID == id).FinalStatus = '';
     //                 }
-                    
+
     //         }, function(error) {
     //             console.log('error', error);
     //         });
 
     //     }, this);
     //     vm.groupToPages();
-        	
+
     // };
  vm.filterDepartment= function(Dept,Priority,Status){
      vm.Dept=Dept;
@@ -437,12 +451,12 @@ function AllTicketCtl($scope, $http, $timeout, $filter ,$window) {
     else if(vm.Dept == undefined && vm.Priority == undefined && vm.Status != undefined )
         {
             casestr=7;
-        }    
+        }
     else
         {
             casestr=8;
         }
-        
+
         switch(casestr){
             case 1:
                 {
@@ -560,8 +574,8 @@ function AllTicketCtl($scope, $http, $timeout, $filter ,$window) {
                 {
                      vm.groupToPages();
                 }
-                break;    
-            
+                break;
+
         };
 
  };
@@ -570,11 +584,16 @@ function AllTicketCtl($scope, $http, $timeout, $filter ,$window) {
     var data = $filter('filter')(vm.DatalistESPLServiceDesk,vm.filterText, false,'Employee.Title');
     vm.groupToPagesFilter(data);
     vm.page = 1;
- 
+
 };
 
 vm.showFIlter=function(count){
     vm.itemsPerPage=count;
+     if(vm.currentPage!=0)
+        {
+             vm.currentPage = 0;
+        }
+    
     if(vm.Dept!= undefined || vm.Dept!= '' || vm.Priority != undefined || vm.Priority!='' || vm.Status!= undefined || vm.Status!='' )
         {
           vm.itemsPerPage=count;
@@ -583,10 +602,15 @@ vm.showFIlter=function(count){
     else{
             vm.groupToPagesFilter(vm.DatalistESPLServiceDesk);
             vm.page = 1;
-    }    
-   
+    }
+
 };
  vm.groupToPagesFilter = function(data) {
+      if(vm.currentPage!=0)
+        {
+             vm.currentPage = 0;
+        }
+    
         if(vm.itemsPerPage == null || vm.itemsPerPage == undefined){
             vm.itemsPerPage=vm.RecordsPerPage[0];
         }
@@ -605,6 +629,11 @@ vm.showFIlter=function(count){
 
 
     vm.groupToPages = function() {
+         if(vm.currentPage!=0)
+        {
+             vm.currentPage = 0;
+        }
+    
         vm.pagedItems = [];
 if(vm.itemsPerPage == null || vm.itemsPerPage == undefined){
             vm.itemsPerPage=vm.RecordsPerPage[0];
@@ -680,12 +709,12 @@ if(vm.itemsPerPage == null || vm.itemsPerPage == undefined){
         vm.showModal = !vm.showModal;
        // vm.CommentHistory=false;
         //vm.CommentHistoryhide=false;
-    
-    }; 
+
+    };
     vm.cancel = function(item) {
         vm.showModal = false;
     };
-    vm.ReplyFunction =function(item){  
+    vm.ReplyFunction =function(item){
         if(vm.item.Comments != ''){
             var clientContext = SP.ClientContext.get_current();
             var list = clientContext.get_web().get_lists().getByTitle(vm.listServiceDeskComments);
@@ -697,10 +726,13 @@ if(vm.itemsPerPage == null || vm.itemsPerPage == undefined){
             if(item.FinalStatus != undefined){
                 var status = item.FinalStatus;
             }
+            // else if(item.FinalStatus =='Reopen'){
+            //     var status='Open';
+            // }
             else{
                 var status = 'Open';
             }
-            
+
             var concern = item.Actual_x0020_Concern;
             var dept = item.Department.Department;
             var serviceid= item.Id;
@@ -711,7 +743,7 @@ if(vm.itemsPerPage == null || vm.itemsPerPage == undefined){
             listItem.set_item('Department',dept);
             listItem.set_item('Service_x0020_Desk_x0020_Id',serviceid);
             listItem.update();
-            
+
             clientContext.load(listItem);
             clientContext.executeQueryAsync(function (sender, arges) {
                 alert('Reply Saved Succcessfull');
@@ -743,7 +775,7 @@ if(vm.itemsPerPage == null || vm.itemsPerPage == undefined){
 //     listItem.set_item('Department',dept);
 //     listItem.set_item('Service_x0020_Desk_x0020_Id',serviceid);
 //     listItem.update();
-    
+
 //     clientContext.load(listItem);
 //     clientContext.executeQueryAsync(function (sender, arges) {
 //         alert('Reply Saved Succcessfull');
@@ -773,7 +805,7 @@ if(vm.itemsPerPage == null || vm.itemsPerPage == undefined){
                 }
         }, function(error) {
             console.log('error', error);
-        }); 
+        });
     };
     vm.Resolve = function(item) {
         vm.IsView=false;
@@ -789,7 +821,7 @@ if(vm.itemsPerPage == null || vm.itemsPerPage == undefined){
         vm.GetDataforReplyResolveFunction(item);
         vm.toggleModalReject(item);
     };
-    vm.ResolveFunction =function(item){  
+    vm.ResolveFunction =function(item){
         if(vm.item.Comments != ''){
         var clientContext = SP.ClientContext.get_current();
         var list = clientContext.get_web().get_lists().getByTitle(vm.listServiceDeskComments);
@@ -809,7 +841,7 @@ if(vm.itemsPerPage == null || vm.itemsPerPage == undefined){
         listItem.set_item('Department',dept);
         listItem.set_item('Service_x0020_Desk_x0020_Id',serviceid);
         listItem.update();
-        
+
         clientContext.load(listItem);
         clientContext.executeQueryAsync(function (sender, arges) {
             alert('Resolved Succcessfull');
@@ -897,7 +929,7 @@ function modal() {
 
 
 
- 
+
 
 
 
